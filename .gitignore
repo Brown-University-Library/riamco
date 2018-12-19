@@ -1,0 +1,19 @@
+# Files to ignore in Git
+
+# Ignore bundler config.
+/.bundle
+
+# Ignore the default SQLite databases.
+/db/*.sqlite3
+
+# Ignore all logfiles and tempfiles.
+/tmp
+/log
+.byebug_history
+.DS_Store
+
+# Ignore our oficial settings and configuration files
+.env
+refresh.sh
+/http
+

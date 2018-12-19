@@ -1,0 +1,81 @@
+<!-- Button to open the modal form -->
+<button type="button" class="btn btn-link btn-sm search-toggle-more-categories"
+  data-toggle="modal" data-target="#modal_form_<%= facet.name %>"
+  title="Show more categories for this facet">
+    <small class="glyphicon glyphicon-plus"></small>&nbsp;<span>More…</span>
+</button>
+
+<!-- Modal form -->
+<% id_prefix = "modal_form_" + facet.name %>
+<div id="<%= id_prefix %>" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%= facet.title %></h4>
+      </div>
+      <div class="modal-body">
+        <!-- Use a SPAN to preserve state while the page is loaded.
+             Don't use an INPUT because I don't want to preserve the value
+             if the page is refreshed. -->
+        <span id="<%= id_prefix %>_page_num" class="hidden">1</span>
+        <span id="<%= id_prefix %>_loaded" class="hidden">false</span>
+
+        <!-- items added via RenderFacet() JavaScript call (see below)-->
+        <span id="<%= id_prefix %>_loading">
+          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
+          Loading...
+        </span>
+        <div>
+          <ul id="<%= id_prefix %>_items">
+          </ul>
+        </div>
+      </div> <!-- modal body -->
+      <div class="modal-footer">
+        <a id="<%= id_prefix %>_prev_link" href="javascript:facetsMoreObj.GoPrevPage('<%= facet.name %>');" class="btn btn-default pull-left" role="button" title="See previous group of facets">« Previous</a>
+        <a id="<%= id_prefix %>_next_link" href="javascript:facetsMoreObj.GoNextPage('<%= facet.name %>');" class="btn btn-default pull-left" role="button" title="See next group of facets">Next »</a>
+        <a id="<%= id_prefix %>_sort_az" href="javascript:facetsMoreObj.SortFacetByValue('<%= facet.name %>');" class="btn btn-default pull-left" role="button" title="Sort facets alphabetically (ascending)">A-Z</a>
+        <a id="<%= id_prefix %>_sort_num" href="javascript:facetsMoreObj.SortFacetByCount('<%= facet.name %>');" class="btn btn-default pull-left active" role="button" title="Sort facets by count (descending)">9-0</a>
+        <input id="<%= id_prefix %>_filter" placeholder="narrow your search" title="narrow your search" value="" class="pull right">
+      </div>
+    </div> <!-- modal content -->
+  </div> <!-- modal-dialog -->
+</div> <!-- modal_form -->
+
+<script type="text/javascript">
+  $(function() {
+    // wire the filter textbox
+    $("#<%= id_prefix %>_filter").on("input", function() {
+      facetsMoreObj.GoFirstPage("<%= facet.name %>");
+      facetsMoreObj.RenderFacet("<%= facet.name %>");
+    });
+
+    $("#<%= id_prefix %>").on("shown.bs.modal", function() {
+
+      // give focus to the filter textbox.
+      $("#<%= id_prefix %>_filter").focus();
+
+      // if we haven't already, fetch the data.
+      var loadedId = "#<%= id_prefix %>_loaded";
+      var loadingId = "#<%= id_prefix %>_loading";
+      if ($(loadedId).text() == "false") {
+        $(loadedId).text("true");
+        var fetchDataUrl = '<%= (@presenter.facetSearchBaseUrl + "&f_name=" + facet.name).html_safe %>';
+        $.getJSON(fetchDataUrl, function(values) {
+          $.each(values, function(key, value) {
+            facetsMoreObj.AddFacetValue("<%= facet.name %>", value.text, value.count, value.add_url, value.remove_url);
+          });
+          facetsMoreObj.SortFacetByCount("<%= facet.name %>");
+          facetsMoreObj.RenderFacet("<%= facet.name %>");
+        })
+        .done(function() {
+          $(loadingId).addClass("hidden");
+        })
+        .fail(function() {
+          $(loadingId).html("Error: could not retrieve facet information.");
+        });
+      }
+    });
+  });
+</script>

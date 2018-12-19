@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<% # Carry referrer when using HTTPS (http://markpercival.tumblr.com/post/51560498133/hacking-https-http-referrers) %>
+<meta name="referrer" content="always">
+
+<title><%= @page_title || "RIAMCO" %></title>
+
+<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+
+<%= stylesheet_link_tag    'application', media: 'all' %>
+
+<%= javascript_include_tag 'application' %>
+<%= csrf_meta_tags %>
+<%= favicon_link_tag 'favicon.ico' %>
+
+<% if @link_alternate %>
+	<link rel="alternate" type="application/rdf+xml" href="<%= @link_alternate %>" />
+<% end %>
+</head>
+
+<body class="no-logo fae">
+
+<header id="branding" role="banner">
+	<div class="header">
+		<div class="hgroup">
+			<div class="container">
+				<div class="row">
+
+					<div class="site-logo col-lg-3 col-md-3 col-sm-3 hidden-xs logo-sm">
+            <a href="http://brown.edu" target="_blank"><%= image_tag( "brown_logo_small.png", alt: "Brown University") %></a>
+					</div>
+					<div class="site-logo col-xs-3 visible-xs-block">
+            <a href="http://brown.edu" target="_blank"><%= image_tag( "brown_logo_small.png", alt: "Brown University") %></a>
+					</div>
+
+				<% unless current_page?(root_path) %>
+					<div class="site-title col-lg-6 col-md-6 col-sm-6 hidden-xs">
+						<h1>
+							<a href="<%= root_path %>">RIAMCO</a>
+						</h1>
+					</div>
+					<div class="site-title col-xs-6  visible-xs-block">
+						<h1>
+							<a href="<%= root_path %>">RIAMCO</a>
+						</h1>
+					</div>
+				<% end %>
+
+				<% if current_page?(root_path) %>
+					<div class="col-lg-3 col-lg-push-7 col-md-3 col-md-push-7 col-sm-3 col-sm-push-6 hidden-xs">
+						<p>
+							<a href="<%= manager_url() %>" class="manage-profile-link">Manage your profile</a>
+						</p>
+					</div>
+					<div class="col-xs-12 visible-xs-block">
+						<p>
+							<a href="<%= manager_url() %>" class="manage-profile-link">Manage your profile</a>
+						</p>
+					</div>
+				<% end %>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<% if flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+  <% end %>
+
+<% if flash[:alert] %>
+    <div class="alert"><%= flash[:alert] %></div>
+<% end %>
+
+<%= yield %>
+
+<!-- #wrapper-content -->
+
+
+<footer role="contentinfo" class="footer col-sm-12">
+	<div class="row">
+		<div class="container">
+			<div class="col-md-12">
+				<nav role="navigation">
+					<ul id="footer-nav" role="list">
+						<li role="listitem">
+							<a href="TBD" title="About Researchers@Brown">About</a>
+						<li role="listitem">
+							<a href="TBD" title="Help and Frequently Asked Questions">Help</a>
+						<li role="listitem">
+							<a href="http://brown.edu/" target="_blank">Brown University</a>
+						<li role="listitem">
+							<a href="TBD" target="_blank" title="Submit feedback about Researchers@Brown">Feedback</a>
+					</ul>
+				</nav>
+				<p class="copyright">
+					&copy; 2017 <a href="http://brown.edu/" target="_blank">Brown University</a> |
+					<a class="terms" href="TBD" title="Terms of Use">Terms of Use</a> |
+					Powered by <a href="http://vivoweb.org/" target="_blank" title="Powered by VIVO"><strong>VIVO</strong></a>
+			 	</p>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<% if ENV["GOOGLE_ANALYTICS_KEY"] %>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV["GOOGLE_ANALYTICS_KEY"] %>"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', '<%= ENV["GOOGLE_ANALYTICS_KEY"] %>');
+	</script>
+<% end %>
+</body>
+
+</html>

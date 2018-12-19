@@ -1,0 +1,89 @@
+<script>
+  $(function () {
+    // Enable tooltips
+    // https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-tooltips.php
+    var options = {
+      html: true,
+      placement: "bottom"
+    };
+    $("[data-toggle='tooltip']").tooltip(options);
+  });
+</script>
+
+
+<style>
+/* Override Bootstrap default values*/
+.tooltip-inner {
+  max-width: 300px;
+  text-align: left;
+}
+
+.tooltip strong {
+  color: blue;
+  background-color: #F5F2EC;  /* light beige */
+}
+</style>
+
+<%= render "results_javascript" %>
+<%= render "search_box" %>
+
+<div class="container-fluid results-page col-sm-12">
+  <%= render "manage_profile_login" %>
+
+  <div class="row results-page-wrapper">
+    <div class="results-wrapper col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
+      <div class="result-nums-breadcrumbs-wrapper">
+        <%= render "results_pagination_top" %>
+        <%= render "results_search_terms" %>
+      </div> <!-- result-nums-breadcrumbs-wrapper -->
+
+      <h2 class="visible-print">Results</h2>
+
+      <!-- search results -->
+      <div class="row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+        <!--added for single row approach -->
+        <h3 class="hidden">Fully-matching results</h3>
+
+        <div class="clearfix visible-md-block"></div>
+        <div class="clearfix visible-lg-block"></div>
+
+        <% @presenter.results.each_with_index do |item, index| %>
+          <div class="clearfix visible-sm-block"></div>
+          <div class="clearfix visible-xs-block"></div>
+          <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 expert-results" data-fb-result="<%= 'item.uri' %>">
+            <div class="gap30"></div>
+            <section itemscope itemtype="TBD" id="individual-intro" class="vcard person" role="region">
+              <section class="share-contact" role="region">
+                <div class="share-contact--bottom"></div>
+                <div id="photo-wrapper" class="results__photo" aria-hidden="true">
+                  <a href="<%= 'item.uri' %>">thumbnail</a>
+                </div>
+                <div class="contact-content">
+                  <h4>
+                    <span itemprop="name" class="fn">
+                      <a href="<%= 'item.uri' %>"><%= item.title %></a>
+                    </span>
+                  </h4>
+                  <span class="results-title"><%= item.title %></span>
+                </div>
+              </section>
+            </section>
+          </div>
+        <% end %>
+      </div> <!-- row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12 -->
+
+      <%= render "results_pagination_bottom" %>
+
+    </div> <!-- results-wrapper col-lg-9 col-lg-push-3 ... -->
+
+    <% if @presenter.num_found > 0 %>
+      <%= render "results_facets" %>
+    <% end %>
+
+  </div> <!-- row -->
+</div> <!-- container-fluid col-sm-12 -->
+
+<% if @presenter.explain_format != nil %>
+  <%= render "explain_results" %>
+<% end %>

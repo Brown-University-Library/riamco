@@ -22,6 +22,10 @@
   color: blue;
   background-color: #F5F2EC;  /* light beige */
 }
+
+em {
+  background-color: #F3F5B3;  /* light yellow */
+}
 </style>
 
 <%= render "results_javascript" %>
@@ -46,7 +50,7 @@
             <div style="padding-bottom:10px">
               <div><b><a href="render.php?eadid=<%=item.id %>"><%= item.title %></a></b></div>
               <div style="padding-left: 15px"><%= item.extent %></div>
-              <div style="padding-left: 15px"><%= item.abstract %></div>
+              <div style="padding-left: 15px"><%= item.abstract.html_safe %></div>
               <% if item.repository %>
                 <div style="padding-left: 15px"><i>Repository: <%= item.repository %></i></div>
               <% end %>

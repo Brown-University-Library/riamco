@@ -9,9 +9,12 @@ class Search
     extra_fqs = []
     params.fl = nil # ["id", "title_s", "institution_s", "unit_id_s", "abstract_txt_en"]
     params.sort = "title_s asc"
-    # Query filter with custom boost values
-    # "short_id_s^2500 email_s^2500 nameText^2000"
+    # TODO: decide what fields we should use and their boost values.
     qf = "id abstract_txt_en"
+
+    params.hl = true
+    params.hl_fl = "abstract_txt_en"
+    params.hl_snippets = 30
 
     # For information on Solr's Minimum match value see
     #   "Solr in Action" p. 229
@@ -30,9 +33,26 @@ class Search
     end
 
     results.solr_docs.each do |doc|
-        item = SearchItem.from_hash(doc)
+        id = doc["id"]
+        highlights = results.highlights.for(id) || []
+        item = SearchItem.from_hash(doc, highlights)
         results.items << item
     end
+
+    results.items.each do |result|
+      result.highlights.each do |hl|
+        hl_field = hl[0]
+        hl_hits = hl[1]
+        if hl_field == "abstract_txt_en"
+          hl_hits.each do |hit|
+            # update the abstract text with the highlighted text
+            text = hit.gsub("<em>", "").gsub("</em>", "")
+            result.abstract.gsub!(text, hit)
+          end
+        end
+      end
+    end
+
     results
   end
 end

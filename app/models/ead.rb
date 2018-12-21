@@ -6,8 +6,8 @@ class Ead
     attr_reader :abstract, :biog_hist, :browse_terms, :bulk,
         :creators, :date, :end_year, :extent, :filing_title,
         :filing_title_sort, :id, :institution, :institution_id,
-        :keyword, :languages, :repository_name, :scope_content, 
-        :start_year, :subjects, :title, :title_sort, :title_sort_alpha, 
+        :keyword, :languages, :repository_name, :scope_content,
+        :start_year, :subjects, :title, :title_sort, :title_sort_alpha,
         :title_proper, :title_proper_sort, :unit_id
 
     def initialize(xml)
@@ -37,7 +37,7 @@ class Ead
         @title_proper = get_doc_title_proper()
         # # titleproper_sort
         @unit_id = get_doc_unit_id()
-        # TODO: parse the inventory to get series, subseries, file/item
+        @inventory = nil
     end
 
     def to_s()
@@ -74,13 +74,11 @@ class Ead
         solr_data
     end
 
-    private 
-        # NOTE: We could simplify the XPATH expressions if we remove the
-        # namespaces from the XML document (@xml_doc.remove_namespaces!)
-        # but that feels wrong.
-        #
-        # TODO: make sure value the values are clean (e.g. no line breaks)
-        #
+    def inventory()
+        @inventory ||= get_doc_inventory()
+    end
+
+    private
         def get_doc_id()
             @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:eadid[1]/text()").text
         end
@@ -127,7 +125,7 @@ class Ead
                 title_proper += titles[0].text
             end
             year = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper/xmlns:date/@normal")
-            if year.count > 0 
+            if year.count > 0
                 title_proper += " " + year[0].value  # use "value" because it's an attribute
             end
             title_proper
@@ -170,10 +168,10 @@ class Ead
         end
 
         def get_doc_scope_content()
-            # The original RIAMCO code is picking up "scopecontent" nodes in 
+            # The original RIAMCO code is picking up "scopecontent" nodes in
             # the entire XML document regardless of the path for Solr indexing
             # but only the nodes in the "/ead/archdesc/descgrp/scopecontent"
-            # xpath for display in the XSLT. I think we should always honor 
+            # xpath for display in the XSLT. I think we should always honor
             # the xpath. TODO: Check with Karen.
             get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:scopecontent/xmlns:p")
         end
@@ -192,8 +190,42 @@ class Ead
 
         def get_doc_institution_name(institution_id)
             inst = Institutions.for_code(institution_id)
-            return inst[:name] if inst != nil 
+            return inst[:name] if inst != nil
             nil
+        end
+
+        def get_doc_inventory()
+            puts "calculating inventory"
+            # TODO: this should be changed to a recursive method
+            # to walk each level in order and be able to build the
+            # path series/subseries/item+file.
+            #
+            # As-is seems to work since it's picking up the C nodes
+            # in the order they are on the XML, but I am not sure
+            # this will be consistent.
+            inventory = []
+            c_nodes = @xml_doc.xpath("//xmlns:c")
+            c_nodes.each do |node|
+
+                label = ""
+                unit_title = node.xpath("xmlns:did/xmlns:unittitle/text()")
+                if unit_title.count > 0
+                    label += unit_title[0].text
+                end
+
+                unit_id = node.xpath("xmlns:did/xmlns:unitid/text()")
+                if unit_id.count > 0
+                    label += " " + unit_id[0].text
+                end
+
+                inv = {
+                    id: node["id"],
+                    level: node["level"],
+                    label: label
+                }
+                inventory << inv
+            end
+            inventory
         end
 
         def get_xpath_value(xpath)
@@ -212,7 +244,8 @@ class Ead
         end
 
         def trim_text(text)
-            # remove trailing line breaks, spaces, and periods 
+            return nil if text == nil
+            # remove trailing line breaks, spaces, and periods
             clean = text.chomp.strip.chomp(".")
         end
 end

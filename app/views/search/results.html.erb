@@ -28,8 +28,7 @@
 <%= render "search_box" %>
 
 <div class="container-fluid results-page col-sm-12">
-  <%= render "manage_profile_login" %>
-  # <div><a href="http://brown.edu">hello</a></div>
+  <!-- render "manage_profile_login" -->
 
   <div class="row results-page-wrapper">
     <div class="results-wrapper col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
@@ -45,16 +44,18 @@
 
         <% @presenter.results.each_with_index do |item, index| %>
             <div style="padding-bottom:10px">
-              <div><b><%= item.title %></b></div>  
-              <div><a href="http://brown.edu">hello</a></div>
-              <div><%= item.extent %></div>
-              <div><%= item.abstract %></div>
-              <div><i>Repository: <%= item.repository %></i></div>
+              <div><b><a href="<%= ead_show_path(item.id) %>"><%= item.title %></a></b></div>
+              <div style="padding-left: 15px"><%= item.extent %></div>
+              <div style="padding-left: 15px"><%= item.abstract %></div>
+              <% if item.repository %>
+                <div style="padding-left: 15px"><i>Repository: <%= item.repository %></i></div>
+              <% end %>
             </div>
         <% end %>
       </div> <!-- row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12 -->
 
-      <%= render "results_pagination_bottom" %>
+      <!-- this guy wreaks havoc with the links on the page
+      render "results_pagination_bottom" -->
 
     </div> <!-- results-wrapper col-lg-9 col-lg-push-3 ... -->
 

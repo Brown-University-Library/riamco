@@ -1,6 +1,31 @@
 Rails.application.routes.draw do
-  # Display URL
-  get 'ead/:id' => 'ead#show', as: :ead_show
+
+  # Original PHP URLs.
+  get 'render.php' => 'ead#show_legacy'
+  get 'browse.html' => 'legacy#browse'
+  get 'index.html' => 'legacy#home'
+  get 'advanced_search.html' => 'legacy#advanced_search'
+  get 'about.html' => 'legacy#about'
+  get 'help.html' => 'legacy#help'
+  get 'contact.html' => 'legacy#contact'
+
+  # New URLs
+  get 'index' => 'home#index'
+  get 'advanced_search' => 'home#advanced_search'
+  get 'about' => 'home#about'
+  get 'help' => 'home#help'
+  get 'contact' => 'home#contact'
+
+  # # New display URL.
+  # # 
+  # # CAREFUL: If we change the path (e.g. add /ead/) we need to 
+  # #          update the XSLT files to generate navigation links
+  # #          to the new path.
+  # # 
+  # # We must use a constraint in the route definition to support periods 
+  # # on the ID, something that Rails does not do by default
+  # # (see https://stackoverflow.com/a/23672925/446681)
+  # get 'ead/:id' => 'ead#show', as: :ead_show, constraints: { id: /[a-zA-Z0-9\.\-]+/ }
 
   # Search URLs
   get 'search_facets' => 'search#facets'

@@ -2,6 +2,7 @@ class Search
   def initialize(solr_url)
     logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
     @solr = SolrLite::Solr.new(solr_url, logger)
+    @solr.def_type = "edismax"
   end
 
   def search(params, debug = false)
@@ -10,7 +11,7 @@ class Search
 
     # Query filter with custom boost values
     # "short_id_s^2500 email_s^2500 nameText^2000"
-    qf = nil 
+    qf = "id abstract_txt_en"
 
     # For information on Solr's Minimum match value see
     #   "Solr in Action" p. 229

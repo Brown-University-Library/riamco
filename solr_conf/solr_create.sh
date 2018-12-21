@@ -9,4 +9,4 @@ solr create -c riamco2
 #   }
 # }' http://localhost:8983/solr/riamco2/schema
 
-bundle exec rake riamco:eads_to_solr[/Users/hectorcorrea/dev/riamco/xml/published/*.xml,true]
+bundle exec rake riamco:eads_to_solr[/Users/hectorcorrea/dev/riamco_php/xml/published/*.xml,true]

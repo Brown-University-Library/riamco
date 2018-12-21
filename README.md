@@ -31,7 +31,7 @@ your environment.
 
 # Indexing our EAD files
 ```
-bundle exec rake riamco:eads_to_solr[/path/to/xml/published/*.xml,true]
+bundle exec rake riamco:ead_to_solr[/path/to/xml/published/*.xml,true]
 ```
 
 You can pass `false` as the second argument to skip the pushing of the data to Solr and instead get the JSON output on the console.

@@ -4,7 +4,7 @@ require "byebug"
 
 namespace :riamco do
   desc "Generates the JSON to import to Solr the indicated EAD files (and optionally imports it)"
-  task :eads_to_solr, [:file_path, :import] => :environment do |cmd, args|
+  task :ead_to_solr, [:file_path, :import] => :environment do |cmd, args|
     file_path = args[:file_path]
     if file_path == nil
       abort "Must provide file path to import (e.g. /some/path/*.xml)"

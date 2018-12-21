@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # Display URL
+  get 'ead/:id' => 'ead#show', as: :ead_show
+
   # Search URLs
   get 'search_facets' => 'search#facets'
   get 'search' => 'search#index', as: :search

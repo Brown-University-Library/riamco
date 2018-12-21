@@ -6,9 +6,9 @@ class Ead
     attr_reader :abstract, :biog_hist, :browse_terms, :bulk,
         :creators, :date, :end_year, :extent, :filing_title,
         :filing_title_sort, :id, :institution, :institution_id,
-        :keyword, :languages, :scope_content, :start_year, :subjects,
-        :title, :title_sort, :title_sort_alpha, :title_proper,
-        :title_proper_sort, :unit_id
+        :keyword, :languages, :repository_name, :scope_content, 
+        :start_year, :subjects, :title, :title_sort, :title_sort_alpha, 
+        :title_proper, :title_proper_sort, :unit_id
 
     def initialize(xml)
         @xml_doc = Nokogiri::XML(xml)
@@ -27,11 +27,12 @@ class Ead
         @institution = get_doc_institution_name(@institution_id)
         # @keyword Should this be a copy field in Solr instead?
         @languages = get_doc_languages()
+        @repository_name = get_doc_repository_name()
         @scope_content = get_doc_scope_content()
         @start_year = get_doc_start_year(@date)
         @subjects = get_doc_subjects()
         @title = get_doc_title()
-        # # title_sort_
+        @title_sort = get_doc_title_sort(@title)
         # # title_sort_alpha
         @title_proper = get_doc_title_proper()
         # # titleproper_sort
@@ -58,12 +59,15 @@ class Ead
             filing_title_s: self.filing_title,
             id: self.id,
             institution_s: self.institution,
+            institution_id_s: self.institution_id,
             languages_ss: self.languages,
             title_s: self.title,
+            title_sort_s: self.title_sort,
             title_proper_s: self.title_proper,
             timestamp_s: DateTime.now.to_s,
             scope_content_txts_en: self.scope_content,
             start_year_i: self.start_year,
+            repository_name_s: self.repository_name,
             subjects_ss: self.subjects,
             unit_id_s: self.unit_id
         }
@@ -107,6 +111,11 @@ class Ead
             get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='primary']/text()")
         end
 
+        def get_doc_title_sort(title)
+            return nil if title == nil
+            title.upcase
+        end
+
         def get_doc_filing_title()
             get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='filing']/text()")
         end
@@ -128,10 +137,9 @@ class Ead
             langs = []
             doc_langs = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:profiledesc/xmlns:langusage/xmlns:language")
             doc_langs.each do |l|
-                langs << l.text.chomp.strip
+                langs << trim_text(l.text)
             end
-            langs.uniq!
-            langs
+            langs.uniq
         end
 
         def get_doc_main_agency_code()
@@ -148,6 +156,11 @@ class Ead
 
         def get_doc_browse_terms()
             get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject[@source='riamco']")
+        end
+
+        def get_doc_repository_name()
+            name = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:repository/xmlns:corpname[1]/text()")
+            trim_text(name)
         end
 
         def get_doc_subjects()
@@ -196,6 +209,11 @@ class Ead
                 values << node.text
             end
             values
+        end
+
+        def trim_text(text)
+            # remove trailing line breaks, spaces, and periods 
+            clean = text.chomp.strip.chomp(".")
         end
 end
 

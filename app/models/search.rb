@@ -8,7 +8,7 @@ class Search
   def search(params, debug = false)
     extra_fqs = []
     params.fl = nil # ["id", "title_s", "institution_s", "unit_id_s", "abstract_txt_en"]
-
+    params.sort = "title_s asc"
     # Query filter with custom boost values
     # "short_id_s^2500 email_s^2500 nameText^2000"
     qf = "id abstract_txt_en"

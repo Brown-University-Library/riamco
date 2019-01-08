@@ -37,17 +37,15 @@ class Ead
         @title_proper = get_doc_title_proper()
         # # titleproper_sort
         @unit_id = get_doc_unit_id()
-        @inventory = nil
+        @inventory = get_doc_inventory()
     end
 
     def to_s()
         "#{@id}, #{@title}"
     end
 
-    def to_solr()
-        # For now create a single Solr document but once we include the inventory
-        # we should create multiple documents (once for each level)
-        solr_data = {
+    def to_solr(with_inventory = false)
+        core_doc = {
             abstract_txt_en: self.abstract,
             biog_hist_txt_en: self.biog_hist,
             browse_terms_ss: self.browse_terms,
@@ -71,6 +69,26 @@ class Ead
             subjects_ss: self.subjects,
             unit_id_s: self.unit_id
         }
+
+        if with_inventory == false || inventory.count == 0
+            return [core_doc]
+        end
+
+        # Return one Solr document per entry in the inventory. The "core" data
+        # is the same for all of them, but the inventory_* fields are different
+        # and the ID has a sequence to force them to be different.
+        solr_data = []
+        seq = 1
+        id = core_doc[:id]
+        inventory.each do |inv|
+            solr_doc = core_doc.clone
+            solr_doc[:id] = id + "-" + seq.to_s
+            solr_doc[:inventory_label_s] = inv[:label]
+            solr_doc[:inventory_descendent_path] = inv[:full_path]
+            solr_doc[:inventory_level_s] = inv[:level]
+            solr_data << solr_doc
+            seq += 1
+        end
         solr_data
     end
 
@@ -135,7 +153,11 @@ class Ead
             langs = []
             doc_langs = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:profiledesc/xmlns:langusage/xmlns:language")
             doc_langs.each do |l|
-                langs << trim_text(l.text)
+                lang = trim_text(l.text)
+                if lang == "eng"
+                    lang = "English"
+                end
+                langs << lang
             end
             langs.uniq
         end
@@ -195,37 +217,36 @@ class Ead
         end
 
         def get_doc_inventory()
-            puts "calculating inventory"
-            # TODO: this should be changed to a recursive method
-            # to walk each level in order and be able to build the
-            # path series/subseries/item+file.
-            #
-            # As-is seems to work since it's picking up the C nodes
-            # in the order they are on the XML, but I am not sure
-            # this will be consistent.
             inventory = []
-            c_nodes = @xml_doc.xpath("//xmlns:c")
-            c_nodes.each do |node|
-
-                label = ""
-                unit_title = node.xpath("xmlns:did/xmlns:unittitle/text()")
-                if unit_title.count > 0
-                    label += unit_title[0].text
-                end
-
-                unit_id = node.xpath("xmlns:did/xmlns:unitid/text()")
-                if unit_id.count > 0
-                    label += " " + unit_id[0].text
-                end
-
-                inv = {
-                    id: node["id"],
-                    level: node["level"],
-                    label: label
-                }
-                inventory << inv
-            end
+            root_c_nodes = @xml_doc.xpath("xmlns:ead/xmlns:archdesc/xmlns:dsc/xmlns:c")
+            process_inventory_nodes(inventory, 1, root_c_nodes, nil)
             inventory
+        end
+
+        def process_inventory_nodes(inventory, depth, nodes, parent_path)
+            nodes.each do |node|
+                data = {
+                    id: node.xpath("string(@id)"),  # this can be null
+                    full_path: nil,                 # set below
+                    depth: depth,
+                    level: node.xpath("string(@level)"),
+                    label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text)
+                }
+
+                if parent_path == nil
+                    # top level node
+                    data[:full_path] = safe_path(data[:label])
+                else
+                    # child level node
+                    data[:full_path] = parent_path + " / " + safe_path(data[:label])
+                end
+
+                # Add node to the inventory...
+                inventory << data
+
+                # ...and process its children
+                process_inventory_nodes(inventory, depth+1, node.xpath("xmlns:c"), data[:full_path])
+            end
         end
 
         def get_xpath_value(xpath)
@@ -247,6 +268,13 @@ class Ead
             return nil if text == nil
             # remove trailing line breaks, spaces, and periods
             clean = text.chomp.strip.chomp(".")
+        end
+
+        # By default the descendent_path field type in Solr uses the 
+        # forward slash (/) as the delimiter. Make sure the value to use
+        # does not contain the delimiter.
+        def safe_path(path)
+            path.gsub("/", "^^")
         end
 end
 

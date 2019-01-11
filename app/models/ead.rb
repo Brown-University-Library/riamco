@@ -56,36 +56,55 @@ class Ead
             extent_s: self.extent,
             filing_title_s: self.filing_title,
             id: self.id,
+            ead_id_s: self.id,
             institution_s: self.institution,
             institution_id_s: self.institution_id,
             languages_ss: self.languages,
-            title_s: self.title,
+            title_s: self.title,                        # for faceting
+            title_txt_en: self.title,                   # for searching
             title_sort_s: self.title_sort,
             title_proper_s: self.title_proper,
             timestamp_s: DateTime.now.to_s,
             scope_content_txts_en: self.scope_content,
             start_year_i: self.start_year,
             repository_name_s: self.repository_name,
-            subjects_ss: self.subjects,
-            unit_id_s: self.unit_id
+            subjects_ss: self.subjects,                 # for faceting
+            subjects_txts_en: self.subjects,            # for searching
+            unit_id_s: self.unit_id,
+            inventory_level_s: "Collection"
         }
 
-        if with_inventory == false || inventory.count == 0
+        if with_inventory == false
             return [core_doc]
         end
 
-        # Return one Solr document per entry in the inventory. The "core" data
-        # is the same for all of them, but the inventory_* fields are different
-        # and the ID has a sequence to force them to be different.
+        # Return one Solr document for the collection...
         solr_data = []
+        solr_data << core_doc
+
+        # ...plus one document per each entry in the inventory.
+        # The "core" data is the same for all of them, but the
+        # inventory_* fields are different and the ID has a
+        # sequence to force them to be different.
         seq = 1
-        id = core_doc[:id]
         inventory.each do |inv|
-            solr_doc = core_doc.clone
-            solr_doc[:id] = id + "-" + seq.to_s
-            solr_doc[:inventory_label_s] = inv[:label]
-            solr_doc[:inventory_descendent_path] = inv[:full_path]
-            solr_doc[:inventory_level_s] = inv[:level]
+            # TODO: Make sure to handle if the level is "Collection" since
+            # we are hard-coding "Collection" above for the "main" record.
+            solr_doc = {
+                id: core_doc[:id] + "-" + seq.to_s,
+                ead_id_s: core_doc[:id],
+                title_s: core_doc[:title_s],                    # collection name (for faceting)
+                title_txt_en: core_doc[:title_s],               # collection name (for searching)
+                institution_s: core_doc[:institution_s],
+                institution_id_s: core_doc[:institution_id_s],
+                timestamp_s: DateTime.now.to_s,
+                inventory_container_txt_en: inv[:container_text],
+                inventory_label_txt_en: inv[:label],
+                inventory_date_s: inv[:date],
+                inventory_descendent_path: inv[:full_path],     # for navigation
+                inventory_path_txt_en: inv[:full_path],         # for searching
+                inventory_level_s: inv[:level]
+            }
             solr_data << solr_doc
             seq += 1
         end
@@ -230,8 +249,21 @@ class Ead
                     full_path: nil,                 # set below
                     depth: depth,
                     level: node.xpath("string(@level)"),
-                    label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text)
+                    container_text: nil,            # set below
+                    label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text),
+                    date: node.xpath("string(xmlns:did/xmlns:unitdate[1])")
                 }
+
+                containers = node.xpath("xmlns:did/xmlns:container")
+                if containers.count > 0
+                    # collect the containers into a single string (e.g. "box 1 folder 2")
+                    data[:container_text] = ""
+                    containers.each do |container|
+                        if container.attributes["label"]
+                            data[:container_text] += container.attributes["label"].value + " " + container.text + " "
+                        end
+                    end
+                end
 
                 if parent_path == nil
                     # top level node
@@ -270,7 +302,7 @@ class Ead
             clean = text.chomp.strip.chomp(".")
         end
 
-        # By default the descendent_path field type in Solr uses the 
+        # By default the descendent_path field type in Solr uses the
         # forward slash (/) as the delimiter. Make sure the value to use
         # does not contain the delimiter.
         def safe_path(path)

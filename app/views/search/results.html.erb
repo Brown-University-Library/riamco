@@ -47,12 +47,38 @@ em {
       <div class="row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
         <% @presenter.results.each_with_index do |item, index| %>
+            <!-- move out of here the logic to handle different
+                 types of results (collections, series, items) -->
             <div style="padding-bottom:10px">
-              <div><b><a href="render.php?eadid=<%=item.id %>"><%= item.title %></a></b></div>
-              <div style="padding-left: 15px"><%= item.extent %></div>
-              <div style="padding-left: 15px"><%= item.abstract.html_safe %></div>
+              <div><b><a target="_blank", href="render.php?eadid=<%=item.ead_id %>"><%= item.title %></a></b></div>
+              <div style="padding-left: 15px">Format: <%= item.inv_level %></div>
+
+              <% if item.institution_name  %>
+                <div style="padding-left: 15px">Institution: <%= item.institution_name %></div>
+              <% end %>
+
+              <% if item.extent %>
+                <div style="padding-left: 15px"><%= item.extent %></div>
+              <% end %>
+
+              <% if item.abstract %>
+                <div style="padding-left: 15px"><%= item.abstract.html_safe %></div>
+              <% end %>
+
               <% if item.repository %>
                 <div style="padding-left: 15px"><i>Repository: <%= item.repository %></i></div>
+              <% end %>
+
+              <% if item.inv_container %>
+                <div style="padding-left: 15px">Container: <%= item.inv_container %></div>
+              <% end %>
+
+              <% if item.inv_label %>
+                <div style="padding-left: 15px">Label: <%= item.inv_label.html_safe %></div>
+              <% end %>
+
+              <% if item.inv_date %>
+                <div style="padding-left: 15px">Date: <%= item.inv_date %></div>
               <% end %>
             </div>
         <% end %>

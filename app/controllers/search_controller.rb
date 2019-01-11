@@ -56,8 +56,10 @@ class SearchController < ApplicationController
     def facets_fields()
       f = []
       f << SolrLite::FacetField.new("institution_s", "Institution")
+      f << SolrLite::FacetField.new("title_s", "Collection")
       f << SolrLite::FacetField.new("subjects_ss", "Subject")
       f << SolrLite::FacetField.new("browse_terms_ss", "Browse Term")
+      f << SolrLite::FacetField.new("inventory_level_s", "Level")
       f << SolrLite::FacetField.new("languages_ss", "Language")
       f << SolrLite::FacetField.new("creators_ss", "Creator")
       f

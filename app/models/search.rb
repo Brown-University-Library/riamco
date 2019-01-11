@@ -19,7 +19,7 @@ class Search
     # hits more unique.
     #
     # TODO: decide what fields we should use and their boost values.
-    qf = "id ead_id title_txt_en^100 abstract_txt_en^0.1 inventory_label_txt_en inventory_path_txt_en subjects_txts_en"
+    qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 inventory_label_txt_en inventory_path_txt_en subjects_txts_en"
 
     params.hl = true
     params.hl_fl = "abstract_txt_en inventory_label_txt_en"
@@ -28,16 +28,66 @@ class Search
     # TODO: figure out a good value for this
     mm = nil
 
-    results = @solr.search(params, extra_fqs, qf, mm, debug)
-    if !results.ok?
-      raise("Solr reported: #{results.error_msg}")
-    end
+    use_groups = true
+    if use_groups
+      # TODO: Figure out why pagination is not working.
+      # It works from page 1 to page 2, but then it does not.
+      # It seems that we are not passing the start/rows parameters
+      # (or not getting them in the response) and that's why it's
+      # resetting to page 1.
+      #
+      #       ==> The issue might be in the SolrLite gem <==
+      #
+      results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", 4)
+      if !results.ok?
+        raise("Solr reported: #{results.error_msg}")
+      end
 
-    results.solr_docs.each do |doc|
+      groups_ids = results.solr_groups("ead_id_s")
+
+      # puts "==> #{params.page}, #{params.start_row}"
+      # puts "\t#{groups_ids}"
+      # byebug
+
+      groups_ids.each do |group_id|
+        docs_for_group = results.solr_docs_for_group("ead_id_s", group_id)
+
+        # Try to create the item with collection information
+        # if it is found in the documents.
+        item = nil
+        docs_for_group.each do |doc|
+          if doc["inventory_level_s"] == "Collection"
+            item = SearchItem.from_hash(doc, [])
+            break
+          end
+        end
+
+        if item == nil
+          # create a stub
+          item = SearchItem.for_collection(group_id)
+        end
+
+        docs_for_group.each do |doc|
+          if doc["inventory_level_s"] == "Collection"
+            # skip it
+          else
+            item.add_child(doc)
+          end
+        end
+        results.items << item
+      end
+
+    else
+      results = @solr.search(params, extra_fqs, qf, mm, debug)
+      if !results.ok?
+        raise("Solr reported: #{results.error_msg}")
+      end
+      results.solr_docs.each do |doc|
         id = doc["id"]
         highlights = results.highlights.for(id) || []
         item = SearchItem.from_hash(doc, highlights)
         results.items << item
+      end
     end
 
     results.items.each do |result|

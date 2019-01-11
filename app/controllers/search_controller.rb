@@ -45,7 +45,6 @@ class SearchController < ApplicationController
         params.sort = "timestamp_s desc"
       end
       params.facet_limit = facet_limit if facet_limit != nil
-      # TODO: add support for this params.def_fype = "edismax"
 
       searcher = Search.new(solr_url)
       search_results = searcher.search(params, debug)

@@ -2,7 +2,7 @@ class SearchItem
   attr_accessor :id, :ead_id, :title, :abstract, :extent, :repository,
     :institution_name, :institution_id,
     :inv_level, :inv_label, :inv_date, :inv_container,
-    :highlights
+    :highlights, :children
 
   def initialize(id, ead_id, title, abstract, extent, repository, institution_name, institution_id,
     inv_level, inv_label, inv_date, inv_container, highlights)
@@ -19,6 +19,7 @@ class SearchItem
     @inv_label = inv_label || ""
     @inv_date = inv_date
     @inv_container = inv_container
+    @children = []
   end
 
   def self.from_hash(h, highlights)
@@ -28,5 +29,18 @@ class SearchItem
       h["inventory_level_s"], h["inventory_label_txt_en"],
       h["inventory_date_s"], h["inventory_container_txt_en"],
       highlights)
+  end
+
+  def self.for_collection(id)
+    SearchItem.new(id, id, "title for #{id}", "abstract for #{id}",
+      "extent_s for #{id}", "repo for #{id}",
+      "inst for #{id}", "inst id for #{id}",
+      "Collection",  nil,
+      nil, nil,
+      [])
+  end
+
+  def add_child(h)
+    @children << SearchItem.from_hash(h, [])
   end
 end

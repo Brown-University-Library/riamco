@@ -80,6 +80,13 @@ em {
               <% if item.inv_date %>
                 <div style="padding-left: 15px">Date: <%= item.inv_date %></div>
               <% end %>
+
+              <% if item.children.count > 0 %>
+                <% item.children.each do |inv_item| %>
+                  <p><%= inv_item.inv_container %> <%= inv_item.inv_label.html_safe %> (<%= inv_item.inv_date %>)</p>
+                <% end %>
+              <% end %>
+
             </div>
         <% end %>
       </div> <!-- row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12 -->

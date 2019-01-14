@@ -62,7 +62,7 @@ em {
               <% end %>
 
               <% if item.abstract %>
-                <div style="padding-left: 15px"><%= item.abstract.html_safe %></div>
+                <div style="padding-left: 15px"><%= item.abstract_hl.html_safe %></div>
               <% end %>
 
               <% if item.repository %>
@@ -74,7 +74,7 @@ em {
               <% end %>
 
               <% if item.inv_label %>
-                <div style="padding-left: 15px">Label: <%= item.inv_label.html_safe %></div>
+                <div style="padding-left: 15px">Label: <%= item.inv_label_hl.html_safe %></div>
               <% end %>
 
               <% if item.inv_date %>
@@ -83,7 +83,11 @@ em {
 
               <% if item.children.count > 0 %>
                 <% item.children.each do |inv_item| %>
-                  <p><%= inv_item.inv_container %> <%= inv_item.inv_label.html_safe %> (<%= inv_item.inv_date %>)</p>
+                  <p><%= inv_item.inv_container %> <%= inv_item.inv_label_hl.html_safe %> (<%= inv_item.inv_date %>)</p>
+                <% end %>
+
+                <% if item.match_count > 4 %>
+                  <i>...and <%= item.match_count-4 %> other matches</i>
                 <% end %>
               <% end %>
 

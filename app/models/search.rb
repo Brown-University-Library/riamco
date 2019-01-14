@@ -28,27 +28,14 @@ class Search
     # TODO: figure out a good value for this
     mm = nil
 
-    use_groups = true
+    use_groups = true # params.q != "*"
     if use_groups
-      # TODO: Figure out why pagination is not working.
-      # It works from page 1 to page 2, but then it does not.
-      # It seems that we are not passing the start/rows parameters
-      # (or not getting them in the response) and that's why it's
-      # resetting to page 1.
-      #
-      #       ==> The issue might be in the SolrLite gem <==
-      #
       results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", 4)
       if !results.ok?
         raise("Solr reported: #{results.error_msg}")
       end
 
       groups_ids = results.solr_groups("ead_id_s")
-
-      # puts "==> #{params.page}, #{params.start_row}"
-      # puts "\t#{groups_ids}"
-      # byebug
-
       groups_ids.each do |group_id|
         docs_for_group = results.solr_docs_for_group("ead_id_s", group_id)
 
@@ -57,21 +44,27 @@ class Search
         item = nil
         docs_for_group.each do |doc|
           if doc["inventory_level_s"] == "Collection"
-            item = SearchItem.from_hash(doc, [])
+            highlights = results.highlights.for(doc["id"]) || {}
+            item = SearchItem.from_hash(doc, highlights)
             break
           end
         end
 
         if item == nil
-          # create a stub
-          item = SearchItem.for_collection(group_id)
+          # The collection was not in the result set, fetch it.
+          # TODO: Should we cache this data?
+          collectionDoc = @solr.get(group_id)
+          item = SearchItem.from_hash(collectionDoc, {})
         end
+
+        item.match_count = results.num_found_for_group("ead_id_s", group_id)
 
         docs_for_group.each do |doc|
           if doc["inventory_level_s"] == "Collection"
             # skip it
           else
-            item.add_child(doc)
+            highlights = results.highlights.for(doc["id"]) || {}
+            item.add_child(doc, highlights)
           end
         end
         results.items << item
@@ -89,27 +82,6 @@ class Search
         results.items << item
       end
     end
-
-    results.items.each do |result|
-      result.highlights.each do |hl|
-        hl_field = hl[0]
-        hl_hits = hl[1]
-        if hl_field == "abstract_txt_en"
-          hl_hits.each do |hit|
-            # update the abstract text with the highlighted text
-            text = hit.gsub("<em>", "").gsub("</em>", "")
-            result.abstract.gsub!(text, hit)
-          end
-        elsif hl_field == "inventory_label_txt_en"
-          hl_hits.each do |hit|
-            # update the label text with the highlighted text
-            text = hit.gsub("<em>", "").gsub("</em>", "")
-            result.inv_label.gsub!(text, hit)
-          end
-        end
-      end
-    end
-
     results
   end
 end

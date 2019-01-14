@@ -91,7 +91,7 @@ class Ead
             # TODO: Make sure to handle if the level is "Collection" since
             # we are hard-coding "Collection" above for the "main" record.
             solr_doc = {
-                id: core_doc[:id] + "-" + seq.to_s,
+                id: core_doc[:id] + "-" + seq_str(seq)
                 ead_id_s: core_doc[:id],
                 title_s: core_doc[:title_s],                    # collection name (for faceting)
                 title_txt_en: core_doc[:title_s],               # collection name (for searching)
@@ -307,6 +307,10 @@ class Ead
         # does not contain the delimiter.
         def safe_path(path)
             path.gsub("/", "^^")
+        end
+
+        def seq_str(seq)
+            seq.to_s.rjust(7,"0")
         end
 end
 

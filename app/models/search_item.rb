@@ -2,7 +2,7 @@ class SearchItem
   attr_accessor :id, :ead_id, :title, :abstract, :extent, :repository,
     :institution_name, :institution_id,
     :inv_level, :inv_label, :inv_date, :inv_container,
-    :highlights, :children
+    :highlights, :children, :match_count
 
   def initialize(id, ead_id, title, abstract, extent, repository, institution_name, institution_id,
     inv_level, inv_label, inv_date, inv_container, highlights)
@@ -16,10 +16,19 @@ class SearchItem
     @repository = repository
     @highlights = highlights
     @inv_level = inv_level
-    @inv_label = inv_label || ""
+    @inv_label = inv_label
     @inv_date = inv_date
     @inv_container = inv_container
     @children = []
+    @match_count = 0
+  end
+
+  def abstract_hl
+    hl_value("abstract_txt_en", @abstract)
+  end
+
+  def inv_label_hl
+    hl_value("inventory_label_txt_en", @inv_label) || ""
   end
 
   def self.from_hash(h, highlights)
@@ -37,10 +46,24 @@ class SearchItem
       "inst for #{id}", "inst id for #{id}",
       "Collection",  nil,
       nil, nil,
-      [])
+      {})
   end
 
-  def add_child(h)
-    @children << SearchItem.from_hash(h, [])
+  def add_child(h, highlights)
+    @children << SearchItem.from_hash(h, highlights)
   end
+
+  private 
+    def hl_value(solr_field, value)
+      hits = @highlights[solr_field]
+      if hits == nil
+        return value
+      end
+      txt = value
+      hits.each do |hit|
+        plain = hit.gsub("<em>", "").gsub("</em>", "")
+        txt.gsub!(plain, hit)
+      end
+      txt
+    end
 end

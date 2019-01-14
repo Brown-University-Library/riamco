@@ -5,7 +5,7 @@ class Search
     @solr.def_type = "edismax"
   end
 
-  def search(params, debug = false)
+  def search(params, debug = false, flat_display = false)
     extra_fqs = []
     params.fl = nil
     # params.sort = "title_s asc"
@@ -28,7 +28,7 @@ class Search
     # TODO: figure out a good value for this
     mm = nil
 
-    use_groups = true
+    use_groups = !flat_display
     if use_groups
       results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", 4)
       if !results.ok?

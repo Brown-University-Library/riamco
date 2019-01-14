@@ -103,6 +103,7 @@ em {
                   <table class="table">
                   <% item.children.each do |inv_item| %>
                     <tr>
+                      <td class="table_cell"><%= inv_item.inv_level %></td>
                       <td class="table_cell"><%= inv_item.inv_container %></td>
                       <td class="table_cell"><%= inv_item.inv_label_hl.html_safe %></td>
                       <td class="table_cell"><%= inv_item.inv_date %></td>
@@ -110,7 +111,9 @@ em {
                   <% end %>
                   </table>
                   <% if item.match_count > 4 %>
-                    <i>...and <%= item.match_count-4 %> other matches</i>
+                    <div class="result">
+                      ...and <%= item.match_count-4 %> other <a target="_blank", href="render.php?eadid=<%=item.ead_id %>&view=inventory">matches</a>
+                    </div>
                   <% end %>
                 <% end %>
 

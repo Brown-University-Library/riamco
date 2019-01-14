@@ -40,18 +40,6 @@ class SearchResultsPresenter
     set_urls_in_facets()
     set_remove_url_in_facets()
 
-    # @results.each do |item|
-    #   item.uri = display_show_url(item.vivo_id)
-    #   if item.type == "PEOPLE"
-    #     item.thumbnail = "person_placeholder.jpg" if item.thumbnail == nil
-    #   else
-    #     item.thumbnail = "org_placeholder.png" if item.thumbnail == nil
-    #   end
-    #   if item.title != nil && item.title.length > 50
-    #     item.title = item.title[0..47] + "..."
-    #   end
-    # end
-
     @page = results.page
     @start = results.start
     @end = results.end
@@ -77,6 +65,10 @@ class SearchResultsPresenter
 
     @explain_format = explain_format
     @explainer = results.explainer
+  end
+
+  def empty_search?()
+    @params.q == "*"
   end
 
   def pages_urls()

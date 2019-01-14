@@ -28,7 +28,7 @@ class Search
     # TODO: figure out a good value for this
     mm = nil
 
-    use_groups = true # params.q != "*"
+    use_groups = true
     if use_groups
       results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", 4)
       if !results.ok?

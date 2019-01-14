@@ -26,6 +26,20 @@
 em {
   background-color: #F3F5B3;  /* light yellow */
 }
+
+.result {
+  padding-left: 15px;
+}
+
+.table {
+  margin-left: 15px;
+  max-width: 80%;
+}
+.table_cell {
+  border: 1px solid #c3bebe;  /* gray */
+  padding-left: 5px;
+  padding-right: 5px;
+}
 </style>
 
 <%= render "results_javascript" %>
@@ -49,48 +63,58 @@ em {
         <% @presenter.results.each_with_index do |item, index| %>
             <!-- move out of here the logic to handle different
                  types of results (collections, series, items) -->
-            <div style="padding-bottom:10px">
+            <div style="padding-bottom:10px; padding-left: 15px;">
               <div><b><a target="_blank", href="render.php?eadid=<%=item.ead_id %>"><%= item.title %></a></b></div>
-              <div style="padding-left: 15px">Format: <%= item.inv_level %></div>
+              <div class="result">Format: <%= item.inv_level %></div>
 
               <% if item.institution_name  %>
-                <div style="padding-left: 15px">Institution: <%= item.institution_name %></div>
+                <div class="result">Institution: <%= item.institution_name %></div>
               <% end %>
 
               <% if item.extent %>
-                <div style="padding-left: 15px"><%= item.extent %></div>
+                <div class="result"><%= item.extent %></div>
               <% end %>
 
               <% if item.abstract %>
-                <div style="padding-left: 15px"><%= item.abstract_hl.html_safe %></div>
+                <div class="result"><%= item.abstract_hl.html_safe %></div>
               <% end %>
 
               <% if item.repository %>
-                <div style="padding-left: 15px"><i>Repository: <%= item.repository %></i></div>
+                <div class="result"><i>Repository: <%= item.repository %></i></div>
               <% end %>
 
               <% if item.inv_container %>
-                <div style="padding-left: 15px">Container: <%= item.inv_container %></div>
+                <div class="result">Container: <%= item.inv_container %></div>
               <% end %>
 
               <% if item.inv_label %>
-                <div style="padding-left: 15px">Label: <%= item.inv_label_hl.html_safe %></div>
+                <div class="result">Label: <%= item.inv_label_hl.html_safe %></div>
               <% end %>
 
               <% if item.inv_date %>
-                <div style="padding-left: 15px">Date: <%= item.inv_date %></div>
+                <div class="result">Date: <%= item.inv_date %></div>
               <% end %>
 
-              <% if item.children.count > 0 %>
-                <% item.children.each do |inv_item| %>
-                  <p><%= inv_item.inv_container %> <%= inv_item.inv_label_hl.html_safe %> (<%= inv_item.inv_date %>)</p>
+              <% if @presenter.empty_search? %> 
+                <div class="result"><i>(<%= item.match_count %> archival items)</i></div>
+              <% else %>
+
+                <% if item.children.count > 0 %>
+                  <table class="table">
+                  <% item.children.each do |inv_item| %>
+                    <tr>
+                      <td class="table_cell"><%= inv_item.inv_container %></td>
+                      <td class="table_cell"><%= inv_item.inv_label_hl.html_safe %></td>
+                      <td class="table_cell"><%= inv_item.inv_date %></td>
+                    </tr>
+                  <% end %>
+                  </table>
+                  <% if item.match_count > 4 %>
+                    <i>...and <%= item.match_count-4 %> other matches</i>
+                  <% end %>
                 <% end %>
 
-                <% if item.match_count > 4 %>
-                  <i>...and <%= item.match_count-4 %> other matches</i>
-                <% end %>
               <% end %>
-
             </div>
         <% end %>
       </div> <!-- row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12 -->

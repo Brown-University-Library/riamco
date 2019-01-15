@@ -31,8 +31,15 @@ em {
   padding-left: 15px;
 }
 
+.result-bottom {
+  text-align: right;
+  padding-right: 160px;
+}
+
 .table {
-  margin-left: 15px;
+  margin-top: 7px;
+  margin-left: 25px;
+  margin-bottom: 0px;
   max-width: 80%;
 }
 .table_cell {
@@ -111,7 +118,7 @@ em {
                   <% end %>
                   </table>
                   <% if item.match_count > 4 %>
-                    <div class="result">
+                    <div class="result-bottom">
                       ...and <%= item.match_count-4 %> other <a target="_blank", href="render.php?eadid=<%=item.ead_id %>&view=inventory">matches</a>
                     </div>
                   <% end %>

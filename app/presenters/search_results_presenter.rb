@@ -6,7 +6,7 @@ class SearchResultsPresenter
   include Rails.application.routes.url_helpers
 
   attr_accessor :form_values, :fq, :facets, :query, :search_qs, :results,
-    :page, :start, :end, :num_found, :num_pages, :page_start, :page_end,
+    :page, :start, :end, :num_found, :num_pages, :page_start, :page_end, :num_eads,
     :previous_url, :next_url,
     :remove_q_url, :facetSearchBaseUrl,
     :suggest_q, :suggest_url,
@@ -34,6 +34,16 @@ class SearchResultsPresenter
       @suggest_url = @remove_q_url + "&q=#{CGI.escape(suggest_q)}"
     end
 
+    @num_eads = 0
+    if @params.q == "*"
+      @num_eads = Collections.count
+    else
+      eads = results.facets.find {|f| f.name=="title_s" }
+      if eads != nil 
+        @num_eads = eads.values.count
+      end
+    end
+
     # from results
     @facets = results.facets
     @results = results.items
@@ -44,7 +54,13 @@ class SearchResultsPresenter
     @start = results.start
     @end = results.end
     @num_found = results.num_found
-    @num_pages = results.num_pages
+    # Calculate the number of pages based on the number of EADs
+    # rather than on the number of matches.
+    @num_pages = 0
+    if results.page_size > 0
+      @num_pages = (@num_eads / results.page_size).to_i
+      @num_pages += 1 if (@num_eads % results.page_size) != 0
+    end
 
     pages_to_display = 10
     if @num_pages < pages_to_display

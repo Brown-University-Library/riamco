@@ -28,8 +28,17 @@ class Search
     # TODO: figure out a good value for this
     mm = nil
 
-    use_groups = !flat_display
-    if use_groups
+    if flat_display
+      results = search_flat(params, extra_fqs, qf, mm, debug)
+    else
+      results = search_grouped(params, extra_fqs, qf, mm, debug)
+    end
+    results
+  end
+
+  private
+
+    def search_grouped(params, extra_fqs, qf, mm, debug)
       results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", 4)
       if !results.ok?
         raise("Solr reported: #{results.error_msg}")
@@ -40,7 +49,7 @@ class Search
         docs_for_group = results.solr_docs_for_group("ead_id_s", group_id)
 
         # Try to create the item with collection information
-        # if it is found in the documents.
+        # if the collection document is found in the resultset.
         item = nil
         docs_for_group.each do |doc|
           if doc["inventory_level_s"] == "Collection"
@@ -69,8 +78,10 @@ class Search
         end
         results.items << item
       end
+      results
+    end
 
-    else
+    def search_flat(params, extra_fqs, qf, mm, debug)
       results = @solr.search(params, extra_fqs, qf, mm, debug)
       if !results.ok?
         raise("Solr reported: #{results.error_msg}")
@@ -81,7 +92,6 @@ class Search
         item = SearchItem.from_hash(doc, highlights)
         results.items << item
       end
+      results
     end
-    results
-  end
 end

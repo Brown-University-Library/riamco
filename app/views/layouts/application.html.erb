@@ -20,9 +20,6 @@
 <%= csrf_meta_tags %>
 <%= favicon_link_tag 'favicon.ico' %>
 
-<% if @link_alternate %>
-	<link rel="alternate" type="application/rdf+xml" href="<%= @link_alternate %>" />
-<% end %>
 </head>
 
 <body class="no-logo fae">
@@ -32,26 +29,12 @@
 		<div class="hgroup">
 			<div class="container">
 				<div class="row">
-
 					<div class="site-logo col-lg-3 col-md-3 col-sm-3 hidden-xs logo-sm">
             <a href="http://brown.edu" target="_blank"><%= image_tag( "brown_logo_small.png", alt: "Brown University") %></a>
 					</div>
 					<div class="site-logo col-xs-3 visible-xs-block">
             <a href="http://brown.edu" target="_blank"><%= image_tag( "brown_logo_small.png", alt: "Brown University") %></a>
 					</div>
-
-				<% unless current_page?(root_path) %>
-					<div class="site-title col-lg-6 col-md-6 col-sm-6 hidden-xs">
-						<h1>
-							<a href="<%= root_path %>">RIAMCO</a>
-						</h1>
-					</div>
-					<div class="site-title col-xs-6  visible-xs-block">
-						<h1>
-							<a href="<%= root_path %>">RIAMCO</a>
-						</h1>
-					</div>
-				<% end %>
 
 				<% if current_page?(root_path) %>
 					<div class="col-lg-3 col-lg-push-7 col-md-3 col-md-push-7 col-sm-3 col-sm-push-6 hidden-xs">
@@ -64,6 +47,19 @@
 							<a href="<%= manager_url() %>" class="manage-profile-link">Manage your profile</a>
 						</p>
 					</div>
+				<% else %>
+
+					<div class="site-title col-lg-6 col-md-6 col-sm-6 hidden-xs">
+						<h1>
+							<a href="<%= root_path %>">RIAMCO</a>
+						</h1>
+					</div>
+					<div class="site-title col-xs-6  visible-xs-block">
+						<h1>
+							<a href="<%= root_path %>">RIAMCO</a>
+						</h1>
+					</div>
+
 				<% end %>
 
 				</div>
@@ -101,8 +97,7 @@
 					</ul>
 				</nav>
 				<p class="copyright">
-					&copy; 2017 <a href="http://brown.edu/" target="_blank">Brown University</a> |
-					<a class="terms" href="TBD" title="Terms of Use">Terms of Use</a>
+					Sponsors 
 			 	</p>
 			</div>
 		</div>

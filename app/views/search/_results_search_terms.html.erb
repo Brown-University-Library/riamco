@@ -4,6 +4,17 @@
 
     <% if @presenter.num_found == 0 %>
       <h3>No results were found</h3>
+    <% else %>
+      <div class="search-result-numbers">
+        <span id="search-total-matching"><%= @presenter.num_found %></span>
+        <% if @presenter.empty_search? %>
+          archival objects found in
+        <% else %> 
+          matches found in 
+        <% end %>
+        <span id="search-total-matching"><%= @presenter.num_eads %></span>
+        finding aids
+      </div>
     <% end %>
 
     <span class="search-result-facets no-orphans">
@@ -13,6 +24,8 @@
         <span class="sr-only">Remove search term <%= @presenter.query %></span>
       </a>
     </span>
+  <% else %> 
+    <!-- display nothing -->
   <% end %>
 
   <% @presenter.fq.each do |fq| %>

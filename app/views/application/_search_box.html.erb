@@ -1,32 +1,32 @@
-        <form class="navbar-form navbar-right " action="<%= search_path() %>" method="GET">
-            <div class="form-group">
-                <span class="ui-helper-hidden-accessible" aria-live="polite" role="status"></span>
-                <input
-                    autocomplete="off"
-                    name="q"
-                    id="query_top"
-                    title="Search query"
-                    value="<%= @presenter.query %>"
-                    accesskey="q"
-                    placeholder="Names, places, subjects, material types..."
-                    class="form-control query ui-autocomplete-input"
-                    size="50"
-                    type="text">
-            </div>
+<form class="navbar-form navbar-right " action="<%= search_path() %>" method="GET">
+    <div class="form-group">
+        <span class="ui-helper-hidden-accessible" aria-live="polite" role="status"></span>
+        <input
+            autocomplete="off"
+            name="q"
+            id="query_top"
+            title="Search query"
+            value="<%= @presenter.query %>"
+            accesskey="q"
+            placeholder="Names, places, subjects, material types..."
+            class="form-control query ui-autocomplete-input"
+            size="50"
+            type="text">
+    </div>
 
-            <button type="submit" class="btn btn-default sympl-search hidden-xs">
-                <span class="glyphicon glyphicon-search" role="submit" aria-hidden="true"></span>
-                <span aria-only="true">Search</span>
-            </button>
+    <button type="submit" class="btn btn-default sympl-search hidden-xs">
+        <span class="glyphicon glyphicon-search" role="submit" aria-hidden="true"></span>
+        <span aria-only="true">Search</span>
+    </button>
 
-            <button type="submit" class="btn btn-default btn-block sympl-search hidden-sm hidden-md hidden-lg">
-                <span class="glyphicon glyphicon-search" role="submit" aria-hidden="true"></span>
-                <span aria-only="true">Search</span>
-            </button>
+    <button type="submit" class="btn btn-default btn-block sympl-search hidden-sm hidden-md hidden-lg">
+        <span class="glyphicon glyphicon-search" role="submit" aria-hidden="true"></span>
+        <span aria-only="true">Search</span>
+    </button>
 
-            <% (@presenter.form_values || []).each do |form_value| %>
-              <input name="<%= form_value[:name] %>" id="<%= form_value[:name] %>"
-                  value="<%= form_value[:value] %>"
-                  type="text" class="hidden">
-            <% end %>
-        </form>
+    <% (@presenter.form_values || []).each do |form_value| %>
+        <input name="<%= form_value[:name] %>" id="<%= form_value[:name] %>"
+            value="<%= form_value[:value] %>"
+            type="text" class="hidden">
+    <% end %>
+</form>

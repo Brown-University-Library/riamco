@@ -10,10 +10,10 @@ Rails.application.routes.draw do
   get 'contact.html' => 'legacy#contact'
 
   # New URLs
-  get 'index' => 'home#index'
+  get 'index' => 'home#index', as: :home_index
   get 'advanced_search' => 'home#advanced_search'
-  get 'about' => 'home#about'
-  get 'help' => 'home#help'
+  get 'about' => 'home#about', as: :home_about
+  get 'help' => 'home#help', as: :home_help
   get 'contact' => 'home#contact'
 
   # # New display URL.

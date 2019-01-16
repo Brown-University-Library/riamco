@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def about
-    render text: "About TBD"
+    @presenter = DefaultPresenter.new()
   end
 
   def advanced_search
@@ -12,7 +12,7 @@ class HomeController < ApplicationController
   end
 
   def help
-    render text: "Help TBD"
+    @presenter = DefaultPresenter.new()
   end
 
   def index

@@ -1,64 +1,29 @@
-<%= render "search_box" %>
-
 <div class="container">
   <div class="row">
-    <h2>Researchers@Brown Help</h2>
-    <ul>
-    <li><h3>General information</h3>
-    <p>For general information about this site visit the
-      <a href="about">About Researchers@Brown</a> page. For information about
-      the implementation of VIVO at Brown see <a href="history">VIVO History and
-      Implementation</a>. To learn about current and future development plans
-      see <a href="roadmap">Researchers@Brown Roadmap</a>.
-    </p>
-    </li>
+    <h1>Help</h1>
+    <h2><a href="finding_aid.html">What Is a Finding Aid?</a> | <a href="glossary.html">Glossary</a> | <a href="visit.html">Plan Visit</a></h2>
+    <p><br /></p>
+    <h2>How to Search or Browse</h2>
+    <p>Use the search box on the <a href="index.html">RIAMCO Home page</a> to find a word (or words) 
+    appearing anywhere within RIAMCO finding aids. <a href="advanced_search.html">Advanced Search</a> 
+    will allow you to specify where in the documents to look for the words you enter and to limit 
+    your search to one or more specific institutions. Use <a href="browse.html">Browse</a> to find 
+    lists of archival collections under the name of an institution or by the subject of the 
+    collections. The <a href="advanced_search_help.html">Advanced Search Help</a> page provides 
+    explanations of advanced search terms and search tips.</p>
 
-    <li><h3>FAQ</h3>
-    <p>We also keep a list of <a href="faq">Frequently Asked Questions</a> that you
-      might find useful.</p>
-    </li>
 
-    <li>
-    <h3>Editing your profile information</h3>
-    <p>Click “Manage your profile” on the top right of any page and you will be
-      prompted to login to the profile manager. You can also watch this
-      <a href="http://www.screencast.com/t/6LKyqKgT2" target="_blank">step by step tutorial</a> (8 minutes)
-      to learn more about the different sections of information that you can edit. <em>Note: this
-      tutorial uses an older version of the public profile but the editing interface is the same.</em>
-    </p>
-    <p>See <a href="https://www.brown.edu/initiatives/translational-research/news/2017/09/have-you-checked-your-researchersbrown-profile-lately">
-      "Have You Checked Your Researchers@Brown Profile Lately?"</a> by Advance Clinical and Translational Research (Advance-CTR).<br />
-      <a href="https://www.brown.edu/initiatives/translational-research/news/2017/09/have-you-checked-your-researchersbrown-profile-lately">
-        <%= image_tag("vivo_blank_profile.jpg") %></a>
-    </p>
-    </li>
-
-    <li><h3>Visualizations</h3>
-    <p><%= image_tag("viz_mini.png", style: "float: left;") %>Your Brown co-author and
-    Brown collaborator networks are now available as visual representations at the
-    individual and departmental levels. Click <a href="help/viz">here to learn more</a>.</p>
-
-    <li>
-    <h3>Managing your publications</h3>
-    <p>Publications are an important part of your profile and there are several
-      options to manage them. Visit the <a href="publications">Managing Your Publications</a>
-      page to get details or watch this <a href="http://www.screencast.com/t/BPcARDBuyZS" target="_blank">short tutorial</a>
-      (4 minutes).
-    <em>Note: this tutorial uses an older version of the public profile but the
-      editing interface is the same.</em>
-    </p>
-    </li>
-
-    <li>
-    <h3>Contact Us</h3>
-    <p>If you have any suggestions, problems, or questions you can submit
-      them to us via <a href="https://docs.google.com/forms/d/e/1FAIpQLSe9_8wO8f6Vd0E0N_ZVXiBN2YSO7NmWvP-utEGiQLJXz3nkJA/viewform?usp=pp_url&entry.1922592043&entry.911094868&entry.1400327620&entry.197578216&entry.19651479=https%3A%2F%2Fvivostaging.brown.edu%2Fhelp">this form</a>.
-      We'd love to hear from you. You can also e-mail us directly at
-      <a href="mailto:researchers@brown.edu">researchers@brown.edu</a> but please
-      note that we are not able to answer questions about Brown research or
-      provide referrals to Brown researchers.
-    </p>
-    </li>
-    </ul>
+    <h2>Additional Help</h2>
+    <p>Please contact the <a href="participating.html">Participating Institution</a> with questions about specific collections. The name of the Participating Institution appears at the beginning of each finding aid. </p>
+    
+    <h2>Frequently Asked Questions </h2>
+    <p>The <a href="faq.html">FAQ page</a> provides answers to other common questions about using archival collections.</p>
   </div>
 </div>
+
+<script> 
+  $(function() {
+    $("#q").focus(); // Force focus to the search textbox
+    $("#nav_help").addClass("active");
+  });
+</script>

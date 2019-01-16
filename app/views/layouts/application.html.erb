@@ -24,49 +24,32 @@
 
 <body class="no-logo fae">
 
-<header id="branding" role="banner">
-	<div class="header">
-		<div class="hgroup">
-			<div class="container">
-				<div class="row">
-					<div class="site-logo col-lg-3 col-md-3 col-sm-3 hidden-xs logo-sm">
-            <a href="http://brown.edu" target="_blank"><%= image_tag( "brown_logo_small.png", alt: "Brown University") %></a>
-					</div>
-					<div class="site-logo col-xs-3 visible-xs-block">
-            <a href="http://brown.edu" target="_blank"><%= image_tag( "brown_logo_small.png", alt: "Brown University") %></a>
-					</div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">RIAMCO</a>
+    </div>
 
-				<% if current_page?(root_path) %>
-					<div class="col-lg-3 col-lg-push-7 col-md-3 col-md-push-7 col-sm-3 col-sm-push-6 hidden-xs">
-						<p>
-							<a href="<%= manager_url() %>" class="manage-profile-link">Manage your profile</a>
-						</p>
-					</div>
-					<div class="col-xs-12 visible-xs-block">
-						<p>
-							<a href="<%= manager_url() %>" class="manage-profile-link">Manage your profile</a>
-						</p>
-					</div>
-				<% else %>
-
-					<div class="site-title col-lg-6 col-md-6 col-sm-6 hidden-xs">
-						<h1>
-							<a href="<%= root_path %>">RIAMCO</a>
-						</h1>
-					</div>
-					<div class="site-title col-xs-6  visible-xs-block">
-						<h1>
-							<a href="<%= root_path %>">RIAMCO</a>
-						</h1>
-					</div>
-
-				<% end %>
-
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li id="nav_home"><a href="<%= home_index_path() %>">Home</a></li>
+        <li id="nav_browse"><a href="#">Browse</a></li>
+        <li id="nav_advanced"><a href="#">Advanced Search</a></li>
+        <li id="nav_about"><a href="<%= home_about_path() %>">About</a></li>
+        <li id="nav_help"><a href="<%= home_help_path() %>">Help</a></li>
+        <li id="nav_contact"><a href="#">Contact</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 
 <% if flash[:notice] %>
@@ -79,26 +62,15 @@
 
 <%= yield %>
 
-<!-- #wrapper-content -->
-
-
 <footer role="contentinfo" class="footer col-sm-12">
 	<div class="row">
 		<div class="container">
 			<div class="col-md-12">
-				<nav role="navigation">
-					<ul id="footer-nav" role="list">
-						<li role="listitem">
-							<a href="TBD" title="About RIAMCO">About</a>
-						<li role="listitem">
-							<a href="TBD" title="Help and Frequently Asked Questions">Help</a>
-						<li role="listitem">
-							<a href="TBD" target="_blank" title="Submit feedback about Researchers@Brown">Feedback</a>
-					</ul>
-				</nav>
-				<p class="copyright">
-					Sponsors 
-			 	</p>
+				<p>Sponsors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="http://www.neh.gov/"><img src="img/neh_logo.gif" alt="National Endowment" /></a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="http://www.wethepeople.gov/"><img src="img/wtp_logo.gif" alt="We the People" /></a>
+				</p>
 			</div>
 		</div>
 	</div>

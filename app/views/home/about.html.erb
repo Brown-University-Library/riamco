@@ -1,68 +1,19 @@
-<style>
-th,td {
-  border: solid 1px;
-}
-</style>
-
-<%= render "search_box" %>
-
 <div class="container">
   <div class="row">
-    <h2>About Researchers@Brown</h2>
-
-    <p>Researchers@Brown brings together, in one site, publicly available information
-      on the people, departments, and activities that collectively make up research
-      and scholarship in all disciplines at Brown University. Researchers@Brown is
-      an implementation of <a href="http://vivoweb.org">VIVO</a>, an open community,
-      open information model, and open source semantic web application. VIVO was
-      originally developed at Cornell University and was improved and expanded
-      via an National Institutes of Health (NIH) multi-institution grant in 2009 - 2012.
-      VIVO is currently a project of <a href="http://duraspace.org/">DuraSpace</a>,
-      an independent 501(c)(3) not-for-profit organization whose mission is to
-      “preserve and provide access to the world's intellectual, cultural and
-      scientific heritage” by supporting open technologies that provide long-term,
-      durable access to digital assets. VIVO is currently in use at over 150
-      institutions worldwide.
-    </p>
-
-    <p>For information about the implementation of Researchers@Brown see:
-      <a href="/history">VIVO History and Implementation</a>. For a description
-      of future development plans see <a href="/roadmap">Researchers@Brown Roadmap</a>.
-    </p>
-
-    <h3>Profiles</h3>
-    <p>Researcher@Brown profiles for new faculty are automatically generated
-      based on information in a daily feed from the Faculty Information System
-      (FIS). These initial shell profiles contain name and email (from Workday),
-      department(s), title(s), position(s), degrees (from FIS), and courses taught
-      (from Banner). Faculty (or deputies) add additional data via a Profile Manager.
-      Publications are harvested once a week from Web of Science and PubMed;
-      these publications must be approved by the faculty member before they
-      appear on the public profile. Harvested publications contain links to full
-      text if available.
-    </p>
-
-    <p>Information on the inclusion policy for profiles is available on our
-      <a href="https://library.brown.edu/vivo/faq.html#who">FAQ</a> page.
-    </p>
-
-    <h3>Governance</h3>
-    <p>The VIVO Steering Group provides continuing oversight for the VIVO project
-      at Brown. This group includes representatives from the Dean of the Faculty,
-      Division of Biology and Medicine, School of Public Health, Office of the
-      Vice President for Research, Computing and Information Services, and the
-      University Library.</p>
-
-    <h3>Researchers@Brown in the News</h3>
-    <p><a href="https://bitly.com/vivoseo">In a recent study</a>, Brown ranked #1
-      out of 90 sites for the highest proportion of profiles appearing in the
-      top 3 Google search results.
-    </p>
-
-    <hr />
-    <p>For further information about Researchers@Brown see our
-      <a href="/help">Help</a> page or our <a href="/faq">Frequently Asked Questions</a> page.
-    </p>
-
+  <h1>About This Project</h1>
+      <h2><a href="participating.html">Participating Institutions</a> &nbsp;&#124&nbsp; <a href="links.html">Links</a> &nbsp;&#124&nbsp; <a href="resources.html">Project Resources</a></h2>
+      <p>The Rhode Island Archival and Manuscript Collections Online (RIAMCO) gateway provides access to archival and manuscript collections throughout Rhode Island.  Researchers can locate collections relating to their research at ten Rhode Island repositories through one comprehensive website regardless of physical location.  Individual or family papers that are split among repositories can be intellectually reunited as a result of online finding aids and the application of sophisticated search technologies developed in this project. </p>
+      <p>Through the application of Encoded Archival Description (EAD) finding aids, RIAMCO collocates dispersed but overlapping collections about the history of Rhode Island drawn from public, private, and university repositories across the state, fashioning a union web resource hosted and supported by Brown University. </p>
+      <p>Rhode Island’s history, from a colony for religious dissidents, an ardent contributor to the American Revolution and the birth of the United States through its role in the Industrial Revolution and the Civil War to the Great Depression, World War II, and the turmoil of the 1960’s, is documented in the archival and manuscript collections housed in Rhode Island’s special collections repositories. </p>
+      <p>The material documented in RIAMCO spans the history of the early Americas to the present day and provides valuable insight into a range of topics including business, maritime history, the Civil War, slavery, literature, church history, immigration, politics, diplomatic history, art and architecture, military history, labor, health and medicine, state and local government, higher education, and Native Americans.</p>
+      <br />
+      <h1><a href="http://www.riamco.org/join.html">Join RIAMCO!</a></h1>
   </div>
 </div>
+
+<script> 
+  $(function() {
+    $("#q").focus(); // Force focus to the search textbox
+    $("#nav_about").addClass("active");
+  });
+</script>

@@ -1,3 +1,9 @@
+<style>
+.jumbotron {
+  background-color: #dae6ed;
+}
+</style>
+
 <div class="row hero">
   <div class="theme-showcase">
     <div class="col-md-12">
@@ -5,7 +11,7 @@
 
         <div class="jumbotron">
           <img src="<%= image_url('RIAMCO_header_graphic.gif') %>"
-            alt="RIAMCO">
+            alt="RIAMCO" style="width: 100%;">
         </div>
         <form id="search-homepage" action="<%= search_path() %>" name="search-home" role="search" method="GET">
           <div class="input-group input-group-lg">
@@ -20,23 +26,16 @@
         </form>
       </div>
     </div>
-    <div class="col-md-12">
-      <div class="container">
-        <div id="homepage-link-row">
-          <a href="TBD">Advanced search&hellip;</a>
-        </div>
-        <div class="jumbotron">
-          <p>&nbsp;</p>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
-
+<div class="row">
+  <div class="col-md-12">
+  &nbsp;
+  </div>
+</div>
 <script> 
   $(function() {
-    debugger;
     $("#q").focus(); // Force focus to the search textbox
     $("#nav_home").addClass("active");
   });

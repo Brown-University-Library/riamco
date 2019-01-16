@@ -2,20 +2,14 @@
 <html lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<% # Carry referrer when using HTTPS (http://markpercival.tumblr.com/post/51560498133/hacking-https-http-referrers) %>
 <meta name="referrer" content="always">
 
 <title><%= @page_title || "RIAMCO" %></title>
 
-<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-
 <%= stylesheet_link_tag    'application', media: 'all' %>
-
 <%= javascript_include_tag 'application' %>
 <%= csrf_meta_tags %>
 <%= favicon_link_tag 'favicon.ico' %>
@@ -34,7 +28,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">RIAMCO</a>
+      <a class="navbar-brand" href="<%= home_index_path() %>">RIAMCO</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->

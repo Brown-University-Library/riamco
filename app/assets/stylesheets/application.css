@@ -14,10 +14,18 @@
  *= require_self
  */
 
+.navbar-default {
+    margin-bottom: 15px;
+}
+
 .jumbotron {
     background-color: #e4e8f0;
+    padding-top: 1px;
+    padding-bottom: 6px;
+    margin-bottom: 15px;
 }
 
 .footer {
     background-color: #e4e8f0;
+    margin-top: 15px;
 }

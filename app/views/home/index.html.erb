@@ -4,8 +4,7 @@
       <div class="container" role="main">
 
         <div class="jumbotron">
-          <img src="<%= image_url('RIAMCO_header_graphic.gif') %>"
-            alt="RIAMCO" style="width: 100%;">
+          <img src="<%= image_url('RIAMCO_header_graphic.gif') %>" alt="RIAMCO">
         </div>
         <form id="search-homepage" action="<%= search_path() %>" name="search-home" role="search" method="GET">
           <div class="input-group input-group-lg">
@@ -25,39 +24,25 @@
 
 <div class="row">
   <div class="col-md-12">
-    <p><strong>Welcome to the Rhode Island Archival and Manuscript Collections Online.</strong></p>
-    <p>The Rhode Island Archival and Manuscript Collections Online (RIAMCO) 
-  is the gateway to information about archival collections in Rhode Island. 
-  Search the finding aids to discover what historical materials are available 
-  for research and where those collections are located.  The <A HREF="javascript:popUp('http://www2.archivists.org/glossary/terms/f/finding-aid')">finding aids</a> 
-  give detailed descriptions of <A HREF="javascript:popUp('http://www2.archivists.org/glossary/terms/p/primary-source')">primary source</a> materials located at repositories across Rhode Island.</p>
-    <p>RIAMCO is directed by an Executive Committee with representatives from each of the 25 consortium members:</p>
-    <p>&#8226; Bristol Historical &amp; Preservation Society</p> 
-    <p>&#8226; Brown University</p>
-    <p>&#8226; Haffenreffer Museum of Anthropology</p>
-    <p>&#8226; Historic New England</p>
-    <p>&#8226; Jamestown Historical Society</p>
-    <p>&#8226; John Carter Brown Library</p>
-    <p>&#8226; Naval War College</p>
-    <p>&#8226; Newport Art Museum</p>
-    <p>&#8226; Newport Historical Society</p>
-    <p>&#8226; North Kingstown Free Library</p>
-    <p>&#8226; Preservation Society of Newport County</p>
-    <p>&#8226; Providence Athenaeum</p>
-    <p>&#8226; Providence City Archives</p>
-    <p>&#8226; Providence College</p>
-    <p>&#8226; Providence Public Library</p>
-    <p>&#8226; Redwood Library and Athenaeum</p>
-    <p>&#8226; Rhode Island College</p>
-    <p>&#8226; Rhode Island Historical Society </p>
-    <p>&#8226; Rhode Island School of Design </p>
-    <p>&#8226; Rhode Island State Archives</p>
-    <p>&#8226; Roger Williams University </p>
-    <p>&#8226; Salve Regina University </p>
-    <p>&#8226; Tomaquag Museum </p>
-    <p>&#8226; University of Rhode Island </p>
-    <p>&#8226; Westerly Public Library </p>
-    <p>&nbsp;</p>
+    <div class="container">
+      <h2>Welcome to the Rhode Island Archival and Manuscript Collections Online.</h2>
+
+      <p>The Rhode Island Archival and Manuscript Collections Online (RIAMCO) 
+    is the gateway to information about archival collections in Rhode Island. 
+    Search the finding aids to discover what historical materials are available 
+    for research and where those collections are located. 
+    The <a href="http://www2.archivists.org/glossary/terms/f/finding-aid" target="_blank">finding aids</a> 
+    give detailed descriptions of 
+    <a href="http://www2.archivists.org/glossary/terms/p/primary-source" target="_blank">primary source</a> 
+    materials located at repositories across Rhode Island.</p>
+
+      <p>RIAMCO is directed by an Executive Committee with representatives from each of the 25 consortium members:</p>
+      <ul>
+        <% @presenter.institutions.each do |inst| %>
+          <li><%= inst[:name] %>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </div>
 <script> 

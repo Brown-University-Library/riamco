@@ -16,6 +16,6 @@ class HomeController < ApplicationController
   end
 
   def index
-    @presenter = DefaultPresenter.new()
+    @presenter = HomePresenter.new()
   end
 end

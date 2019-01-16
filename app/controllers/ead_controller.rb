@@ -16,13 +16,21 @@ class EadController < ApplicationController
   private
     def load_ead_html(id, view)
       # TODO: clean the id and view parameters
-      xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
-      xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
-      Rails.logger.info(xml_file)
-      Rails.logger.info(xsl_file)
-      document = Nokogiri::XML(File.read(xml_file))
-      template = Nokogiri::XSLT(File.read(xsl_file))
-      html = template.transform(document)
+      html = ""
+      html_path = ENV["EAD_HTML_FILES_PATH"]
+      html_file = html_path + "/#{id}_riamco_#{view}.html"
+      if File.exist?(html_file)
+        Rails.logger.info("Reading HTML file for #{id}, #{view}")
+        html = File.read(html_file)
+      else
+        Rails.logger.info("Creating HTML file for #{id}, #{view}")
+        xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
+        xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
+        document = Nokogiri::XML(File.read(xml_file))
+        template = Nokogiri::XSLT(File.read(xsl_file))
+        html = template.transform(document)
+        File.write(html_file, html)
+      end
       html
     end
 end

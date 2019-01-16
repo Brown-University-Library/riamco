@@ -1,5 +1,8 @@
 # Files to ignore in Git
 
+# Our locally generated HTML finding aids (from the XML+XSLT)
+/public/html
+
 # Ignore bundler config.
 /.bundle
 

@@ -8,7 +8,6 @@ class Search
   def search(params, debug = false, flat_display = false)
     extra_fqs = []
     params.fl = nil
-    # params.sort = "title_s asc"
 
     # The current boost values for title (100) and abstract (.1) are to
     # account for the fact that Solr is weighting the title *too low*
@@ -17,12 +16,12 @@ class Search
     # documents have a title whereas only a few of them (the collections)
     # have an abstract which results in Solr considering the abstract
     # hits more unique.
-    #
-    # TODO: decide what fields we should use and their boost values.
-    qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 inventory_label_txt_en inventory_path_txt_en subjects_txts_en"
+    qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 scope_content_txts_en "
+    qf += "inventory_label_txt_en inventory_scope_content_txt_en inventory_path_txt_en "
+    qf += "subjects_txts_en"
 
     params.hl = true
-    params.hl_fl = "abstract_txt_en inventory_label_txt_en"
+    params.hl_fl = "abstract_txt_en scope_content_txts_en inventory_label_txt_en inventory_scope_content_txt_en"
     params.hl_snippets = 30
 
     # TODO: figure out a good value for this
@@ -47,7 +46,6 @@ class Search
       groups_ids = results.solr_groups("ead_id_s")
       groups_ids.each do |group_id|
         docs_for_group = results.solr_docs_for_group("ead_id_s", group_id)
-
         # Try to create the item with collection information
         # if the collection document is found in the resultset.
         item = nil
@@ -61,7 +59,7 @@ class Search
 
         if item == nil
           # The collection was not in the result set, fetch it.
-          # TODO: Should we cache this data?
+          # TODO: Should we get this via Collections.by_id(group_id) instead ?
           collectionDoc = @solr.get(group_id)
           item = SearchItem.from_hash(collectionDoc, {})
         end

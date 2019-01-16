@@ -72,22 +72,26 @@ em {
                  types of results (collections, series, items) -->
             <div style="padding-bottom:10px; padding-left: 15px;">
               <div><b><a target="_blank", href="render.php?eadid=<%=item.ead_id %>"><%= item.title %></a></b></div>
-              <div class="result">Format: <%= item.inv_level %></div>
+              <div class="result"><b>Format:</b> <%= item.inv_level %></div>
 
               <% if item.institution_name  %>
-                <div class="result">Institution: <%= item.institution_name %></div>
+                <div class="result"><b>Institution:</b> <%= item.institution_name %></div>
               <% end %>
 
               <% if item.extent %>
-                <div class="result"><%= item.extent %></div>
+                <div class="result"><b>Extent:</b> <%= item.extent %></div>
               <% end %>
 
               <% if item.abstract %>
-                <div class="result"><%= item.abstract_hl.html_safe %></div>
+                <div class="result"><b>Abstract:</b> <%= item.abstract_hl.html_safe %></div>
+              <% end %>
+
+              <% if item.scope_content_hl? %>
+                <div class="result"><b>Scope and Content:</b> <%= item.scope_content_hl.html_safe %></div>
               <% end %>
 
               <% if item.repository %>
-                <div class="result"><i>Repository: <%= item.repository %></i></div>
+                <div class="result"><b>Repository:</b> <%= item.repository %></div>
               <% end %>
 
               <% if item.inv_container %>
@@ -107,12 +111,16 @@ em {
               <% else %>
 
                 <% if item.children.count > 0 %>
+                  <div class="result"><b>Inventory:</b></div>
                   <table class="table">
                   <% item.children.each do |inv_item| %>
                     <tr>
                       <td class="table_cell"><%= inv_item.inv_level %></td>
                       <td class="table_cell"><%= inv_item.inv_container %></td>
-                      <td class="table_cell"><%= inv_item.inv_label_hl.html_safe %></td>
+                      <td class="table_cell">
+                        <%= inv_item.inv_scope_content_hl.html_safe %>
+                        <%= inv_item.inv_label_hl.html_safe %>
+                      </td>
                       <td class="table_cell"><%= inv_item.inv_date %></td>
                     </tr>
                   <% end %>

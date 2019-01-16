@@ -99,6 +99,7 @@ class Ead
                 institution_id_s: core_doc[:institution_id_s],
                 timestamp_s: DateTime.now.to_s,
                 inventory_container_txt_en: inv[:container_text],
+                inventory_scope_content_txt_en: inv[:scope_content],
                 inventory_label_txt_en: inv[:label],
                 inventory_date_s: inv[:date],
                 inventory_descendent_path: inv[:full_path],     # for navigation
@@ -250,6 +251,7 @@ class Ead
                     depth: depth,
                     level: node.xpath("string(@level)"),
                     container_text: nil,            # set below
+                    scope_content: nil,             # set below
                     label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text),
                     date: node.xpath("string(xmlns:did/xmlns:unitdate[1])")
                 }
@@ -263,6 +265,11 @@ class Ead
                             data[:container_text] += container.attributes["label"].value + " " + container.text + " "
                         end
                     end
+                end
+
+                scope_content = node.xpath("string(xmlns:scopecontent)")
+                if scope_content != ""
+                    data[:scope_content] = trim_text(scope_content)
                 end
 
                 if parent_path == nil

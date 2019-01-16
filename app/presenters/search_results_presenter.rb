@@ -35,7 +35,7 @@ class SearchResultsPresenter
     end
 
     @num_eads = 0
-    if @params.q == "*"
+    if @params.fq.count == 0 && @params.q == "*"
       @num_eads = Collections.count
     else
       eads = results.facets.find {|f| f.name=="title_s" }
@@ -52,7 +52,7 @@ class SearchResultsPresenter
 
     @page = results.page
     @start = results.start
-    @end = results.end
+
     @num_found = results.num_found
     # Calculate the number of pages based on the number of EADs
     # rather than on the number of matches.
@@ -61,6 +61,8 @@ class SearchResultsPresenter
       @num_pages = (@num_eads / results.page_size).to_i
       @num_pages += 1 if (@num_eads % results.page_size) != 0
     end
+
+    @end = [@start + results.page_size, @num_eads].min
 
     pages_to_display = 10
     if @num_pages < pages_to_display

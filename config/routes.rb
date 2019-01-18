@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # Original PHP URLs.
   get 'render.php' => 'ead#show_legacy'
   get 'browse.html' => 'legacy#browse'
@@ -8,13 +7,18 @@ Rails.application.routes.draw do
   get 'about.html' => 'legacy#about'
   get 'help.html' => 'legacy#help'
   get 'contact.html' => 'legacy#contact'
+  get 'finding_aid.html' => 'legacy#finding_aid'
+  get 'glossary.html' => 'legacy#glossary'
+  get 'visit.html' => 'legacy#visit'
 
   # New URLs
-  get 'index' => 'home#index'
   get 'advanced_search' => 'home#advanced_search'
   get 'about' => 'home#about', as: :home_about
   get 'help' => 'home#help', as: :home_help
-  get 'contact' => 'home#contact'
+  get 'contact' => 'home#contact', as: :home_contact
+  get 'finding_aid' => 'home#finding_aid', as: :home_finding_aid
+  get 'visit' => 'home#visit', as: :home_visit
+  get 'glossary' => 'home#glossary', as: :home_glossary
 
   # # New display URL.
   # # 

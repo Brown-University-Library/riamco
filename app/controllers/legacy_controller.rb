@@ -15,12 +15,24 @@ class LegacyController < ApplicationController
         redirect_to "/search"
     end
 
+    def finding_aid
+        redirect_to "/finding_aid"
+    end
+
+    def glossary
+        redirect_to "/glossary"
+    end
+
     def help
         redirect_to "/help"
     end
 
     def home
-        redirect_to "/index"
+        redirect_to "/"
+    end
+
+    def visit
+        redirect_to "/visit"
     end
 end
   

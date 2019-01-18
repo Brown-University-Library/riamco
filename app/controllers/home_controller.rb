@@ -8,7 +8,15 @@ class HomeController < ApplicationController
   end
 
   def contact
-    render text: "Contact TBD"
+    @presenter = DefaultPresenter.new()
+  end
+
+  def finding_aid
+    @presenter = HomePresenter.new()
+  end
+
+  def glossary
+    @presenter = HomePresenter.new()
   end
 
   def help
@@ -16,6 +24,10 @@ class HomeController < ApplicationController
   end
 
   def index
+    @presenter = HomePresenter.new()
+  end
+
+  def visit
     @presenter = HomePresenter.new()
   end
 end

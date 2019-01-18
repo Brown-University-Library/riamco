@@ -1,10 +1,10 @@
 <div class="container">
   <div class="row">
+    <%= render "help_menu" %>
+
     <h1>Help</h1>
-    <h2><a href="finding_aid.html">What Is a Finding Aid?</a> | <a href="glossary.html">Glossary</a> | <a href="visit.html">Plan Visit</a></h2>
-    <p><br /></p>
     <h2>How to Search or Browse</h2>
-    <p>Use the search box on the <a href="index.html">RIAMCO Home page</a> to find a word (or words) 
+    <p>Use the search box on the <a href="<%= root_path() %>">RIAMCO Home page</a> to find a word (or words) 
     appearing anywhere within RIAMCO finding aids. <a href="advanced_search.html">Advanced Search</a> 
     will allow you to specify where in the documents to look for the words you enter and to limit 
     your search to one or more specific institutions. Use <a href="browse.html">Browse</a> to find 
@@ -14,10 +14,10 @@
 
 
     <h2>Additional Help</h2>
-    <p>Please contact the <a href="participating.html">Participating Institution</a> with questions about specific collections. The name of the Participating Institution appears at the beginning of each finding aid. </p>
+    <p>Please contact the <a href="<%= home_participating_path() %>">Participating Institution</a> with questions about specific collections. The name of the Participating Institution appears at the beginning of each finding aid. </p>
     
     <h2>Frequently Asked Questions </h2>
-    <p>The <a href="faq.html">FAQ page</a> provides answers to other common questions about using archival collections.</p>
+    <p>The <a href="<%= home_faq_path() %>">FAQ page</a> provides answers to other common questions about using archival collections.</p>
   </div>
 </div>
 

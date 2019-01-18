@@ -1,39 +1,51 @@
 Rails.application.routes.draw do
-  # Original PHP URLs.
+  # Original PHP URL to display a findind aid.
   get 'render.php' => 'ead#show_legacy'
-  get 'browse.html' => 'legacy#browse'
-  get 'index.html' => 'legacy#home'
-  get 'advanced_search.html' => 'legacy#advanced_search'
+
+  # Original static pages
+  # (they redirect to the new URLs)
   get 'about.html' => 'legacy#about'
-  get 'help.html' => 'legacy#help'
+  get 'advanced_search.html' => 'legacy#advanced_search'
+  get 'browse.html' => 'legacy#browse'
   get 'contact.html' => 'legacy#contact'
+  get 'copyright.html' => 'legacy#copyright'
+  get 'faq.html' => 'legacy#faq'
   get 'finding_aid.html' => 'legacy#finding_aid'
   get 'glossary.html' => 'legacy#glossary'
+  get 'help.html' => 'legacy#help'
+  get 'index.html' => 'legacy#home'
+  get 'search.php' => 'legacy#search'
   get 'visit.html' => 'legacy#visit'
 
-  # New URLs
-  get 'advanced_search' => 'home#advanced_search'
+  # New URLs (without .php or .html)
   get 'about' => 'home#about', as: :home_about
-  get 'help' => 'home#help', as: :home_help
   get 'contact' => 'home#contact', as: :home_contact
+  get 'copyright' => 'home#copyright', as: :home_copyright
+  get 'faq' => 'home#faq', as: :home_faq
   get 'finding_aid' => 'home#finding_aid', as: :home_finding_aid
-  get 'visit' => 'home#visit', as: :home_visit
   get 'glossary' => 'home#glossary', as: :home_glossary
-
-  # # New display URL.
-  # # 
-  # # CAREFUL: If we change the path (e.g. add /ead/) we need to 
-  # #          update the XSLT files to generate navigation links
-  # #          to the new path.
-  # # 
-  # # We must use a constraint in the route definition to support periods 
-  # # on the ID, something that Rails does not do by default
-  # # (see https://stackoverflow.com/a/23672925/446681)
-  # get 'ead/:id' => 'ead#show', as: :ead_show, constraints: { id: /[a-zA-Z0-9\.\-]+/ }
+  get 'help' => 'home#help', as: :home_help
+  get 'join' => 'home#join', as: :home_join
+  get 'participating' => 'home#participating', as: :home_participating
+  get 'visit' => 'home#visit', as: :home_visit
 
   # Search URLs
+  get 'advanced_search' => 'search#advanced_search', as: :advanced_search
   get 'search_facets' => 'search#facets'
   get 'search' => 'search#index', as: :search
+
+  # POSSIBLE FUTURE ENHANCEMENT:
+  #
+  # In the future we could consider using a cleaner URL for the display of
+  # the finding aids (e.g. /ead/id rather than /render.php?eadid=id) but if
+  # we do that we need to update the path in the XSLT files to generate the
+  # proper navigation links to the new path.
+  # 
+  # Also, the finding aid ID contains periods and Rails does not supports
+  # periods in the URL by default. We would need to use a constraint in the
+  # route definition to support periods (see https://stackoverflow.com/a/23672925/446681)
+  #
+  # get 'ead/:id' => 'ead#show', as: :ead_show, constraints: { id: /[a-zA-Z0-9\.\-]+/ }
 
   # Home page
   root 'home#index'

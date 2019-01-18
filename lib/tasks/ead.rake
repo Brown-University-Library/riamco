@@ -1,6 +1,5 @@
 require "./app/models/ead.rb"
 require "./app/models/institutions.rb"
-require "byebug"
 
 namespace :riamco do
   desc "Generates the JSON to import to Solr the indicated EAD files (and optionally imports it)"

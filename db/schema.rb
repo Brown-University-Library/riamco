@@ -10,18 +10,3 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
-
-ActiveRecord::Schema.define(version: 20181213160900) do
-
-  create_table "organizations", force: :cascade do |t|
-    t.integer  "organization_id"
-    t.string   "name",            limit: 255
-    t.integer  "active"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "organizations", ["name"], name: "index_organizations_on_name"
-  add_index "organizations", ["organization_id"], name: "index_organizations_on_organization_id"
-
-end

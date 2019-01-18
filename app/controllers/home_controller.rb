@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   def about
-    @presenter = DefaultPresenter.new()
+    @presenter = HomePresenter.new()
   end
 
   def advanced_search
@@ -8,11 +8,11 @@ class HomeController < ApplicationController
   end
 
   def contact
-    @presenter = DefaultPresenter.new()
+    @presenter = HomePresenter.new()
   end
 
   def copyright
-    @presenter = DefaultPresenter.new()
+    @presenter = HomePresenter.new()
   end
 
   def faq
@@ -28,11 +28,11 @@ class HomeController < ApplicationController
   end
 
   def help
-    @presenter = DefaultPresenter.new()
+    @presenter = HomePresenter.new()
   end
 
   def participating
-    @presenter = DefaultPresenter.new()
+    @presenter = HomePresenter.new()
   end
 
   def join

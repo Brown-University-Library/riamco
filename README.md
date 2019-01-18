@@ -11,14 +11,13 @@ brew install chruby
 ruby-install ruby 2.3.5
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 chruby 2.3.5
-brew install mysql
 gem install bundle
 ```
 
 # To get started
 ```
-git https://github.com/Brown-University-Library/riamco2.git
-cd riamco2
+git https://github.com/Brown-University-Library/riamco.git
+cd riamco
 bundle install
 source .env_sample
 bundle exec rake db:migrate
@@ -37,6 +36,10 @@ bundle exec rake riamco:ead_to_solr[/path/to/xml/published/*.xml,true]
 You can pass `false` as the second argument to skip the pushing of the data to Solr and instead get the JSON output on the console.
 
 # General Architecture
+
+The data for this project lives in XML files that contain information for each of the
+finding aids in RIAMCO. This data is imported to a Solr
+
 
 # Solr Index
 TODO: document the schema

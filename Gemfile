@@ -11,9 +11,10 @@ gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 
 group :production do
+  gem "sqlite3"
   # Rails 4.x must stay within MySQL 0.4
   # https://github.com/brianmario/mysql2/issues/950#issuecomment-376375844
-  gem 'mysql2', '< 0.5'
+  # gem 'mysql2', '< 0.5'
 end
 
 group :development, :test do

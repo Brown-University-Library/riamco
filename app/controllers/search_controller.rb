@@ -15,6 +15,10 @@ class SearchController < ApplicationController
     render "error", status: 500
   end
 
+  def advanced_search
+    @presenter = DefaultPresenter.new
+  end
+
   # Returns the facet values (as JSON) for a search.
   # Use by the modals forms that show all values for a facet.
   def facets

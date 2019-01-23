@@ -7,6 +7,19 @@ em {
   padding-left: 15px;
 }
 
+.facet-text-truncated {
+  /* source https://css-tricks.com/snippets/css/truncate-string-with-ellipsis/ */
+  width: 450px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.result-title {
+  font-size: large;
+}
+
 .result-bottom {
   text-align: right;
   padding-right: 160px;
@@ -23,6 +36,102 @@ em {
   border: 1px solid #c3bebe;  /* gray */
   padding-left: 5px;
   padding-right: 5px;
+}
+
+#search-result-count .search-result-previous {
+	position: relative;
+	padding: 1rem;
+}
+#search-result-count .search-result-previous:after {
+	content: "";
+	position: absolute;
+	top: 5%;
+	right: 0;
+	width: 1px;
+	height: 90%;
+	background: #000;
+}
+#search-result-count .search-result-previous.is-active:hover {
+	background-color: #594036;
+	transition-property: background-color;
+	transition-delay: 0s;
+	transition-duration: .3s;
+	transition-timing-function: ease;
+	cursor: pointer;
+}
+#search-result-count .search-result-previous.is-active:hover a {
+	color: #fff;
+	transition-property: color;
+	transition-delay: 0s;
+	transition-duration: .3s;
+	transition-timing-function: ease;
+}
+#search-result-count .search-result-previous.is-active:hover .glyphicon {
+	color: #fff;
+	transition-property: color;
+	transition-delay: 0s;
+	transition-duration: .3s;
+	transition-timing-function: ease;
+}
+#search-result-count .search-result-next {
+	position: relative;
+	padding: 1rem;
+}
+#search-result-count .search-result-next:before {
+	content: "";
+	position: absolute;
+	top: 5%;
+	left: 0;
+	width: 1px;
+	height: 90%;
+	background: #000;
+}
+#search-result-count .search-result-next.is-active:hover {
+	background-color: #594036;
+	transition-property: background-color;
+	transition-delay: 0s;
+	transition-duration: .3s;
+	transition-timing-function: ease;
+	cursor: pointer;
+}
+#search-result-count .search-result-next.is-active:hover a {
+	color: #fff;
+	transition-property: color;
+	transition-delay: 0s;
+	transition-duration: .3s;
+	transition-timing-function: ease;
+}
+#search-result-count .search-result-next.is-active:hover .glyphicon {
+	color: #fff;
+	transition-property: color;
+	transition-delay: 0s;
+	transition-duration: .3s;
+	transition-timing-function: ease;
+}
+#search-result-count .search-result-numbers {
+	position: relative;
+	padding: 1rem;
+}
+
+
+.facet-breadcrumbs {
+	padding-left: 1.5rem;
+}
+
+.facet-breadcrumbs .search-result-facets a {
+	border: 1px solid gray;
+	border-radius: 5px;
+	display: inline-block;
+	margin: 0 0 .5rem 0; /* negative margin to remove white space between inline-block span elements */
+	padding: .5rem .8rem;
+}
+
+.facet-category {
+  display: none;
+}
+.facet-breadcrumbs {
+  margin-bottom: 2rem;
+  padding: 0 1rem;
 }
 </style>
 
@@ -48,7 +157,7 @@ em {
             <!-- move out of here the logic to handle different
                  types of results (collections, series, items) -->
             <div style="padding-bottom:10px; padding-left: 15px;">
-              <div><b><a target="_blank", href="render.php?eadid=<%=item.ead_id %>"><%= item.title %></a></b></div>
+              <div class="result-title"><a target="_blank", href="render.php?eadid=<%=item.ead_id %>"><%= item.title %></a></div>
               <div class="result"><b>Format:</b> <%= item.inv_level %></div>
 
               <% if item.institution_name  %>

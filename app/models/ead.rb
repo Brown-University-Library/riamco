@@ -71,14 +71,14 @@ class Ead
             subjects_ss: self.subjects,                 # for faceting
             subjects_txts_en: self.subjects,            # for searching
             unit_id_s: self.unit_id,
-            inventory_level_s: "Collection"
+            inventory_level_s: "Finding Aid"
         }
 
         if with_inventory == false
             return [core_doc]
         end
 
-        # Return one Solr document for the collection...
+        # Return one Solr document for the finding aid...
         solr_data = []
         solr_data << core_doc
 
@@ -88,13 +88,11 @@ class Ead
         # sequence to force them to be different.
         seq = 1
         inventory.each do |inv|
-            # TODO: Make sure to handle if the level is "Collection" since
-            # we are hard-coding "Collection" above for the "main" record.
             solr_doc = {
                 id: core_doc[:id] + "-" + seq_str(seq),
                 ead_id_s: core_doc[:id],
-                title_s: core_doc[:title_s],                    # collection name (for faceting)
-                title_txt_en: core_doc[:title_s],               # collection name (for searching)
+                title_s: core_doc[:title_s],                    # finding aid name (for faceting)
+                title_txt_en: core_doc[:title_s],               # finding aid name (for searching)
                 institution_s: core_doc[:institution_s],
                 institution_id_s: core_doc[:institution_id_s],
                 timestamp_s: DateTime.now.to_s,

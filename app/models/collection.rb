@@ -1,4 +1,4 @@
-class Collection
+class FindingAid
     attr_accessor :id, :ead_id, :title, :abstract, :extent, :repository,
       :institution_name, :institution_id,
       :children_count

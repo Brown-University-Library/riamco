@@ -36,7 +36,7 @@ class SearchResultsPresenter
 
     @num_eads = 0
     if @params.fq.count == 0 && @params.q == "*"
-      @num_eads = Collections.count
+      @num_eads = FindingAids.count
     else
       eads = results.facets.find {|f| f.name=="title_s" }
       if eads != nil 

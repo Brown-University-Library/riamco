@@ -1,9 +1,7 @@
 <div class="error-404-wrapper">
 	<h1>Oops! Something went wrong</h1>
 	<p>We've logged the error and will review it. However, if you need assistance,
-	  please let us know via the
-	  <a href="<%= contact_us_url() %>" target="_blank" title="Submit feedback">Contact Us</a>
-	  form.</p>
+	  please <a href="<%= home_contact_path() %>">let us know</a>.</p>
 
-	<%= render "hero_search" %>
+		<%= render "search_form_big" %>
 </div>

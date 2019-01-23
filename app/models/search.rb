@@ -1,3 +1,5 @@
+require 'uri'
+
 class Search
   def initialize(solr_url)
     logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
@@ -13,7 +15,7 @@ class Search
     # account for the fact that Solr is weighting the title *too low*
     # and the abstract *too high* by default because of the inverted
     # document frequency (IDF). I think this calculation is because all
-    # documents have a title whereas only a few of them (the collections)
+    # documents have a title whereas only a few of them (the finding aids)
     # have an abstract which results in Solr considering the abstract
     # hits more unique.
     qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 scope_content_txts_en "
@@ -46,11 +48,11 @@ class Search
       groups_ids = results.solr_groups("ead_id_s")
       groups_ids.each do |group_id|
         docs_for_group = results.solr_docs_for_group("ead_id_s", group_id)
-        # Try to create the item with collection information
-        # if the collection document is found in the resultset.
+        # Try to create the item with finding aid information
+        # if the finding aid document is found in the resultset.
         item = nil
         docs_for_group.each do |doc|
-          if doc["inventory_level_s"] == "Collection"
+          if doc["inventory_level_s"] == "Finding Aid"
             highlights = results.highlights.for(doc["id"]) || {}
             item = SearchItem.from_hash(doc, highlights)
             break
@@ -58,16 +60,20 @@ class Search
         end
 
         if item == nil
-          # The collection was not in the result set, fetch it.
-          # TODO: Should we get this via Collections.by_id(group_id) instead ?
-          collectionDoc = @solr.get(group_id)
-          item = SearchItem.from_hash(collectionDoc, {})
+          # The finding aid was not in the result set, fetch it.
+          # TODO: Should we get this via FindingAids.by_id(group_id) instead ?
+          solr_id = URI.escape(group_id)
+          finging_aid_doc = @solr.get(solr_id)
+          if finging_aid_doc == nil
+            raise("Error getting finding aid with id: #{group_id}")
+          end
+          item = SearchItem.from_hash(finging_aid_doc, {})
         end
 
         item.match_count = results.num_found_for_group("ead_id_s", group_id)
 
         docs_for_group.each do |doc|
-          if doc["inventory_level_s"] == "Collection"
+          if doc["inventory_level_s"] == "Finding Aid"
             # skip it
           else
             highlights = results.highlights.for(doc["id"]) || {}

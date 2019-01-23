@@ -63,7 +63,7 @@
     var items = [];
     var filterId = "#modal_form_" + facetName + "_filter";
     var filter = $(filterId).val();
-    var pageSize, start, stop, i, item, text, href, html, pageCount;
+    var pageSize, start, stop, i, item, text, href, html, pageCount, itemCount;
 
     if (filter == "") {
       items = facetsMoreObj.data[facetName];
@@ -80,22 +80,27 @@
     pageSize = 20;
     start = (pageNum - 1) * pageSize;
     stop = Math.min(items.length, start + pageSize);
+    itemCount = (stop-start) + 1;
     pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
 
     $(ul).children().remove();
     for(i = start; i < stop; i++) {
       item = items[i];
-      if (item.removeUrl == null) {
-          href = "<a href='" + item.addUrl + "'>" + item.value + "</a>";
-          text = "(" + item.count + ")";
-          html = "<li>" + href + " " + text
-      } else {
-          text = item.value + " (" + item.count + ")";
-          href = "<a href='" + item.removeUrl + "'><span class='glyphicon glyphicon-remove'></span></a>";
-          html = "<li>" + text + " " + href;
-      }
+      href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
+      text = "(" + item.count + ")";
+      html = "<li><span class='facet-text-truncated'>" + href + "</span> <span style='float:right;'>" + text + "</span>"
       $(ul).append(html);
     }
+
+    if (itemCount < pageSize) {
+      // Insert stub rows to preserve the size of the modal constant,
+      // this is useful since the navigation button (prev/next) are
+      // at the bottom of the page.
+      for(i = itemCount; i <= pageSize; i++) {
+        $(ul).append("<li style='list-style-type: none;'><span class='facet-text-truncated'>&nbsp;</span>");
+      }
+    }
+
     facetsMoreObj.TooglePrevNextPage(facetName, pageCount);
   };
 

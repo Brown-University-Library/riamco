@@ -67,7 +67,7 @@ class SearchController < ApplicationController
       f << SolrLite::FacetField.new("languages_ss", "Language")
       f << SolrLite::FacetField.new("creators_ss", "Creator")
 
-      year = SolrLite::FacetField.new("end_year_i", "Date Range")
+      year = SolrLite::FacetField.new("start_year_i", "Date Range")
       year.range = true
       year.range_start = 0
       year.range_end = 3000

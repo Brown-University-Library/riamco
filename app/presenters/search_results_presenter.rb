@@ -46,6 +46,14 @@ class SearchResultsPresenter
 
     # from results
     @facets = results.facets
+
+    @facets.each do |facet|
+      if facet.name == "start_year_i"
+        # Sort by year, descending
+        facet.values.sort_by! {|value| -value.range_start }
+      end
+    end
+
     @results = results.items
     set_urls_in_facets()
     set_remove_url_in_facets()

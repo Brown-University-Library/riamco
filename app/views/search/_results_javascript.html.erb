@@ -90,12 +90,12 @@
         // link hs the name of the facet to add
         href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
         text_count = "(" + item.count + ")";
-        html = "<li><span class='facet-text-truncated'>" + href + "</span> <span style='float:right;'>" + text_count + "</span>"
+        html = "<li><span class='facet-text-truncated'>" + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
       } else {
         // link has just the "X" to remove the facet
         href = "<a href='" + item.removeUrl + "' title='" + item.value + "'><span class='glyphicon glyphicon-remove'></span></a>";
         text_count = "(" + item.count + ")";
-        html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span style='float:right;'>" + text_count + "</span>"
+        html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
       }
       $(ul).append(html);
     }

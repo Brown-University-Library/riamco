@@ -63,7 +63,7 @@
     var items = [];
     var filterId = "#modal_form_" + facetName + "_filter";
     var filter = $(filterId).val();
-    var pageSize, start, stop, i, item, text, href, html, pageCount, itemCount;
+    var pageSize, start, stop, i, item, text_count, href, html, pageCount, itemCount;
 
     if (filter == "") {
       items = facetsMoreObj.data[facetName];
@@ -86,9 +86,17 @@
     $(ul).children().remove();
     for(i = start; i < stop; i++) {
       item = items[i];
-      href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
-      text = "(" + item.count + ")";
-      html = "<li><span class='facet-text-truncated'>" + href + "</span> <span style='float:right;'>" + text + "</span>"
+      if (item.removeUrl == null) {
+        // link hs the name of the facet to add
+        href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
+        text_count = "(" + item.count + ")";
+        html = "<li><span class='facet-text-truncated'>" + href + "</span> <span style='float:right;'>" + text_count + "</span>"
+      } else {
+        // link has just the "X" to remove the facet
+        href = "<a href='" + item.removeUrl + "' title='" + item.value + "'><span class='glyphicon glyphicon-remove'></span></a>";
+        text_count = "(" + item.count + ")";
+        html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span style='float:right;'>" + text_count + "</span>"
+      }
       $(ul).append(html);
     }
 

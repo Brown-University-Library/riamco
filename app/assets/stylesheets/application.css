@@ -47,3 +47,11 @@ to { -webkit-transform: rotate(360deg);}
 from { transform: scale(1) rotate(0deg);}
 to { transform: scale(1) rotate(360deg);}
 }
+
+/* 
+ * TODO: update to bold text on active, and change background to blue on hover
+ */
+.navbar-default .navbar-nav > .active > a {
+    font-weight: bold;
+    background-image: none;
+}

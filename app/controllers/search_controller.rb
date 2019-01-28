@@ -1,5 +1,6 @@
 class SearchController < ApplicationController
   def index
+    @nav_active = "nav_browse"    
     @presenter = execute_search()
     if @presenter.num_found == 0
         Rails.logger.warn("No results were found. Search: #{@presenter.search_qs}")

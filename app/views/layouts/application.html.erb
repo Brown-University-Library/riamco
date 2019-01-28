@@ -12,8 +12,7 @@
 <%= stylesheet_link_tag    'application', media: 'all' %>
 <%= javascript_include_tag 'application' %>
 <%= csrf_meta_tags %>
-<%= favicon_link_tag 'favicon.ico' %>
-
+<%= favicon_link_tag 'favicon.png' %>
 </head>
 
 <body class="no-logo fae">
@@ -41,6 +40,12 @@
         <li id="nav_help"><a href="<%= home_help_path() %>">Help</a></li>
         <li id="nav_contact"><a href="<%= home_contact_path() %>">Contact</a></li>
       </ul>
+      <% if ENV["IS_DEMO"] == "true" %>
+        <ul class="nav navbar-nav navbar-right">
+          <li style="background-color:#ffb400; font-weight: bold;" id="nav_demo">
+            <a href="#" title="This site is a demo of the upcoming RIAMCO website.">DEMO SITE</a></li>
+        </ul>
+      <% end %>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
@@ -82,4 +87,14 @@
 <% end %>
 </body>
 
+<% if @nav_active %>
+<script> 
+  $(function() {
+    $("#<%= @nav_active %>").addClass("active");
+  });
+</script>
+<% end %>
+
 </html>
+
+

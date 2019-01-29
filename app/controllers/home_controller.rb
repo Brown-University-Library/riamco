@@ -21,7 +21,7 @@ class HomeController < ApplicationController
   def faq
     @presenter = HomePresenter.new()
   end
-  
+
   def finding_aid
     @nav_active = "nav_help"
     @presenter = HomePresenter.new()
@@ -38,6 +38,7 @@ class HomeController < ApplicationController
   end
 
   def participating
+    @nav_active = "nav_about"
     @presenter = HomePresenter.new()
   end
 
@@ -50,6 +51,11 @@ class HomeController < ApplicationController
     @presenter = HomePresenter.new()
   end
 
+  def links
+    @nav_active = "nav_about"
+    @presenter = HomePresenter.new()
+  end
+
   def page_not_found
     # Use the page title to track page not found in Google Analytics
     # (see https://www.practicalecommerce.com/Locating-404s-with-Google-Analytics)
@@ -58,7 +64,12 @@ class HomeController < ApplicationController
     Rails.logger.warn(err_msg)
     # Force to render as HTML
     render "not_found", status: 404, formats: [:html]
-end
+  end
+
+  def resources
+    @nav_active = "nav_about"
+    @presenter = HomePresenter.new()
+  end
 
   def visit
     @nav_active = "nav_help"

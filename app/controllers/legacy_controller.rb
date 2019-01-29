@@ -43,6 +43,14 @@ class LegacyController < ApplicationController
         redirect_to home_join_path()
     end
 
+    def links
+        redirect_to home_links_path()
+    end
+
+    def resources
+        redirect_to home_resources_path()
+    end
+
     def search
         redirect_to search_path()
     end
@@ -51,4 +59,3 @@ class LegacyController < ApplicationController
         redirect_to home_visit_path()
     end
 end
-  

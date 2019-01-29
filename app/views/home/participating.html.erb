@@ -1,2 +1,42 @@
-<h1>*sad trombone*</h1>
-<h2>This page has not been implemented</h2>
+<div class="container">
+    <div class="row">
+
+        <div class="btn-group" role="group" aria-label="...">
+            <a class="btn btn-default active" href="participating.html">Participating Institutions</a>
+            <a class="btn btn-default" href="links.html">Links</a>
+            <a class="btn btn-default" href="resources.html">Project Resources</a>
+        </div>
+
+        <h1>Participating Institutions</h1>
+
+        <ul>
+        <% @presenter.institutions.each do |inst| %>
+            <li>
+                <% if inst[:link] != nil %>
+                    <a href="<%= inst[:link] %>" target="_blank"><%= inst[:name] %></a>
+                <% else %>
+                    <%= inst[:name] %>
+                <% end %>
+
+            <% if inst[:contacts] && inst[:contacts].count > 0 %>
+                <ul>
+                <% inst[:contacts].each do |contact| %>
+                    <li>
+                    <% if contact[:link] != nil %>
+                        <a href="<%= contact[:link] %>" target="_blank"><%= contact[:text] %></a>
+                    <% else %>
+                        <%= contact[:text] %>
+                    <% end %>
+                    <% if contact[:email] != nil %>
+                        | <a href="mailto:<%= contact[:email] %>"><%= contact[:email] %></a>
+                    <% end %>
+                <% end %>
+                </ul>
+            <% elsif inst[:email] %>
+                | <a href="mailto:<%= inst[:email] %>"><%= inst[:email] %></a>
+            <% end %>
+        <% end %>
+        </ul>
+
+    </div>
+</div>

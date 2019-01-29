@@ -160,12 +160,14 @@ em {
 #search-result-count a {
 	font-weight: 600;
 }
+/*
 .facet-breadcrumbs a {
-	color: #333;
+ 	color: #333;
 }
 .facet-breadcrumbs a:hover {
 	color: #594036;
 }
+*/
 .categoryCount {
   color: #594036;
   margin: 0 -2px;
@@ -241,7 +243,7 @@ em {
                 <div class="result">Date: <%= item.inv_date %></div>
               <% end %>
 
-              <% if @presenter.empty_search? %> 
+              <% if @presenter.empty_search? %>
                 <div class="result"><i>(<%= item.match_count %> archival items)</i></div>
               <% else %>
 

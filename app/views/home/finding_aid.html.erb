@@ -5,7 +5,12 @@
 </style>
 <div class="container">
   <div class="row">
-    <%= render "help_menu" %>
+
+    <div class="btn-group" role="group" aria-label="...">
+        <a class="btn btn-default active" href="<%= home_finding_aid_path() %>">What Is a Finding Aid?</a>
+        <a class="btn btn-default" href="<%= home_glossary_path() %>">Glossary</a>
+        <a class="btn btn-default" href="<%= home_visit_path() %>">Plan Your Visit</a>
+    </div>
 
     <h1>What Is a Finding Aid?</h1>
     <p>The RIAMCO website is a  collection of online finding aids. 

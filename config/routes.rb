@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'glossary.html' => 'legacy#glossary'
   get 'help.html' => 'legacy#help'
   get 'index.html' => 'legacy#home'
+  get 'links.html' => 'legacy#links'
+  get 'resources.html' => 'legacy#resources'
   get 'search.php' => 'legacy#search'
   get 'visit.html' => 'legacy#visit'
 
@@ -26,7 +28,9 @@ Rails.application.routes.draw do
   get 'glossary' => 'home#glossary', as: :home_glossary
   get 'help' => 'home#help', as: :home_help
   get 'join' => 'home#join', as: :home_join
+  get 'links' => 'home#links', as: :home_links
   get 'participating' => 'home#participating', as: :home_participating
+  get 'resources' => 'home#resources', as: :home_resources
   get 'visit' => 'home#visit', as: :home_visit
 
   # Search URLs

@@ -6,6 +6,10 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore production generated files
+/vendor/bundle
+/public/assets
+
 # Ignore the default SQLite databases.
 /db/*.sqlite3
 
@@ -19,4 +23,3 @@
 .env
 refresh.sh
 /http
-

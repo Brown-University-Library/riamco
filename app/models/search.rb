@@ -26,6 +26,8 @@ class Search
     params.hl_fl = "abstract_txt_en scope_content_txts_en inventory_label_txt_en inventory_scope_content_txt_en"
     params.hl_snippets = 30
 
+    params.spellcheck = true
+
     # TODO: figure out a good value for this
     mm = nil
 

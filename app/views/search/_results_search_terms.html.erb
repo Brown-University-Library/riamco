@@ -1,7 +1,8 @@
 <!-- search terms used -->
 <div class="facet-breadcrumbs">
-  <% if !@presenter.query.empty? %>
-
+  <% if @presenter.query.empty? %>
+    <!-- display nothing -->
+  <% else %>
     <% if @presenter.num_found == 0 %>
       <h3>No results were found</h3>
     <% else %>
@@ -9,8 +10,8 @@
         <span id="search-total-matching"><%= @presenter.num_found %></span>
         <% if @presenter.empty_search? %>
           archival objects found in
-        <% else %> 
-          matches found in 
+        <% else %>
+          matches found in
         <% end %>
         <span id="search-total-matching"><%= @presenter.num_eads %></span>
         finding aids
@@ -24,8 +25,12 @@
         <span class="sr-only">Remove search term <%= @presenter.query %></span>
       </a>
     </span>
-  <% else %> 
-    <!-- display nothing -->
+
+    <% if @presenter.num_found == 0 && @presenter.suggest_url != nil %>
+      <p>Would you like to see results for
+      <a class="search-instead-links" href="<%= @presenter.suggest_url %>"><%= @presenter.suggest_q %></a>
+      instead?</p>
+    <% end %>
   <% end %>
 
   <% @presenter.fq.each do |fq| %>
@@ -36,11 +41,5 @@
         <span class="sr-only">Remove filter <%= fq.value %></span>
         </a>
     </span>
-  <% end %>
-
-  <% if @presenter.num_found > 0 && @presenter.suggest_url != nil %>
-    <p>Would you like to see results for
-      <a class="search-instead-links" href="<%= @presenter.suggest_url %>"><%= @presenter.suggest_q %></a>
-      instead?</p>
   <% end %>
 </div>

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # Original PHP URL to display a findind aid.
-  get 'render.php' => 'ead#show_legacy'
+  get 'render.php' => 'ead#show'
 
   # Original static pages
   # (they redirect to the new URLs)
@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get 'join' => 'home#join', as: :home_join
   get 'links' => 'home#links', as: :home_links
   get 'participating' => 'home#participating', as: :home_participating
+  get 'render' => 'ead#show', as: :ead_show
   get 'resources' => 'home#resources', as: :home_resources
   get 'visit' => 'home#visit', as: :home_visit
 
@@ -44,7 +45,7 @@ Rails.application.routes.draw do
   # the finding aids (e.g. /ead/id rather than /render.php?eadid=id) but if
   # we do that we need to update the path in the XSLT files to generate the
   # proper navigation links to the new path.
-  # 
+  #
   # Also, the finding aid ID contains periods and Rails does not supports
   # periods in the URL by default. We would need to use a constraint in the
   # route definition to support periods (see https://stackoverflow.com/a/23672925/446681)

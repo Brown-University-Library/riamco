@@ -208,7 +208,9 @@ em {
             <!-- move out of here the logic to handle different
                  types of results (collections, series, items) -->
             <div style="padding-bottom:10px; padding-left: 15px;">
-              <div class="result-title"><a target="_blank", href="render.php?eadid=<%=item.ead_id %>"><%= item.title %></a></div>
+              <div class="result-title">
+                  <a target="_blank", href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title %></a>
+              </div>
               <div class="result"><b>Format:</b> <%= item.inv_level %></div>
 
               <% if item.institution_name  %>

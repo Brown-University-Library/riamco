@@ -1,12 +1,5 @@
 class EadController < ApplicationController
   def show
-    id = params["id"]
-    view = params["view"] || "title"
-    html = load_ead_html(id, view)
-    render text: html
-  end
-
-  def show_legacy
     id = params["eadid"]
     view = params["view"] || "title"
     html = load_ead_html(id, view)

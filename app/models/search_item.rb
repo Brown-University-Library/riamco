@@ -40,16 +40,27 @@ class SearchItem
   end
 
   def scope_content_hl
-    # hl_value("scope_content_txts_en", @scope_content) || ""
     hits = @highlights["scope_content_txts_en"]
     if hits == nil
-      return value || ""
+      return ""
     end
     "..." + hits.join(" ... ") + "..."
   end
 
   def scope_content_hl?
     @highlights["scope_content_txts_en"] != nil
+  end
+
+  def subjects_hl
+    hits = @highlights["subjects_txts_en"]
+    if hits == nil
+      return ""
+    end
+    "..." + hits.join(" ... ") + "..."
+  end
+
+  def subjects_hl?
+    @highlights["subjects_txts_en"] != nil
   end
 
   def inv_scope_content_hl

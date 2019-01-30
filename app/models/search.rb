@@ -25,7 +25,8 @@ class Search
     qf += "subjects_txts_en _text_"
 
     params.hl = true
-    params.hl_fl = "abstract_txt_en scope_content_txts_en inventory_label_txt_en inventory_scope_content_txt_en"
+    params.hl_fl = "abstract_txt_en scope_content_txts_en subjects_txts_en "
+    params.hl_fl += "inventory_label_txt_en inventory_scope_content_txt_en"
     params.hl_snippets = 30
 
     params.spellcheck = true

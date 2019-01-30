@@ -233,6 +233,10 @@ em {
                 <div class="result"><b>Scope and Content:</b> <%= item.scope_content_hl.html_safe %></div>
               <% end %>
 
+              <% if item.subjects_hl? %>
+                <div class="result"><b>Subjects:</b> <%= item.subjects_hl.html_safe %></div>
+              <% end %>
+
               <% if item.repository %>
                 <div class="result"><b>Repository:</b> <%= item.repository %></div>
               <% end %>

@@ -227,7 +227,8 @@ class Ead
         end
 
         def get_doc_browse_terms()
-            get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject[@source='riamco']")
+            path = "xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject[@source='riamco']"
+            get_xpath_values(path, true)
         end
 
         def get_doc_repository_name()
@@ -362,19 +363,27 @@ class Ead
             end
         end
 
-        def get_xpath_value(xpath)
+        def get_xpath_value(xpath, trim = false)
             values = @xml_doc.xpath(xpath)
             return nil if values.count == 0
-            values[0].text
+            if trim
+                trim_text(values[0].text)
+            else
+                values[0].text
+            end
         end
 
-        def get_xpath_values(xpath)
+        def get_xpath_values(xpath, trim = false)
             nodes = @xml_doc.xpath(xpath)
             values = []
             nodes.each do |node|
-                values << node.text
+                if trim
+                    values << trim_text(node.text)
+                else
+                    values << node.text
+                end
             end
-            values
+            values.uniq
         end
 
         def trim_text(text)

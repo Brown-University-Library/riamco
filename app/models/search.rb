@@ -20,12 +20,12 @@ class Search
     # hits more unique.
     #
     # TODO: add browse_terms_txts_en
-    qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 scope_content_txts_en "
+    qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 scope_content_txts_en biog_hist_txt_en "
     qf += "inventory_label_txt_en inventory_scope_content_txt_en inventory_path_txt_en "
     qf += "subjects_txts_en _text_"
 
     params.hl = true
-    params.hl_fl = "abstract_txt_en scope_content_txts_en subjects_txts_en "
+    params.hl_fl = "abstract_txt_en scope_content_txts_en subjects_txts_en biog_hist_txt_en "
     params.hl_fl += "inventory_label_txt_en inventory_scope_content_txt_en"
     params.hl_snippets = 30
 

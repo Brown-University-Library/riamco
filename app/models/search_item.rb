@@ -39,6 +39,18 @@ class SearchItem
     hl_value("inventory_label_txt_en", @inv_label) || ""
   end
 
+  def biog_hist_hl
+    hits = @highlights["biog_hist_txt_en"]
+    if hits == nil
+      return ""
+    end
+    "..." + hits.join(" ... ") + "..."
+  end
+
+  def biog_hist_hl?
+    @highlights["biog_hist_txt_en"] != nil
+  end
+
   def scope_content_hl
     hits = @highlights["scope_content_txts_en"]
     if hits == nil

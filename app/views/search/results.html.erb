@@ -233,6 +233,10 @@ em {
                 <div class="result"><b>Scope and Content:</b> <%= item.scope_content_hl.html_safe %></div>
               <% end %>
 
+              <% if item.biog_hist_hl? %>
+                <div class="result"><b>Biographical/Historical note:</b> <%= item.biog_hist_hl.html_safe %></div>
+              <% end %>
+
               <% if item.subjects_hl? %>
                 <div class="result"><b>Subjects:</b> <%= item.subjects_hl.html_safe %></div>
               <% end %>

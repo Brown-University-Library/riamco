@@ -18,6 +18,16 @@ namespace :riamco do
         process_ead_files(file_path)
     end
   end
+
+  desc "Generates the XML used in the original RIAMCO site to import an EAD to Solr"
+  task :legacy_to_solr, [:xml_name, :xslt_name] => :environment do |cmd, args|
+    xml_file = args[:xml_name]
+    xsl_file = args[:xslt_name]
+    document = Nokogiri::XML(File.read(xml_file))
+    template = Nokogiri::XSLT(File.read(xsl_file))
+    xml = template.transform(document)
+    puts xml
+  end
 end
 
 def import_ead_files(file_path)

@@ -86,6 +86,10 @@ class Ead
         # The "core" data is the same for all of them, but the
         # inventory_* fields are different and the ID has a
         # sequence to force them to be different.
+        #
+        # TODO: I am currently keeping the inventory subjects separate
+        #       from the main subjects. Make sure this works as expected
+        #       when filtering via facets on the UI.
         seq = 1
         inventory.each do |inv|
             solr_doc = {
@@ -102,7 +106,9 @@ class Ead
                 inventory_date_s: inv[:date],
                 inventory_descendent_path: inv[:full_path],     # for navigation
                 inventory_path_txt_en: inv[:full_path],         # for searching
-                inventory_level_s: inv[:level]
+                inventory_level_s: inv[:level],
+                subjects_ss: inv[:subjects],                    # for faceting
+                subjects_txts_en: inv[:subjects]                # for searching
             }
             solr_data << solr_doc
             seq += 1
@@ -115,6 +121,25 @@ class Ead
     end
 
     private
+        # Mimics the logic used in the original RIAMCO XSLT.
+        def date_range_from_string(date_str)
+            if date_str == nil || date_str.length < 4
+                return nil
+            end
+
+            if date_str.length == 4
+                # single year
+                return date_str
+            end
+
+            # multiple year, take the first two
+            years = date_str.split("/")
+            if years.count < 2
+                return years[0]
+            end
+            return years[0] + "/" + years[1]
+        end
+
         def get_doc_id()
             @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:eadid[1]/text()").text
         end
@@ -134,7 +159,8 @@ class Ead
         end
 
         def get_doc_bulk()
-            get_xpath_value("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper/xmlns:date/@normal")
+            normal = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unitdate[@type='bulk']/@normal")
+            return date_range_from_string(normal)
         end
 
         def get_doc_creators()
@@ -156,13 +182,11 @@ class Ead
 
         def get_doc_title_proper()
             title_proper = ""
-            titles = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper/text()")
+            titles = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper[1]")
             if titles.count > 0
-                title_proper += titles[0].text
-            end
-            year = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper/xmlns:date/@normal")
-            if year.count > 0
-                title_proper += " " + year[0].value  # use "value" because it's an attribute
+                texts = titles[0].children.map {|c| c.text}
+                texts = texts.map {|text| text == "\n" ? nil : text}.compact
+                title_proper = texts.join(" ")
             end
             title_proper
         end
@@ -185,7 +209,8 @@ class Ead
         end
 
         def get_doc_date()
-            get_xpath_value("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper/xmlns:date/text()")
+            date_str = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unitdate[@type='inclusive']/@normal")
+            return date_range_from_string(date_str)
         end
 
         def get_doc_biog_hist()
@@ -202,9 +227,17 @@ class Ead
         end
 
         def get_doc_subjects()
-            # This is incomplete, we pick subjects from other nodes too.
-            # TODO: look at the original indexing code.
-            get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject")
+            subjects = []
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:persname")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:corpname")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:famname")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:geogname")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:title")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:genreform")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:occupation")
+            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:function")
+            subjects
         end
 
         def get_doc_scope_content()
@@ -251,7 +284,8 @@ class Ead
                     container_text: nil,            # set below
                     scope_content: nil,             # set below
                     label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text),
-                    date: node.xpath("string(xmlns:did/xmlns:unitdate[1])")
+                    date: node.xpath("string(xmlns:did/xmlns:unitdate[1])"),
+                    subjects: nil                   # set below
                 }
 
                 containers = node.xpath("xmlns:did/xmlns:container")
@@ -263,6 +297,19 @@ class Ead
                             data[:container_text] += container.attributes["label"].value + " " + container.text + " "
                         end
                     end
+                end
+
+                # Get the subjects for this inventory node
+                subjects = []
+                subject_paths = ["persname", "corpname", "famname", "subject", "genreform"]
+                subject_paths.each do |path|
+                    values = node.xpath("xmlns:controlaccess/xmlns:#{path}")
+                    values.each do |value|
+                        subjects << value.text
+                    end
+                end
+                if subjects.count > 0
+                    data[:subjects] = subjects
                 end
 
                 scope_content = node.xpath("string(xmlns:scopecontent)")

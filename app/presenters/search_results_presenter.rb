@@ -10,9 +10,11 @@ class SearchResultsPresenter
     :previous_url, :next_url,
     :remove_q_url, :facetSearchBaseUrl,
     :suggest_q, :suggest_url,
-    :explainer, :explain_format
+    :explainer, :explain_format,
+    :debug
 
   def initialize(results, params, base_url, base_facet_search_url, explain_format)
+    @debug = false
     @base_url = base_url
     @facetSearchBaseUrl = base_facet_search_url
 
@@ -39,7 +41,7 @@ class SearchResultsPresenter
       @num_eads = FindingAids.count
     else
       eads = results.facets.find {|f| f.name=="title_s" }
-      if eads != nil 
+      if eads != nil
         @num_eads = eads.values.count
       end
     end

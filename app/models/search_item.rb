@@ -2,11 +2,12 @@ class SearchItem
   attr_accessor :id, :ead_id, :title, :abstract, :scope_content,
     :extent, :repository, :institution_name, :institution_id,
     :inv_level, :inv_scope_content, :inv_label, :inv_date, :inv_container,
-    :highlights, :children, :match_count
+    :timestamp, :highlights, :children, :match_count
 
   def initialize(id, ead_id, title, abstract, scope_content,
     extent, repository, institution_name, institution_id,
-    inv_level, inv_scope_content, inv_label, inv_date, inv_container, highlights)
+    inv_level, inv_scope_content, inv_label, inv_date, inv_container,
+    timestamp, highlights)
     @id = id
     @ead_id = ead_id
     @institution_name = institution_name
@@ -19,6 +20,7 @@ class SearchItem
     end
     @extent = extent
     @repository = repository
+    @timestamp = timestamp
     @highlights = highlights
     @inv_level = inv_level
     @inv_scope_content = inv_scope_content
@@ -61,7 +63,7 @@ class SearchItem
       h["institution_s"], h["institution_id_s"],
       h["inventory_level_s"], h["inventory_scope_content_txt_en"], h["inventory_label_txt_en"],
       h["inventory_date_s"], h["inventory_container_txt_en"],
-      highlights)
+      h["timestamp_s"], highlights)
   end
 
   def add_child(h, highlights)

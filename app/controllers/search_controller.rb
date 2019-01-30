@@ -1,6 +1,6 @@
 class SearchController < ApplicationController
   def index
-    @nav_active = "nav_browse"    
+    @nav_active = "nav_browse"
     @presenter = execute_search()
     if @presenter.num_found == 0
         Rails.logger.warn("No results were found. Search: #{@presenter.search_qs}")
@@ -9,6 +9,7 @@ class SearchController < ApplicationController
       render :json => @presenter.results.to_json
       return
     end
+    @presenter.debug = request.params["debug"] == "true"
     render "results"
   rescue => ex
     backtrace = ex.backtrace.join("\r\n")

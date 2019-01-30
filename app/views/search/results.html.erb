@@ -213,6 +213,10 @@ em {
               </div>
               <div class="result"><b>Format:</b> <%= item.inv_level %></div>
 
+              <% if @presenter.debug %>
+                <div class="result"><b>Timestamp:</b> <%= item.timestamp %></div>
+              <% end %>
+
               <% if item.institution_name  %>
                 <div class="result"><b>Institution:</b> <%= item.institution_name %></div>
               <% end %>

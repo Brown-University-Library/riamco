@@ -6,7 +6,7 @@ class Ead
     attr_reader :abstract, :biog_hist, :browse_terms, :bulk,
         :creators, :date, :end_year, :extent, :filing_title,
         :filing_title_sort, :id, :institution, :institution_id,
-        :keyword, :languages, :repository_name, :scope_content,
+        :keywords, :languages, :repository_name, :scope_content,
         :start_year, :subjects, :title, :title_sort, :title_sort_alpha,
         :title_proper, :title_proper_sort, :unit_id
 
@@ -25,7 +25,7 @@ class Ead
         @id = get_doc_id()
         @institution_id = get_doc_main_agency_code()
         @institution = get_doc_institution_name(@institution_id)
-        # @keyword Should this be a copy field in Solr instead?
+        @keywords = get_doc_keywords()
         @languages = get_doc_languages()
         @repository_name = get_doc_repository_name()
         @scope_content = get_doc_scope_content()
@@ -71,7 +71,8 @@ class Ead
             subjects_ss: self.subjects,                 # for faceting
             subjects_txts_en: self.subjects,            # for searching
             unit_id_s: self.unit_id,
-            inventory_level_s: "Finding Aid"
+            inventory_level_s: "Finding Aid",
+            _text_: self.keywords
         }
 
         if with_inventory == false
@@ -144,16 +145,16 @@ class Ead
             @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:eadid[1]/text()").text
         end
 
-        def get_doc_start_year(date)
+        def get_doc_start_year(date, sep = '/')
             return nil if date == nil
-            tokens = date.split("-")
+            tokens = date.split(sep)
             return nil if tokens.count != 2
             tokens[0].to_i
         end
 
-        def get_doc_end_year(date)
+        def get_doc_end_year(date, sep = '/')
             return nil if date == nil
-            tokens = date.split("-")
+            tokens = date.split(sep)
             return nil if tokens.count != 2
             tokens[1].to_i
         end
@@ -186,7 +187,7 @@ class Ead
             if titles.count > 0
                 texts = titles[0].children.map {|c| c.text}
                 texts = texts.map {|text| text == "\n" ? nil : text}.compact
-                title_proper = texts.join(" ")
+                title_proper = trim_text(texts.join(" "))
             end
             title_proper
         end
@@ -272,6 +273,12 @@ class Ead
             root_c_nodes = @xml_doc.xpath("xmlns:ead/xmlns:archdesc/xmlns:dsc/xmlns:c")
             process_inventory_nodes(inventory, 1, root_c_nodes, nil)
             inventory
+        end
+
+        def get_doc_keywords()
+            root = @xml_doc.xpath("xmlns:ead")
+            texts = root.children.map {|node| node.text}
+            texts.join(" ")
         end
 
         def process_inventory_nodes(inventory, depth, nodes, parent_path)

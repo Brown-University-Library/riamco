@@ -49,8 +49,10 @@ class Ead
             abstract_txt_en: self.abstract,
             biog_hist_txt_en: self.biog_hist,
             browse_terms_ss: self.browse_terms,
+            browse_terms_txts_en: self.browse_terms,
             bulk_s: self.bulk,
             creators_ss: self.creators,
+            creators_txts_en: self.creators,
             date_s: self.date,
             end_year_i: self.end_year,
             extent_s: self.extent,
@@ -109,7 +111,9 @@ class Ead
                 inventory_path_txt_en: inv[:full_path],         # for searching
                 inventory_level_s: inv[:level],
                 subjects_ss: inv[:subjects],                    # for faceting
-                subjects_txts_en: inv[:subjects]                # for searching
+                subjects_txts_en: inv[:subjects],               # for searching
+                creators_ss: inv[:creators],
+                creators_txts_en: inv[:creators]
             }
             solr_data << solr_doc
             seq += 1
@@ -165,7 +169,11 @@ class Ead
         end
 
         def get_doc_creators()
-            get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:origination/xmlns:persname[@role='creator']")
+            values = []
+            values += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:origination/xmlns:corpname")
+            values += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:origination/xmlns:persname")
+            values += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:origination/xmlns:famname")
+            values
         end
 
         def get_doc_title()
@@ -292,7 +300,8 @@ class Ead
                     scope_content: nil,             # set below
                     label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text),
                     date: node.xpath("string(xmlns:did/xmlns:unitdate[1])"),
-                    subjects: nil                   # set below
+                    subjects: nil,                  # set below
+                    creators: nil                   # set below
                 }
 
                 containers = node.xpath("xmlns:did/xmlns:container")
@@ -317,6 +326,19 @@ class Ead
                 end
                 if subjects.count > 0
                     data[:subjects] = subjects
+                end
+
+                # Get the creators for this inventory node
+                creators = []
+                creators_paths = ["persname", "corpname", "famname"]
+                creators_paths.each do |path|
+                    values = node.xpath("xmlns:did/xmlns:origination/xmlns:#{path}")
+                    values.each do |value|
+                        creators << value.text
+                    end
+                end
+                if creators.count > 0
+                    data[:creators] = creators
                 end
 
                 scope_content = node.xpath("string(xmlns:scopecontent)")

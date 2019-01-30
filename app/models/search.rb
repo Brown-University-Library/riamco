@@ -18,9 +18,11 @@ class Search
     # documents have a title whereas only a few of them (the finding aids)
     # have an abstract which results in Solr considering the abstract
     # hits more unique.
+    #
+    # TODO: add browse_terms_txts_en
     qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 scope_content_txts_en "
     qf += "inventory_label_txt_en inventory_scope_content_txt_en inventory_path_txt_en "
-    qf += "subjects_txts_en"
+    qf += "subjects_txts_en _text_"
 
     params.hl = true
     params.hl_fl = "abstract_txt_en scope_content_txts_en inventory_label_txt_en inventory_scope_content_txt_en"

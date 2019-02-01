@@ -74,7 +74,7 @@ class Ead
             subjects_txts_en: self.subjects,            # for searching
             unit_id_s: self.unit_id,
             inventory_level_s: "Finding Aid",
-            _text_: self.keywords
+            keywords_txt_en: self.keywords
         }
 
         if with_inventory == false

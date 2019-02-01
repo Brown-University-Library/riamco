@@ -26,18 +26,9 @@
                       </a>
                     <% end %>
                   </span>
-                  <!--
-                  In order to remove confusion on what the facet
-                  counts represent (matches when there are search
-                  terms vs number of archival objects when there
-                  are no search terms) let us only display the counts
-                  when there are search terms.
-                  -->
-                  <% if !@presenter.query.empty? %>
+                  <% if @presenter.show_facet_counts %>
                     <div class="no-orphans">
-                      &#40;<span>
-                          <span class="categoryCount"><%= value.count %></span>
-                      </span>&#41;
+                      ( <span class="categoryCount"><%= value.count %></span> )
                     </div>
                   <% end %>
               <% end %>

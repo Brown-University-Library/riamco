@@ -11,7 +11,7 @@ class SearchResultsPresenter
     :remove_q_url, :facetSearchBaseUrl,
     :suggest_q, :suggest_url,
     :explainer, :explain_format,
-    :debug
+    :debug, :show_facet_counts
 
   def initialize(results, params, base_url, base_facet_search_url, explain_format)
     @debug = false
@@ -93,6 +93,8 @@ class SearchResultsPresenter
 
     @explain_format = explain_format
     @explainer = results.explainer
+
+    @show_facet_counts = true
   end
 
   def empty_search?()

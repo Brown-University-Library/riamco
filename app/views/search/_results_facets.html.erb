@@ -17,10 +17,10 @@
                 <li>
                   <span>
                     <% if value.remove_url == nil %>
-                      <a href="<%= value.add_url %>"><%= value.text %></a>
+                      <a href="<%= value.add_url + @presenter.facet_count_url_toggle %>"><%= value.text %></a>
                     <% else %>
                       <%= value.text %>
-                      <a href="<%= value.remove_url %>">
+                      <a href="<%= value.remove_url + @presenter.facet_count_url_toggle %>">
                         <span class="glyphicon glyphicon-remove"></span>
                         <span class="sr-only">Remove facet <%= value.text %></span>
                       </a>

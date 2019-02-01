@@ -19,7 +19,7 @@
     <% end %>
 
     <span class="search-result-facets no-orphans">
-      <a href="<%= @presenter.remove_q_url %>" title="Remove search term <%= @presenter.query %>">
+      <a href="<%= @presenter.remove_q_url + @presenter.facet_count_url_toggle %>" title="Remove search term <%= @presenter.query %>">
         <span><span class="facet-category">Searched for: </span><%= @presenter.query %></span>
         <span class="glyphicon glyphicon-remove"></span>
         <span class="sr-only">Remove search term <%= @presenter.query %></span>
@@ -28,14 +28,14 @@
 
     <% if @presenter.num_found == 0 && @presenter.suggest_url != nil %>
       <p>Would you like to see results for
-      <a class="search-instead-links" href="<%= @presenter.suggest_url %>"><%= @presenter.suggest_q %></a>
+      <a class="search-instead-links" href="<%= @presenter.suggest_url + @presenter.facet_count_url_toggle %>"><%= @presenter.suggest_q %></a>
       instead?</p>
     <% end %>
   <% end %>
 
   <% @presenter.fq.each do |fq| %>
     <span class="search-result-facets no-orphans">
-        <a href="<%= fq.remove_url %>" title="Remove filter <%= fq.value %>">
+        <a href="<%= fq.remove_url + @presenter.facet_count_url_toggle %>" title="Remove filter <%= fq.value %>">
         <span><span class="facet-category"><%= fq.title %>: </span><%= fq.value %></span>
         <span class="glyphicon glyphicon-remove"></span>
         <span class="sr-only">Remove filter <%= fq.value %></span>

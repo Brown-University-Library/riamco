@@ -10,9 +10,12 @@ class SearchController < ApplicationController
       return
     end
     @presenter.debug = request.params["debug"] == "true"
-    if request.params.keys.include?("nocounts")
+    if request.params["counts"] == "no"
       # Only include the facet counts if there are search terms
       @presenter.show_facet_counts = !@presenter.query.empty?
+      @presenter.facet_count_url_toggle = "&counts=no"
+    else
+      @presenter.facet_count_url_toggle = "&counts=yes"
     end
     render "results"
   rescue => ex
@@ -69,7 +72,7 @@ class SearchController < ApplicationController
       f << SolrLite::FacetField.new("title_s", "Finding Aid")
       f << SolrLite::FacetField.new("subjects_ss", "Subject")
       f << SolrLite::FacetField.new("browse_terms_ss", "Browse Term")
-      f << SolrLite::FacetField.new("inventory_level_s", "Level")
+      # f << SolrLite::FacetField.new("inventory_level_s", "Level")
       f << SolrLite::FacetField.new("languages_ss", "Language")
       f << SolrLite::FacetField.new("creators_ss", "Creator")
 

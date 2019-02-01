@@ -3,7 +3,7 @@
   <% if @presenter.page == 1 %>
     <span class="search-result-previous">
       <span class="glyphicon glyphicon-chevron-left is-inactive" aria-hidden="true"></span>
-      <span class="chevron-nav-title"> Previous</span>
+      <span class="chevron-nav-title is-inactive"> Previous</span>
     </span>
   <% else %>
     <span class="search-result-previous is-active">
@@ -20,12 +20,12 @@
     <span id="search-page-end"><%= @presenter.end %></span>
     of
     <span id="search-page-end"><%= @presenter.num_eads %></span>
-    finding aids 
+    finding aids
   </span>
 
   <% if @presenter.page >= (@presenter.num_pages) %>
     <span class="search-result-next">
-      <span class="chevron-nav-title">Next </span>
+      <span class="chevron-nav-title is-inactive">Next </span>
       <span class="glyphicon glyphicon-chevron-right is-inactive" aria-hidden="true"></span>
     </span>
   <% else %>

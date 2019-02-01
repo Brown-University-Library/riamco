@@ -49,7 +49,7 @@ class SearchController < ApplicationController
     def execute_search(facet_limit = nil)
       solr_url = ENV["SOLR_URL"]
       flat_display = request.params["flat"] == "true"
-      explain_query = request.params["explain"]
+      explain_query = nil # request.params["explain"]
       debug = explain_query != nil
 
       params = SolrLite::SearchParams.from_query_string(request.query_string, facets_fields())

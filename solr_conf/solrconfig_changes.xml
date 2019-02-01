@@ -1,3 +1,4 @@
+<!-- Replace the entire requestHandler section with this -->
 <requestHandler name="/select" class="solr.SearchHandler">
   <lst name="defaults">
     <str name="echoParams">explicit</str>
@@ -16,3 +17,9 @@
     <str>spellcheck</str>
   </arr>
 </requestHandler>
+
+
+<searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+    <str name="queryAnalyzerFieldType">text_en</str>      <!-- Update this value -->
+    <lst name="spellchecker">
+      <str name="field">keywords_txt_en</str>             <!-- Update this value -->

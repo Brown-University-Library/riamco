@@ -1,6 +1,6 @@
 class FindingAids
     def self.all
-        Rails.cache.fetch("finding_aids_all", expires_in: 2.minute) do
+        Rails.cache.fetch("finding_aids_all", expires_in: 30.minute) do
             solr_url = logger = ENV["SOLR_URL"]
             logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
             solr = SolrLite::Solr.new(solr_url, logger)
@@ -13,9 +13,9 @@ class FindingAids
             results.solr_docs.each do |doc|
                 key = doc["id"]
                 # TODO: convert these docs to Finding Aid objects.
-                docs[key] = doc 
+                docs[key] = doc
             end
-            docs 
+            docs
         end
     rescue Exception => e
         Rails.logger.error "Finding Aids could not be fetch: #{e.message}"
@@ -25,7 +25,7 @@ class FindingAids
     def self.count
         self.all.keys.count
     end
-    
+
     def self.by_id(id)
         self.all[id]
     end

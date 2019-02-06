@@ -1,11 +1,13 @@
 class SearchItem
   attr_accessor :id, :ead_id, :title, :abstract, :scope_content,
     :extent, :repository, :institution_name, :institution_id,
+    :start_year, :end_year,
     :inv_level, :inv_scope_content, :inv_label, :inv_date, :inv_container,
     :timestamp, :highlights, :children, :match_count
 
   def initialize(id, ead_id, title, abstract, scope_content,
     extent, repository, institution_name, institution_id,
+    start_year, end_year,
     inv_level, inv_scope_content, inv_label, inv_date, inv_container,
     timestamp, highlights)
     @id = id
@@ -20,13 +22,15 @@ class SearchItem
     end
     @extent = extent
     @repository = repository
-    @timestamp = timestamp
-    @highlights = highlights
+    @start_year = start_year
+    @end_year = end_year
     @inv_level = inv_level
     @inv_scope_content = inv_scope_content
     @inv_label = inv_label
     @inv_date = inv_date
     @inv_container = inv_container
+    @timestamp = timestamp
+    @highlights = highlights
     @children = []
     @match_count = 0
   end
@@ -84,6 +88,7 @@ class SearchItem
       h["abstract_txt_en"], h["scope_content_txts_en"],
       h["extent_s"], h["repository_name_s"],
       h["institution_s"], h["institution_id_s"],
+      h["start_year_i"], h["end_year_i"],
       h["inventory_level_s"], h["inventory_scope_content_txt_en"], h["inventory_label_txt_en"],
       h["inventory_date_s"], h["inventory_container_txt_en"],
       h["timestamp_s"], highlights)

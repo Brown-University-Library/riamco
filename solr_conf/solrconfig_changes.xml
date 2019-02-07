@@ -20,6 +20,5 @@
 
 
 <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
-    <str name="queryAnalyzerFieldType">text_en</str>      <!-- Update this value -->
     <lst name="spellchecker">
-      <str name="field">keywords_txt_en</str>             <!-- Update this value -->
+      <str name="field">keywords_t</str>    <!-- Update this value -->

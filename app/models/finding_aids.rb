@@ -1,6 +1,7 @@
 class FindingAids
     def self.all
         Rails.cache.fetch("finding_aids_all", expires_in: 30.minute) do
+            start = Time.now
             solr_url = logger = ENV["SOLR_URL"]
             logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
             solr = SolrLite::Solr.new(solr_url, logger)
@@ -15,6 +16,8 @@ class FindingAids
                 # TODO: convert these docs to Finding Aid objects.
                 docs[key] = doc
             end
+            elapsed_ms = ((Time.now - start) * 1000).to_i
+            Rails.logger.error "Finding Aids cache reloaded (#{elapsed_ms} ms)"
             docs
         end
     rescue Exception => e

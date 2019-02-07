@@ -52,7 +52,13 @@ class SearchResultsPresenter
     @facets.each do |facet|
       if facet.name == "start_year_i"
         # Sort by year, descending
-        facet.values.sort_by! {|value| -value.range_start }
+        facet.values.sort_by! {|value| -(value.range_start || 0)}
+        # Limit the year range to the present
+        facet.values.each do |value|
+          if value.text == "2000 - 2099"
+            value.text = "2000 - present"
+          end
+        end
       end
     end
 

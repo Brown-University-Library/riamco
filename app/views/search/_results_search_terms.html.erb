@@ -28,7 +28,7 @@
 
     <% if @presenter.num_found == 0 && @presenter.suggest_url != nil %>
       <p>Would you like to see results for
-      <a class="search-instead-links" href="<%= @presenter.suggest_url + @presenter.facet_count_url_toggle %>"><%= @presenter.suggest_q %></a>
+      <a class="search-instead-links" href="<%= @presenter.suggest_url + @presenter.facet_count_url_toggle %>&sc=y"><%= @presenter.suggest_q %></a>
       instead?</p>
     <% end %>
   <% end %>

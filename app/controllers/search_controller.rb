@@ -3,7 +3,11 @@ class SearchController < ApplicationController
     @nav_active = "nav_browse"
     @presenter = execute_search()
     if @presenter.num_found == 0
-        Rails.logger.warn("No results were found. Search: #{@presenter.search_qs}")
+      msg = "No results were found. Search: #{@presenter.search_qs}. "
+      if @presenter.suggest_url != nil
+        msg += "Spellcheck: #{@presenter.suggest_q}"
+      end
+      Rails.logger.warn(msg)
     end
     if params["format"] == "json"
       render :json => @presenter.results.to_json

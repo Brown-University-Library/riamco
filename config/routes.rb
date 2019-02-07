@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   get 'visit.html' => 'legacy#visit'
 
   # New URLs (without .php or .html)
+  get 'render' => 'ead#show', as: :ead_show
+  get 'download' => 'ead#download', as: :ead_download
+
   get 'about' => 'home#about', as: :home_about
   get 'contact' => 'home#contact', as: :home_contact
   get 'copyright' => 'home#copyright', as: :home_copyright
@@ -30,7 +33,6 @@ Rails.application.routes.draw do
   get 'join' => 'home#join', as: :home_join
   get 'links' => 'home#links', as: :home_links
   get 'participating' => 'home#participating', as: :home_participating
-  get 'render' => 'ead#show', as: :ead_show
   get 'resources' => 'home#resources', as: :home_resources
   get 'visit' => 'home#visit', as: :home_visit
 

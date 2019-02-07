@@ -222,6 +222,7 @@ em {
                 <div class="result-debug"><b>Timestamp:</b> <%= item.timestamp %></div>
                 <div class="result-debug"><b>Start Year:</b> <%= item.start_year %></div>
                 <div class="result-debug"><b>End Year:</b> <%= item.end_year %></div>
+                <div class="result-debug"><a target="_blank", href="<%= ead_download_path() %>?eadid=<%=item.ead_id %>">Download XML</a></div>
               <% end %>
 
               <% if item.institution_name  %>

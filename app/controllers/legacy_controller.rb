@@ -8,7 +8,7 @@ class LegacyController < ApplicationController
     end
 
     def browse
-        redirect_to home_browse_path()
+        redirect_to search_path()
     end
 
     def contact

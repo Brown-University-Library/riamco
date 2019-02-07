@@ -8,20 +8,20 @@ gem 'uglifier', '>= 1.3.0'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
-group :production do
-  gem "sqlite3"
-  # Rails 4.x must stay within MySQL 0.4
-  # https://github.com/brianmario/mysql2/issues/950#issuecomment-376375844
-  # gem 'mysql2', '< 0.5'
-end
+# group :production do
+#   # Rails 4.x must stay within MySQL 0.4
+#   # https://github.com/brianmario/mysql2/issues/950#issuecomment-376375844
+#   # gem 'mysql2', '< 0.5'
+# end
 
 group :development, :test do
-  gem "sqlite3"
   gem "byebug"                # debugger
   gem "better_errors"         # web page for errors
   gem "binding_of_caller"     # allows inspecting values in web error page
   gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
 end
+
+gem "sqlite3"
 
 # Needed on RedHat
 gem 'therubyracer', platforms: :ruby
@@ -33,5 +33,5 @@ gem "rb-readline"
 # See https://github.com/bkeepers/dotenv
 gem 'dotenv-rails'
 
-gem "solr_lite", '0.0.10'
-#gem "solr_lite", path: '/Users/hectorcorrea/dev/solr_lite'
+gem "solr_lite", '0.0.11'
+# gem "solr_lite", path: '/Users/hectorcorrea/dev/solr_lite'

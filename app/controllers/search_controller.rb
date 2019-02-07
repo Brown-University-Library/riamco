@@ -72,16 +72,16 @@ class SearchController < ApplicationController
       f << SolrLite::FacetField.new("title_s", "Finding Aid")
       f << SolrLite::FacetField.new("subjects_ss", "Subject")
       f << SolrLite::FacetField.new("browse_terms_ss", "Browse Term")
-      # f << SolrLite::FacetField.new("inventory_level_s", "Level")
       f << SolrLite::FacetField.new("languages_ss", "Language")
       f << SolrLite::FacetField.new("creators_ss", "Creator")
+      f << SolrLite::FacetField.new("date_range_s", "Date Range")
 
-      year = SolrLite::FacetField.new("start_year_i", "Date Range")
-      year.range = true
-      year.range_start = 0
-      year.range_end = 3000
-      year.range_gap = 100
-      f << year
+      # year = SolrLite::FacetField.new("start_year_i", "Date Range")
+      # year.range = true
+      # year.range_start = 0
+      # year.range_end = 3000
+      # year.range_gap = 100
+      # f << year
 
       f
     end

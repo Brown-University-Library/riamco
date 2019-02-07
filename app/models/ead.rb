@@ -18,7 +18,10 @@ class Ead
         @bulk = get_doc_bulk()
         @creators = get_doc_creators()
         @date = get_doc_date()
-        @end_year = get_doc_end_year(@date)
+        years = get_doc_years(@date)
+        @end_year = years[1]
+        @start_year = years[0]
+
         @extent = get_doc_extent()
         @filing_title = get_doc_filing_title()
         # @filing_title_sort
@@ -29,7 +32,6 @@ class Ead
         @languages = get_doc_languages()
         @repository_name = get_doc_repository_name()
         @scope_content = get_doc_scope_content()
-        @start_year = get_doc_start_year(@date)
         @subjects = get_doc_subjects()
         @title = get_doc_title()
         @title_sort = get_doc_title_sort(@title)
@@ -54,6 +56,7 @@ class Ead
             creators_ss: self.creators,
             creators_txts_en: self.creators,
             date_s: self.date,
+            date_range_s: date_facet(self.start_year),
             end_year_i: self.end_year,
             extent_s: self.extent,
             filing_title_s: self.filing_title,
@@ -145,22 +148,38 @@ class Ead
             return years[0] + "/" + years[1]
         end
 
+        def date_facet(year)
+            if year == nil
+                return "undated"
+            end
+
+            if year < 1
+                # TODO: handle BCE dates
+                return "other"
+            end
+
+            century = (year / 100).to_i
+            range_start = century.to_s.rjust(2,"0") + "01"
+            range_end = (century+1).to_s.rjust(2,"0") + "00"
+            range_start + " - " + range_end
+        end
+
         def get_doc_id()
             @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:eadid[1]/text()").text
         end
 
-        def get_doc_start_year(date, sep = '/')
-            return nil if date == nil
-            tokens = date.split(sep)
-            return nil if tokens.count != 2
-            tokens[0].to_i
+        def get_doc_years(date_str, sep = '/')
+            return [nil,nil] if date_str == nil
+            tokens = date_str.split(sep)
+            return [nil,nil] if tokens.count != 2
+            year1 = get_year(tokens[0]).to_i
+            year2 = get_year(tokens[1]).to_i
+            [year1, year2]
         end
 
-        def get_doc_end_year(date, sep = '/')
-            return nil if date == nil
-            tokens = date.split(sep)
-            return nil if tokens.count != 2
-            tokens[1].to_i
+        def get_year(token)
+            return token if token.length <= 4
+            token[0..3]
         end
 
         def get_doc_bulk()

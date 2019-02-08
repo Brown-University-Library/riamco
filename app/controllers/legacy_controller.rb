@@ -47,6 +47,12 @@ class LegacyController < ApplicationController
         redirect_to home_links_path()
     end
 
+    def render
+        eadid = request.params["eadid"]
+        view = request.params["view"]
+        redirect_to ead_show_path(eadid: eadid, view: view)
+    end
+
     def resources
         redirect_to home_resources_path()
     end

@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
-  # Original PHP URL to display a findind aid.
-  get 'render.php' => 'ead#show'
-
-  # Original static pages
-  # (they redirect to the new URLs)
+  # Redirect the original HTML and PHP pages
+  # to the Rail pages.
+  #
+  # Notice that Apache will not let PHP requests
+  # through if the PHP mod is installed and therefore
+  # the Rail app will not see these requests. If that
+  # is the case you'll need to create a redirect rule
+  # in Apache or a stub PHP file inside the Rails app
+  # (see public/render_302.php as an example)
   get 'about.html' => 'legacy#about'
   get 'advanced_search.html' => 'legacy#advanced_search'
   get 'browse.html' => 'legacy#browse'
@@ -15,6 +19,7 @@ Rails.application.routes.draw do
   get 'help.html' => 'legacy#help'
   get 'index.html' => 'legacy#home'
   get 'links.html' => 'legacy#links'
+  get 'render.php' => 'legacy#render'
   get 'resources.html' => 'legacy#resources'
   get 'search.php' => 'legacy#search'
   get 'visit.html' => 'legacy#visit'

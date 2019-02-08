@@ -1,5 +1,9 @@
 <%= render "results_javascript" %>
-<%= render "search_box" %>
+<div class="container">
+  <div class="row">
+    <%= render "search_box" %>
+  </div>
+</div>
 
 <div class="container-fluid results-page col-sm-12">
   <div class="row results-page-wrapper">
@@ -112,6 +116,8 @@
   </div> <!-- row -->
 </div> <!-- container-fluid col-sm-12 -->
 
-<% if @presenter.explain_format != nil %>
-  <%= render "explain_results" %>
-<% end %>
+<script>
+  $(function() {
+    $("#q").focus(); // Force focus to the search textbox
+  });
+</script>

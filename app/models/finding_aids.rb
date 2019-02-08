@@ -17,7 +17,7 @@ class FindingAids
                 docs[key] = doc
             end
             elapsed_ms = ((Time.now - start) * 1000).to_i
-            Rails.logger.error "Finding Aids cache reloaded (#{elapsed_ms} ms)"
+            Rails.logger.info "Finding Aids cache reloaded (#{elapsed_ms} ms)"
             docs
         end
     rescue Exception => e

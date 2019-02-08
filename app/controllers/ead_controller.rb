@@ -2,23 +2,54 @@ class EadController < ApplicationController
   def show
     id = params["eadid"]
     view = params["view"] || "title"
-    html = load_ead_html(id, view)
-    render text: html
+    if valid_id?(id) && valid_view?(view)
+      html = load_ead_html(id, view)
+      render text: html
+    else
+      Rails.logger.error("Invalid id (#{id}) or view (#{view}) in ead#show")
+      render "not_found", status: 404
+    end
+  rescue => ex
+    backtrace = ex.backtrace.join("\r\n")
+    Rails.logger.error("Could not render finding aid #{id}, view #{view}. Exception: #{ex} \r\n #{backtrace}")
+    render "error", status: 500
   end
 
   def download
     id = params["eadid"]
-    xml = load_xml(id)
-    if xml == nil
-      render text: "Not found", status: 404
+    if valid_id?(id)
+      xml = load_xml(id)
+      if xml == nil
+        render text: "Not found", status: 404
+      else
+        render xml: xml
+      end
     else
-      render xml: xml
+      Rails.logger.error("Invalid id (#{id}) in ead#download")
+      render "not_found", status: 404
     end
+  rescue => ex
+    backtrace = ex.backtrace.join("\r\n")
+    Rails.logger.error("Could not download finding aid #{id}. Exception: #{ex} \r\n #{backtrace}")
+    render "error", status: 500
   end
 
   private
+    # Only accept alphanumeric characters, dashes, underscore or periods.
+    def valid_id?(id)
+      return false if (id || "").length == 0
+      match = /[[:alnum:]\-\_\.]*/.match(id)
+      # If the resulting match is identical to the received id it means
+      # the id includes only valid characters.
+      return match[0] == id
+    end
+
+    def valid_view?(view)
+      # TODO: restrict to known view names
+      valid_id?(view)
+    end
+
     def load_xml(id)
-      # TODO: clean the id
       xml = nil
       xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
       if File.exist?(xml_file)
@@ -31,7 +62,6 @@ class EadController < ApplicationController
     end
 
     def load_ead_html(id, view)
-      # TODO: clean the id and view parameters
       html = ""
       html_path = ENV["EAD_HTML_FILES_PATH"]
       html_file = html_path + "/#{id}_riamco_#{view}.html"

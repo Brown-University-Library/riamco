@@ -126,6 +126,20 @@ class SearchResultsPresenter
     "#{@base_url}?#{qs}&page=#{page_number}"
   end
 
+  def facet_expanded?(facet)
+    if facet.name == "institution_s"
+      return true
+    end
+
+    facet.values.each do |v|
+      if v.remove_url != nil
+        return true
+      end
+    end
+
+    false
+  end
+
   private
     def set_urls_in_facets()
       # this loops through _all_ the facet/values

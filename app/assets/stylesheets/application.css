@@ -83,6 +83,13 @@ em {
   background-color: #e8fae8; /* light green */
 }
 
+.facetLabel {
+	color: #fff;
+	margin: 0;
+	padding: 1rem 0;
+	font-size: 20px;
+}
+
 .facet-text-truncated {
   /* source https://css-tricks.com/snippets/css/truncate-string-with-ellipsis/ */
   width: 450px;
@@ -244,9 +251,14 @@ em {
   margin: 0 -2px;
 }
 
+.panel-group {
+	margin-bottom: 7px
+}
+
 .panel-default {
 	border: 1px solid #333;
 }
+
 .panel-default > .panel-heading {
 	background-color: #1e5a95;
 	background-image: none;
@@ -257,3 +269,35 @@ em {
 	color: #fff;
 	margin: 0 -.1rem;
 }
+
+.panel-heading {
+	padding: 1px 10px;
+}
+
+.panel-body {
+	padding-top: 5px;
+}
+
+.collapse {
+	display: none;
+}
+
+.collapse-toggle {
+	cursor: pointer;
+}
+
+.panel-heading.collapse-toggle .panel-title::before {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: left;
+	color: grey;
+	font-size: 0.8em;
+	line-height: normal;
+	padding-top: 15px;
+	padding-right: 10px;
+}
+
+.panel-heading.collapse-toggle.collapsed .panel-title::before {
+	content: "\e080";
+}
+

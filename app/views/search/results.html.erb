@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div class="container-fluid results-page col-sm-12">
+<div class="container results-page">
   <div class="row results-page-wrapper">
     <div class="results-wrapper col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
       <div class="result-nums-breadcrumbs-wrapper">
@@ -118,6 +118,11 @@
 
 <script>
   $(function() {
-    $("#q").focus(); // Force focus to the search textbox
+    // Force the focus to the search box...
+    var theValue = $("#q").val();
+    $("#q").focus();
+    // ...and the cursor at the end of the text
+    $("#q").val("");
+    $("#q").val(theValue);
   });
 </script>

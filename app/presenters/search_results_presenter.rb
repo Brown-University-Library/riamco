@@ -111,6 +111,15 @@ class SearchResultsPresenter
     @params.q == "*"
   end
 
+  def inventory_more_link(item, limit)
+    return nil if item.match_count <= limit
+    if item.match_count == (limit + 1)
+      '<a target="_blank" href="render.php?eadid=' + item.ead_id + '&view=inventory">match</a>'
+    else
+      '<a target="_blank" href="render.php?eadid=' + item.ead_id + '&view=inventory">matches</a>'
+    end
+  end
+
   def pages_urls()
     @pages_urls ||= begin
       urls = []

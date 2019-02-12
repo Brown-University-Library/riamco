@@ -16,87 +16,92 @@
       <h2 class="visible-print">Results</h2>
 
       <!-- search results -->
-      <div class="row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
         <% @presenter.results.each_with_index do |item, index| %>
-            <!-- move out of here the logic to handle different
-                 types of results (collections, series, items) -->
-            <div style="padding-bottom:10px; padding-left: 15px;">
+
+            <div class="result-rows">
               <div class="result-title">
                   <a target="_blank", href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_hl.html_safe %></a>
               </div>
 
-              <% if @presenter.debug %>
-                <div class="result-debug"><b>Format:</b> <%= item.inv_level %></div>
-                <div class="result-debug"><b>Timestamp:</b> <%= item.timestamp %></div>
-                <div class="result-debug"><b>Start Year:</b> <%= item.start_year %></div>
-                <div class="result-debug"><b>End Year:</b> <%= item.end_year %></div>
-                <div class="result-debug"><a target="_blank", href="<%= ead_download_path() %>?eadid=<%=item.ead_id %>">Download XML</a></div>
-              <% end %>
-
-              <% if item.extent %>
-                <div class="result"><b>Extent:</b> <%= item.extent %></div>
-              <% end %>
-
-              <% if item.abstract %>
-                <div class="result"><b>Abstract:</b> <%= item.abstract_hl.html_safe %></div>
-              <% end %>
-
-              <% if item.scope_content_hl? %>
-                <div class="result"><b>Scope and Content:</b> <%= item.scope_content_hl.html_safe %></div>
-              <% end %>
-
-              <% if item.biog_hist_hl? %>
-                <div class="result"><b>Biographical/Historical note:</b> <%= item.biog_hist_hl.html_safe %></div>
-              <% end %>
-
-              <% if item.subjects_hl? %>
-                <div class="result"><b>Subjects:</b> <%= item.subjects_hl.html_safe %></div>
-              <% end %>
-
-              <% if item.repository %>
-                <div class="result"><b>Repository:</b> <%= item.repository %></div>
-              <% end %>
-
-              <% if item.inv_container %>
-                <div class="result">Container: <%= item.inv_container %></div>
-              <% end %>
-
-              <% if item.inv_label %>
-                <div class="result">Label: <%= item.inv_label_hl.html_safe %></div>
-              <% end %>
-
-              <% if item.inv_date %>
-                <div class="result">Date: <%= item.inv_date %></div>
-              <% end %>
-
-              <% if @presenter.empty_search? %>
-                <div class="result"><i>(<%= item.match_count %> archival items)</i></div>
-              <% else %>
-
-                <% if item.children.count > 0 %>
-                  <div class="result"><b>Inventory:</b></div>
-                  <table class="table">
-                  <% item.children.each do |inv_item| %>
-                    <tr>
-                      <td class="table_cell"><%= inv_item.inv_level %></td>
-                      <td class="table_cell"><%= inv_item.inv_container %></td>
-                      <td class="table_cell">
-                        <%= inv_item.inv_scope_content_hl.html_safe %>
-                        <%= inv_item.inv_label_hl.html_safe %>
-                      </td>
-                      <td class="table_cell"><%= inv_item.inv_date %></td>
-                    </tr>
-                  <% end %>
-                  </table>
-                  <% if item.match_count > 4 %>
-                    <div class="result-bottom">
-                      ...and <%= item.match_count-4 %> other <a target="_blank", href="render.php?eadid=<%=item.ead_id %>&view=inventory">matches</a>
-                    </div>
+              <dl>
+                <% if @presenter.debug %>
+                  <dt class="result-debug">Format:</dt> <dd class="result-debug"><%= item.inv_level %></dd>
+                  <dt class="result-debug">Timestamp:</dt> <dd class="result-debug"><%= item.timestamp %></dd>
+                  <dt class="result-debug">Start Year:</dt> <dd class="result-debug"><%= item.start_year %></dd>
+                  <dt class="result-debug">End Year:</dt> <dd class="result-debug"><%= item.end_year %></dd>
+                  <dt class="result-debug"></dt> <dd><a target="_blank", href="<%= ead_download_path() %>?eadid=<%=item.ead_id %>">Download XML</a></dd>
+                  <% if @presenter.empty_search? %>
+                    <dt class="result-debug"></dt> <dd><%= item.match_count %> archival items</dd>
                   <% end %>
                 <% end %>
 
-              <% end %>
+                <% if item.extent %>
+                  <dt>Extent:</dt> <dd><%= item.extent %></dd>
+                <% end %>
+
+                <% if item.abstract %>
+                  <dt>Abstract:</dt> <dd><%= item.abstract_hl.html_safe %></dd>
+                <% end %>
+
+                <% if item.scope_content_hl? %>
+                  <dt>Scope and Content:</dt> <dd><%= item.scope_content_hl.html_safe %></dd>
+                <% end %>
+
+                <% if item.biog_hist_hl? %>
+                  <dt>Biog./Historical note:</dt> <dd><%= item.biog_hist_hl.html_safe %></dd>
+                <% end %>
+
+                <% if item.subjects_hl? %>
+                  <dt>Subjects:</dt> <dd><%= item.subjects_hl.html_safe %></dd>
+                <% end %>
+
+                <% if item.repository %>
+                  <dt>Repository:</dt> <dd><%= item.repository %></dd>
+                <% end %>
+
+                <% if item.inv_container %>
+                  <dt>Container:</dt> <dd><%= item.inv_container %></dd>
+                <% end %>
+
+                <% if item.inv_label %>
+                  <dt>Label:</dt> <dd><%= item.inv_label_hl.html_safe %></dd>
+                <% end %>
+
+                <% if item.inv_date %>
+                  <dt>Date:</dt> <dd><%= item.inv_date %></dd>
+                <% end %>
+
+                <% if !@presenter.empty_search? && item.children.count > 0 %>
+                    <dt>Inventory:</dt><dd></dd>
+                  </dl>
+                  <table class="inventory-table">
+                  <% item.children_sorted.each do |inv_item| %>
+                    <tr>
+                      <td class="inv-level"><%= inv_item.inv_level %></td>
+                      <td class="inv-container"><%= inv_item.inv_container %></td>
+                      <td class="inv-scope">
+                        <%= inv_item.inv_scope_content_hl.html_safe %>
+                        <%= inv_item.inv_label_hl.html_safe %>
+                      </td>
+                      <td class="inv-date"><%= inv_item.inv_date %></td>
+                    </tr>
+                  <% end %>
+                  </table>
+                  <div class="result-bottom">
+                  <% if item.match_count > 4 %>
+                    ...and <%= item.match_count-4 %> other <a target="_blank", href="render.php?eadid=<%=item.ead_id %>&view=inventory">matches</a>
+                  <% else %>
+                    &nbsp;
+                  <% end %>
+                  </div>
+                  <div style="border-bottom: 1px dotted #ddd;"></div>
+                <% else %>
+                  <div style="border-bottom: 1px dotted #ddd;"></div>
+                  </dl>
+                <% end %>
+
             </div>
         <% end %>
       </div> <!-- row results-row col-lg-12 col-md-12 col-sm-12 col-xs-12 -->

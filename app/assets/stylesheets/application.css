@@ -19,8 +19,7 @@
  * RIAMCO blue: #254085
  * Other blue: #1e5a95  (Gives better contrast for text)
  */
-
- .navbar-default {
+.navbar-default {
     margin-bottom: 15px;
 }
 
@@ -83,6 +82,11 @@ em {
   background-color: #e8fae8; /* light green */
 }
 
+#search-facets {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
 .facetLabel {
 	color: #fff;
 	margin: 0;
@@ -105,20 +109,7 @@ em {
 
 .result-bottom {
   text-align: right;
-  padding-right: 160px;
-}
-
-.table {
-  margin-top: 7px;
-  margin-left: 25px;
-  margin-bottom: 0px;
-  max-width: 80%;
-}
-
-.table_cell {
-  border: 1px solid #c3bebe;  /* gray */
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 15px;
 }
 
 /* results */
@@ -126,6 +117,58 @@ em {
 	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
 	padding-right: 0;
 }
+
+.result-rows {
+	padding-bottom:10px;
+	padding-left: 15px;
+}
+
+.result-rows > dl > dt {
+  float: left;
+  width: 160px;
+  clear: left;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: normal;
+}
+
+.result-rows > dl > dd {
+  display: table;
+  margin-left: 180px;
+}
+
+.inventory-table {
+  margin-top: 7px;
+  margin-left: 65px;
+  margin-bottom: 0px;
+  max-width: 90%;
+}
+
+.inventory-table > tbody > tr > td {
+  border: 1px solid #c3bebe;  /* gray */
+  padding-left: 5px;
+	padding-right: 5px;
+	vertical-align: top;
+}
+
+.inv-level {
+	width: 10%;
+}
+
+.inv-container {
+	width: 30%;
+}
+
+.inv-scope {
+	width: 50%;
+}
+
+.inv-date {
+	width: 10%;
+}
+
 #search-result-count {
 	border-top: 1px solid black;
 	border-bottom: 1px solid black;

@@ -7,6 +7,8 @@ export SOLR_CORE=riamco2
 # solr create -c $SOLR_CORE
 
 
+# TODO: add definition for _txts_en
+
 # Reload Solr core (needed after updating solrconfig.xml)
 #
 # curl "$SOLR_URL/admin/cores?action=RELOAD&core=$SOLR_CORE"

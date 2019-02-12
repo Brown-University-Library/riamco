@@ -34,10 +34,6 @@
                 <div class="result-debug"><a target="_blank", href="<%= ead_download_path() %>?eadid=<%=item.ead_id %>">Download XML</a></div>
               <% end %>
 
-              <% if item.institution_name  %>
-                <div class="result"><b>Institution:</b> <%= item.institution_name %></div>
-              <% end %>
-
               <% if item.extent %>
                 <div class="result"><b>Extent:</b> <%= item.extent %></div>
               <% end %>

@@ -78,7 +78,7 @@ class SearchController < ApplicationController
       f << SolrLite::FacetField.new("subjects_ss", "Subject")
       f << SolrLite::FacetField.new("formats_ss", "Format")
       f << SolrLite::FacetField.new("languages_ss", "Language")
-      f << SolrLite::FacetField.new("title_s", "Finding Aid")
+      f << SolrLite::FacetField.new("title_s", "Collection")
       f
     end
 

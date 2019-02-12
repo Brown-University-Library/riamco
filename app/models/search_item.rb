@@ -24,7 +24,7 @@ class SearchItem
     @repository = repository
     @start_year = start_year
     @end_year = end_year
-    @inv_level = inv_level
+    @inv_level = (inv_level || "").capitalize
     @inv_scope_content = inv_scope_content
     @inv_label = inv_label
     @inv_date = inv_date
@@ -32,6 +32,7 @@ class SearchItem
     @timestamp = timestamp
     @highlights = highlights
     @children = []
+    @childre_sorted = nil
     @match_count = 0
   end
 
@@ -100,6 +101,15 @@ class SearchItem
 
   def add_child(h, highlights)
     @children << SearchItem.from_hash(h, highlights)
+  end
+
+  def children_sorted()
+    # The ID of each children has a sequential number appended to
+    # it. This number represents the position of the inventory item
+    # in the original XML document.
+    @children_sorted ||= begin
+      @children.sort_by {|x| x.id }
+    end
   end
 
   private

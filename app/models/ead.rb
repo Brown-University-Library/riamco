@@ -3,9 +3,9 @@ require "nokogiri"
 require "./app/models/institutions.rb"
 
 class Ead
-    attr_reader :abstract, :biog_hist, :browse_terms, :bulk,
+    attr_reader :abstract, :biog_hist, :bulk,
         :creators, :date, :end_year, :extent, :filing_title,
-        :filing_title_sort, :id, :institution, :institution_id,
+        :filing_title_sort, :formats, :id, :institution, :institution_id,
         :keywords, :languages, :repository_name, :scope_content,
         :start_year, :subjects, :title, :title_sort, :title_sort_alpha,
         :title_proper, :title_proper_sort, :unit_id
@@ -14,9 +14,9 @@ class Ead
         @xml_doc = Nokogiri::XML(xml)
         @abstract = get_doc_abstract()
         @biog_hist = get_doc_biog_hist()
-        @browse_terms = get_doc_browse_terms()
         @bulk = get_doc_bulk()
         @creators = get_doc_creators()
+
         @date = get_doc_date()
         years = get_doc_years(@date)
         @end_year = years[1]
@@ -24,7 +24,7 @@ class Ead
 
         @extent = get_doc_extent()
         @filing_title = get_doc_filing_title()
-        # @filing_title_sort
+        @formats = get_doc_formats()
         @id = get_doc_id()
         @institution_id = get_doc_main_agency_code()
         @institution = get_doc_institution_name(@institution_id)
@@ -35,9 +35,7 @@ class Ead
         @subjects = get_doc_subjects()
         @title = get_doc_title()
         @title_sort = get_doc_title_sort(@title)
-        # # title_sort_alpha
         @title_proper = get_doc_title_proper()
-        # # titleproper_sort
         @unit_id = get_doc_unit_id()
         @inventory = get_doc_inventory()
     end
@@ -50,8 +48,6 @@ class Ead
         core_doc = {
             abstract_txt_en: self.abstract,
             biog_hist_txt_en: self.biog_hist,
-            browse_terms_ss: self.browse_terms,
-            browse_terms_txts_en: self.browse_terms,
             bulk_s: self.bulk,
             creators_ss: self.creators,
             creators_txts_en: self.creators,
@@ -60,6 +56,8 @@ class Ead
             end_year_i: self.end_year,
             extent_s: self.extent,
             filing_title_s: self.filing_title,
+            formats_ss: self.formats,
+            formats_txts_en: self.formats,
             id: self.id,
             ead_id_s: self.id,
             institution_s: self.institution,
@@ -92,10 +90,6 @@ class Ead
         # The "core" data is the same for all of them, but the
         # inventory_* fields are different and the ID has a
         # sequence to force them to be different.
-        #
-        # TODO: I am currently keeping the inventory subjects separate
-        #       from the main subjects. Make sure this works as expected
-        #       when filtering via facets on the UI.
         seq = 1
         inventory.each do |inv|
             solr_doc = {
@@ -208,6 +202,12 @@ class Ead
             get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='filing']/text()")
         end
 
+        def get_doc_formats()
+            formats = []
+            formats += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:genreform")
+            formats
+        end
+
         def get_doc_title_proper()
             title_proper = ""
             titles = @xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:filedesc/xmlns:titlestmt/xmlns:titleproper[1]")
@@ -245,10 +245,11 @@ class Ead
             get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:bioghist/xmlns:p")
         end
 
-        def get_doc_browse_terms()
-            path = "xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject[@source='riamco']"
-            get_xpath_values(path, true)
-        end
+        # not used anymore
+        # def get_doc_browse_terms()
+        #     path = "xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject[@source='riamco']"
+        #     get_xpath_values(path, true)
+        # end
 
         def get_doc_repository_name()
             name = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:repository/xmlns:corpname[1]/text()")
@@ -263,7 +264,6 @@ class Ead
             subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:geogname")
             subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:subject")
             subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:title")
-            subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:genreform")
             subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:occupation")
             subjects += get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:controlaccess/xmlns:function")
             subjects
@@ -274,7 +274,11 @@ class Ead
             # the entire XML document regardless of the path for Solr indexing
             # but only the nodes in the "/ead/archdesc/descgrp/scopecontent"
             # xpath for display in the XSLT. I think we should always honor
-            # the xpath. TODO: Check with Karen.
+            # the xpath.
+            #
+            # TODO: Karen said we should pick them all up. I need to make sure
+            #       that I keep the ones for the inventory items within their
+            #       corresponding inventory Solr document.
             get_xpath_values("xmlns:ead/xmlns:archdesc/xmlns:descgrp/xmlns:scopecontent/xmlns:p")
         end
 

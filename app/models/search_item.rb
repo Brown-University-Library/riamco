@@ -1,16 +1,18 @@
 class SearchItem
-  attr_accessor :id, :ead_id, :title, :abstract, :scope_content,
-    :extent, :repository, :institution_name, :institution_id,
+  attr_accessor :id, :ead_id, :title, :abstract, :call_no,
+    :scope_content, :extent, :repository,
+    :institution_name, :institution_id,
     :start_year, :end_year,
     :inv_level, :inv_scope_content, :inv_label, :inv_date, :inv_container,
     :timestamp, :highlights, :children, :match_count
 
-  def initialize(id, ead_id, title, abstract, scope_content,
+  def initialize(id, ead_id, title, abstract, call_no, scope_content,
     extent, repository, institution_name, institution_id,
     start_year, end_year,
     inv_level, inv_scope_content, inv_label, inv_date, inv_container,
     timestamp, highlights)
     @id = id
+    @call_no = call_no
     @ead_id = ead_id
     @institution_name = institution_name
     @institution_id = institution_id
@@ -90,7 +92,7 @@ class SearchItem
 
   def self.from_hash(h, highlights)
     SearchItem.new(h["id"], h["ead_id_s"], h["title_s"],
-      h["abstract_txt_en"], h["scope_content_txts_en"],
+      h["abstract_txt_en"], h["call_no_s"], h["scope_content_txts_en"],
       h["extent_s"], h["repository_name_s"],
       h["institution_s"], h["institution_id_s"],
       h["start_year_i"], h["end_year_i"],

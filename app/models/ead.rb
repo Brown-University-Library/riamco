@@ -3,7 +3,7 @@ require "nokogiri"
 require "./app/models/institutions.rb"
 
 class Ead
-    attr_reader :abstract, :biog_hist, :bulk,
+    attr_reader :abstract, :biog_hist, :bulk, :call_no,
         :creators, :date, :end_year, :extent, :filing_title,
         :filing_title_sort, :formats, :id, :institution, :institution_id,
         :keywords, :languages, :repository_name, :scope_content,
@@ -15,6 +15,7 @@ class Ead
         @abstract = get_doc_abstract()
         @biog_hist = get_doc_biog_hist()
         @bulk = get_doc_bulk()
+        @call_no = get_doc_call_no()
         @creators = get_doc_creators()
 
         @date = get_doc_date()
@@ -49,6 +50,7 @@ class Ead
             abstract_txt_en: self.abstract,
             biog_hist_txt_en: self.biog_hist,
             bulk_s: self.bulk,
+            call_no_s: self.call_no,
             creators_ss: self.creators,
             creators_txts_en: self.creators,
             date_s: self.date,
@@ -191,6 +193,10 @@ class Ead
 
         def get_doc_title()
             get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='primary']/text()")
+        end
+
+        def get_doc_call_no()
+            get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unitid/text()")
         end
 
         def get_doc_title_sort(title)

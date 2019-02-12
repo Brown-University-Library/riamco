@@ -60,6 +60,10 @@
                 <dt>Repository:</dt> <dd><%= item.repository %></dd>
               <% end %>
 
+              <% if item.call_no %>
+                <dt>Collection call no:</dt> <dd><%= item.call_no %></dd>
+              <% end %>
+
               <% if item.inv_container %>
                 <dt>Container:</dt> <dd><%= item.inv_container %></dd>
               <% end %>

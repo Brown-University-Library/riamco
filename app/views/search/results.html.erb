@@ -88,8 +88,8 @@
                     <td class="inv-level"><%= inv_item.inv_level %></td>
                     <td class="inv-container"><%= inv_item.inv_container %></td>
                     <td class="inv-scope">
+                      <%= inv_item.inv_label_hl.html_safe %><br/>
                       <%= inv_item.inv_scope_content_hl.html_safe %>
-                      <%= inv_item.inv_label_hl.html_safe %>
                     </td>
                     <td class="inv-date"><%= inv_item.inv_date %></td>
                   </tr>

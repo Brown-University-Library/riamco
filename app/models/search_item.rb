@@ -35,6 +35,10 @@ class SearchItem
     @match_count = 0
   end
 
+  def title_hl
+    hl_value("title_txt_en", @title)
+  end
+
   def abstract_hl
     hl_value("abstract_txt_en", @abstract)
   end

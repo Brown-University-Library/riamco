@@ -23,7 +23,7 @@
                  types of results (collections, series, items) -->
             <div style="padding-bottom:10px; padding-left: 15px;">
               <div class="result-title">
-                  <a target="_blank", href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title %></a>
+                  <a target="_blank", href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_hl.html_safe %></a>
               </div>
 
               <% if @presenter.debug %>

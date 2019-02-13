@@ -1,49 +1,60 @@
 <div class="col-lg-3 col-lg-pull-9 col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 hidden-print" id="search-facets">
   <h2 class="sr-only">Refine</h2>
   <div id="facets" class="facet">
-      <% @presenter.facets.each do |facet| %>
-        <% next if facet.values.count == 0 %>
 
-        <div class="panel-group" id="pg_<%= facet.name %>">
-          <div class="panel panel-default">
+    <% @presenter.facets.each do |facet| %>
+      <% next if facet.values.count == 0 %>
 
-            <div class="collapse-toggle panel-heading <%= @presenter.facet_expanded?(facet) ? '' : 'collapsed' %>" data-toggle="collapse" data-target="#pv_<%= facet.name %>">
-              <div class="panel-title">
-                <h3 class="facetLabel"><%= facet.title %></h3>
-              </div>
+      <div class="panel-group" id="pg_<%= facet.name %>">
+        <div class="panel panel-default">
+
+          <div class="collapse-toggle panel-heading <%= @presenter.facet_expanded?(facet) ? '' : 'collapsed' %>" data-toggle="collapse" data-target="#pv_<%= facet.name %>">
+            <div class="panel-title">
+              <h3 class="facetLabel"><%= facet.title %></h3>
             </div>
+          </div>
 
-              <div id="pv_<%= facet.name %>" class="panel-body panel-collapse collapse <%= @presenter.facet_expanded?(facet) ? 'in' : '' %>">
-                <ul class="list-unstyled">
-                  <% facet.values.each_with_index do |value, i| %>
-                    <% if i < 10 || value.remove_url != nil %>
-                      <li>
-                        <span>
-                          <% if value.remove_url == nil %>
-                            <a href="<%= value.add_url + @presenter.facet_count_url_toggle %>"><%= value.text %></a>
-                          <% else %>
-                            <%= value.text %>
-                            <a href="<%= value.remove_url + @presenter.facet_count_url_toggle %>">
-                              <span class="glyphicon glyphicon-remove"></span>
-                              <span class="sr-only">Remove facet <%= value.text %></span>
-                            </a>
-                          <% end %>
-                        </span>
-                        <% if @presenter.show_facet_counts %>
-                          <div class="no-orphans">
-                            ( <span class="categoryCount"><%= value.count %></span> )
-                          </div>
+          <div id="pv_<%= facet.name %>" class="panel-body panel-collapse collapse <%= @presenter.facet_expanded?(facet) ? 'in' : '' %>">
+            <ul class="list-unstyled">
+
+              <% if facet.name == "date_range_s" %>
+                <%= render "facet_custom_year" %>
+              <% end %>
+
+              <% if facet.name != "date_range_s" || (facet.name == "date_range_s" && @presenter.fq_start_year == nil) %>
+                <% facet.values.each_with_index do |value, i| %>
+                  <% if i < 10 || value.remove_url != nil %>
+                    <li>
+                      <span>
+                        <% if value.remove_url == nil %>
+                          <a href="<%= value.add_url + @presenter.facet_count_url_toggle %>"><%= value.text %></a>
+                        <% else %>
+                          <%= value.text %>
+                          <a href="<%= value.remove_url + @presenter.facet_count_url_toggle %>">
+                            <span class="glyphicon glyphicon-remove"></span>
+                            <span class="sr-only">Remove facet <%= value.text %></span>
+                          </a>
                         <% end %>
+                      </span>
+                      <% if @presenter.show_facet_counts %>
+                        <div class="no-orphans">
+                          ( <span class="categoryCount"><%= value.count %></span> )
+                        </div>
+                      <% end %>
                     <% end %>
-                  <% end %>
-                </ul>
-
-                <% if facet.values.count > 10 %>
-                  <%= render "facets_more", facet: facet %>
+                  <% end %> <!-- facet.values.each_with_index -->
                 <% end %>
-              </div> <!-- panel body -->
+              </ul>
+
+              <% if facet.values.count > 10 %>
+                <%= render "facets_more", facet: facet %>
+              <% end %>
+            </div> <!-- panel body -->
+
           </div> <!-- panel -->
         </div> <!-- panel-group -->
-      <% end %>
+
+      <% end %> <!-- @presenter.facets.each -->
+
   </div> <!-- facets -->
 </div>

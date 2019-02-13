@@ -1,0 +1,61 @@
+<style>
+.range-text {
+    display: inline-block;
+    width: 4.5em;
+}
+</style>
+
+<input type="text" name="yearFrom" id="yearFrom"
+  class="range-text" maxlength="4"
+  value="<%= @presenter.start_year_from %>">
+-
+<input type="text" name="yearTo" id="yearTo"
+  class="range-text" maxlength="4"
+  value="<%= @presenter.start_year_to %>">
+<button type="button" name="date_button" id="date_button" class="btn btn-primary btn-xs">
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+</button>
+
+<script>
+  $(function() {
+    var toYearParam = function(text) {
+      var year;
+      if (text.length == 0) {
+        return "*";
+      }
+
+      year = parseInt(text, 10);
+      if (isNaN(year)) {
+        return "*";
+      }
+      return text;
+    };
+
+    $("#date_button").on("click", function(x) {
+      var newUrl;
+      var yearFrom = toYearParam($("#yearFrom").val().trim());
+      var yearTo = toYearParam($("#yearTo").val().trim());
+
+      // Calculate the URL to apply the custom year range.
+      //
+      // Notice that overwrite any previous filtering by the
+      // user via the custom year range (fq_start_year) or
+      // by the Sorl calculated facets (fq_date_range).
+      <% if @presenter.fq_start_year != nil %>
+        newUrl = "<%= @presenter.fq_start_year.remove_url.html_safe %>";
+      <% elsif @presenter.fq_date_range !=nil %>
+        newUrl = "<%= @presenter.fq_date_range.remove_url.html_safe %>";
+      <% else %>
+        newUrl = "<%= @presenter.search_url.html_safe %>";
+      <% end %>
+
+      if ((yearFrom == "*") && (yearTo == "*")) {
+        // nothing to add
+      } else {
+        newUrl += "&fq=start_year_i^" + yearFrom + "," + yearTo;
+      }
+
+      window.location = newUrl;
+    });
+  });
+</script>

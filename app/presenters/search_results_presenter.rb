@@ -11,7 +11,9 @@ class SearchResultsPresenter
     :remove_q_url, :facetSearchBaseUrl,
     :suggest_q, :suggest_url,
     :explainer, :explain_format,
-    :debug, :show_facet_counts, :facet_count_url_toggle
+    :debug, :show_facet_counts, :facet_count_url_toggle,
+    :fq_date_range,
+    :fq_start_year, :start_year_from, :start_year_to
 
   def initialize(results, params, base_url, base_facet_search_url, explain_format)
     @debug = false
@@ -50,16 +52,6 @@ class SearchResultsPresenter
     @facets = results.facets
 
     @facets.each do |facet|
-      # if facet.name == "start_year_i"
-      #   # Sort by year, descending
-      #   facet.values.sort_by! {|value| -(value.range_start || 0)}
-      #   # Limit the year range to the present
-      #   facet.values.each do |value|
-      #     if value.text == "2000 - 2099"
-      #       value.text = "2000 - present"
-      #     end
-      #   end
-      # end
       if facet.name == "date_range_s"
         facet.values.sort_by! {|value| value.text}.reverse!
       end
@@ -68,6 +60,20 @@ class SearchResultsPresenter
     @results = results.items
     set_urls_in_facets()
     set_remove_url_in_facets()
+
+    # Special values to handle filter by date via the Solr calculated
+    # facets (date_range_s) and user's custom range (start_year_i)
+    @fq_date_range = @fq.find {|fq| fq.field == "date_range_s"}
+    @fq_start_year = @fq.find {|fq| fq.field == "start_year_i"}
+    if fq_start_year != nil
+      # TODO: remove this logic once FilterQuery is capable of returning
+      # range from and to values.
+      tokens = fq_start_year.value.split(" - ")
+      if tokens.count == 2
+        @start_year_from = tokens[0].gsub("*","")
+        @start_year_to = tokens[1].gsub("*","")
+      end
+    end
 
     @page = results.page
     @start = results.start
@@ -140,6 +146,10 @@ class SearchResultsPresenter
       return true
     end
 
+    if facet.name == "date_range_s" && @fq_start_year != nil
+      return true
+    end
+
     facet.values.each do |v|
       if v.remove_url != nil
         return true
@@ -147,6 +157,10 @@ class SearchResultsPresenter
     end
 
     false
+  end
+
+  def search_url()
+    @base_url + "?" + @search_qs
   end
 
   private
@@ -168,16 +182,23 @@ class SearchResultsPresenter
     def set_remove_url_in_facets()
       # this loops _only_ through the active filters
       @fq.each do |fq|
-        facet = @params.facet_for_field(fq.field)
-        next if facet == nil
-
-        # set the remove URL in the facet/value
         remove_url = @base_url + '?' + @params.to_user_query_string(fq)
-        facet.set_remove_url_for(fq.value, remove_url)
 
-        # ...and in the fq
-        fq.title = facet.title
-        fq.remove_url = remove_url
+        facet = @params.facet_for_field(fq.field)
+        if facet != nil
+          # set the remove URL in the facet/value
+          # ...and in the fq
+          facet.set_remove_url_for(fq.value, remove_url)
+          fq.title = facet.title
+          fq.remove_url = remove_url
+        else
+          if fq.field == "start_year_i"
+            # this is a known fq not in the facets...
+            # ...set the remove URL only in the fq
+            fq.title = "Date Range"
+            fq.remove_url = remove_url
+          end
+        end
       end
     end
 end

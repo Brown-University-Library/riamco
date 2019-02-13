@@ -12,8 +12,8 @@
 <input type="text" name="yearTo" id="yearTo"
   class="range-text" maxlength="4"
   value="<%= @presenter.start_year_to %>">
-<button type="button" name="date_button" id="date_button" class="btn btn-primary btn-xs">
-  <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search
+<button type="button" name="yearButton" id="yearButton" class="btn btn-primary btn-xs">
+  <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Limit
 </button>
 
 <script>
@@ -31,7 +31,7 @@
       return text;
     };
 
-    $("#date_button").on("click", function(x) {
+    $("#yearButton").on("click", function(x) {
       var newUrl;
       var yearFrom = toYearParam($("#yearFrom").val().trim());
       var yearTo = toYearParam($("#yearTo").val().trim());
@@ -56,6 +56,19 @@
       }
 
       window.location = newUrl;
+    });
+
+    // https://stackoverflow.com/a/155263/446681
+    $("#yearFrom").keyup(function(event) {
+      if (event.keyCode === 13) {
+        $("#yearButton").click();
+      }
+    });
+
+    $("#yearTo").keyup(function(event) {
+      if (event.keyCode === 13) {
+        $("#yearButton").click();
+      }
     });
   });
 </script>

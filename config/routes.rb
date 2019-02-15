@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   get 'visit' => 'home#visit', as: :home_visit
 
   # Search URLs
+  get 'advanced_proxy' => 'search#advanced_proxy', as: :advanced_proxy
   get 'advanced_search' => 'search#advanced_search', as: :advanced_search
   get 'search_facets' => 'search#facets'
   get 'search' => 'search#index', as: :search

@@ -19,7 +19,7 @@ class SearchController < ApplicationController
       @presenter.show_facet_counts = !@presenter.query.empty?
       @presenter.facet_count_url_toggle = "&counts=no"
     else
-      @presenter.facet_count_url_toggle = "&counts=yes"
+      # @presenter.facet_count_url_toggle = "&counts=yes"
     end
     render "results"
   rescue => ex
@@ -30,6 +30,23 @@ class SearchController < ApplicationController
 
   def advanced_search
     @presenter = DefaultPresenter.new
+  end
+
+  def advanced_proxy
+    # TODO: carry current facets in search (if any)
+    #
+    match_type = " AND "
+    if params["match_type"] == "Match Any"
+      match_type = " OR "
+    end
+    q_values = []
+    q_values << param_q(params, "keywords_t")
+    q_values << param_q(params, "title_txt_en")
+    q_values << param_q(params, "abstract_txt_en")
+    q_values << param_q(params, "call_no_s")
+    q = q_values.compact.join(match_type)
+    puts q
+    redirect_to search_url(q:q)
   end
 
   # Returns the facet values (as JSON) for a search.
@@ -92,5 +109,14 @@ class SearchController < ApplicationController
         url += "?"
       end
       url
+    end
+
+    def param_q(params, name)
+      value = params[name]
+      if value == nil || value.empty?
+        return nil
+      end
+
+      name + ':"' + value + '"'
     end
 end

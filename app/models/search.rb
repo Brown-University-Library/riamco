@@ -19,7 +19,7 @@ class Search
     # have an abstract which results in Solr considering the abstract
     # hits more unique.
     qf = "id ead_id_s title_txt_en^100 abstract_txt_en^0.1 scope_content_txts_en biog_hist_txt_en "
-    qf += "inventory_label_txt_en inventory_scope_content_txt_en inventory_path_txt_en "
+    qf += "inventory_label_txt_en inventory_scope_content_txt_en "
     qf += "subjects_txts_en formats_txts_en keywords_t"
 
     params.hl = true

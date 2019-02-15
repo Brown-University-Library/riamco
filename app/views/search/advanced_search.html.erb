@@ -1,2 +1,100 @@
-<h1>Advanced Search</h1>
-<p>Not yet implemented</p>
+<div class="container">
+  <div class="row">
+
+    <h1>Advanced Search</h1>
+    <div class="col-md-8">
+      <form id="search-advanced" class="form-horizontal" action="<%= advanced_proxy_path() %>" method="GET">
+
+        <div class="form-group">
+          <label class="control-label col-md-2" for="anyField">Find items that</label>
+          <div class="col-md-10">
+            <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" name="match_select" id="match_select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Match Any
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="match_select">
+                <li><a href="#">Match Any</a></li>
+                <li><a href="#">Match All</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="keywords_t">All fields</label>
+            <div class="col-md-10">
+            <input type="text" class="form-control" name="keywords_t" id="keywords_t" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="title_txt_en">Title</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control" name="title_txt_en" id="title_txt_en" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="call_no_s">Call No.</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control" name="call_no_s" id="call_no_s" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="abstract_txt_en">Abstract</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control" name="abstract_txt_en" id="abstract_txt_en" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="year_from">Year Range</label>
+            <div class="col-md-3">
+              <input type="text" maxlength="4" class="form-control" name="year_from" id="year_from" placeholder="">
+            </div>
+            <div class="col-md-3">
+                <input type="text" maxlength="4" class="form-control" name="year_to" id="year_to" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="collection">&nbsp;</label>
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-primary btn-lg sympl-search">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    <span aria-only="true">Search</span>
+                </button>
+            </div>
+        </div>
+
+        <input type="text" style="display:none;" name="match_type" id="match_type" value="Match Any">
+
+      </form>
+    </div>
+
+    <div class="col-md-4">
+        <p>instructions on how the advanced search work go here</p>
+    </div>
+
+  </div> <!-- row -->
+</div> <!-- container -->
+
+<script>
+    $(function(){
+        // Make sure the dropdown list reflects the value in the form
+        // (needed when user comes back to this page via the back button)
+        var matchType = $("#match_type").val();
+        var newHtml = matchType + ' <span class="caret"></span>';
+        $("#match_select").html(newHtml);
+
+        $(".dropdown-menu li a").click(function(){
+            // Update the value in the form with the user's selection
+            var newValue = $(this).text();
+            var newHtml = newValue + ' <span class="caret"></span>';
+            $("#match_select").html(newHtml);
+            $("#match_type").val(newValue);
+        });
+    });
+</script>

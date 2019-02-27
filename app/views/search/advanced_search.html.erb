@@ -194,5 +194,12 @@
         btn.preventDefault();
         parseQuery();
       });
+
+      // Give focus to the first search field and move the cursor
+      // to the end of the line.
+      var theValue = $("#keywords_t").val();
+      $("#keywords_t").focus();
+      $("#keywords_t").val("");
+      $("#keywords_t").val(theValue);
     });
 </script>

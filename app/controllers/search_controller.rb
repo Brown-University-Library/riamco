@@ -139,10 +139,12 @@ class SearchController < ApplicationController
       if value == nil || value.strip.empty?
         return nil
       end
-      # Encode to prevent HTML injection but preserve quotes otherwise
-      # the parser won't detect phrases.
+      # Encode to prevent HTML injection but preserve quotes (otherwise
+      # the parser won't detect phrases) and single quotes (since that's
+      # a common and harmless search character)
       encoded = ERB::Util.h(value)
       encoded.gsub!("&quot;", "\"")
+      encoded.gsub!("&#39;", "'")
       parser = QueryParser.new(encoded)
       parser.to_solr_query(field)
     end

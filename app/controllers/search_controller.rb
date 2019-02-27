@@ -16,13 +16,6 @@ class SearchController < ApplicationController
       return
     end
     @presenter.debug = request.params["debug"] == "true"
-    if request.params["counts"] == "no"
-      # Only include the facet counts if there are search terms
-      @presenter.show_facet_counts = !@presenter.query.empty?
-      @presenter.facet_count_url_toggle = "&counts=no"
-    else
-      # @presenter.facet_count_url_toggle = "&counts=yes"
-    end
     render "results"
   rescue => ex
     backtrace = ex.backtrace.join("\r\n")

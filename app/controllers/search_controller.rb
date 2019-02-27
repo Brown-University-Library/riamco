@@ -42,7 +42,8 @@ class SearchController < ApplicationController
         keywords: search_value(params["keywords"], "keywords"),
         title: search_value(params["title"], "title"),
         call_no: search_value(params["call_no"], "call_no"),
-        abstract: search_value(params["abstract"], "abstract")
+        abstract: search_value(params["abstract"], "abstract"),
+        year_range: search_value_range(params["year_from"], params["year_to"], "start_year")
       }
       render :json => data.to_json
     rescue => ex
@@ -63,6 +64,7 @@ class SearchController < ApplicationController
     q_values << search_value(params["title_txt_en"], "title_txt_en")
     q_values << search_value(params["call_no_s"], "call_no_s")
     q_values << search_value(params["abstract_txt_en"], "abstract_txt_en")
+    q_values << search_value_range(params["year_from"], params["year_to"], "start_year_i")
     q = q_values.compact.join(match_type)
     redirect_to search_url(q:q)
   end
@@ -143,5 +145,20 @@ class SearchController < ApplicationController
       encoded.gsub!("&quot;", "\"")
       parser = QueryParser.new(encoded)
       parser.to_solr_query(field)
+    end
+
+    def search_value_range(from, to, field)
+      from = (from != nil && from.strip.empty?) ? nil : from
+      to = (to != nil && to.strip.empty?) ? nil : to
+      case
+      when from == nil && to == nil
+        return nil
+      when from != nil && to == nil
+        return "#{field}:[#{from} TO *]"
+      when from == nil && to != nil
+        return "#{field}:[* TO #{to}]"
+      else
+        return "#{field}:[#{from} TO #{to}]"
+      end
     end
 end

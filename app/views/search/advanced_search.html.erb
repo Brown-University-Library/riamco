@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="keywords_t">All fields</label>
+            <label class="control-label col-md-2" for="keywords_t">All Fields</label>
             <div class="col-md-10">
             <input type="text" class="form-control" name="keywords_t" id="keywords_t" placeholder="">
             </div>
@@ -62,7 +62,7 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="collection">&nbsp;</label>
             <div class="col-md-10">
-                <button name="parse_query" id="parse_query" class="btn btn-lg sympl-search" title="Check the syntax of your search">
+                <button type="button" name="parse_query" id="parse_query" class="btn btn-lg sympl-search" title="Check the syntax of your search">
                   <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
                   <span aria-only="true">Check</span>
                 </button>
@@ -92,7 +92,7 @@
       <div class="panel panel-info">
         <div class="panel-heading">Search tips</div>
         <div class="panel-body">
-          <ul>
+          <ul style="margin-top: 15px;">
             <li>Select "match all" to require all fields.
             <li>Select "match any" to find at least one field.
             <li>Use quotation marks to search as a phrase.
@@ -125,6 +125,9 @@
         if (data.abstract) {
           results.push(data.abstract);
         }
+        if (data.year_range) {
+          results.push(data.year_range);
+        }
         return results;
       };
 
@@ -133,11 +136,15 @@
         var url, jqxhr;
 
         $("#parse_results").html("Validating...");
+
         url = "<%= advanced_parse_path() %>?";
         url += "keywords=" + $("#keywords_t").val() + "&";
         url += "title=" + $("#title_txt_en").val() + "&";
         url += "call_no=" + $("#call_no_s").val() + "&";
         url += "abstract=" + $("#abstract_txt_en").val() + "&";
+        url += "year_from=" + $("#year_from").val() + "&";
+        url += "year_to=" + $("#year_to").val() + "&";
+
         jqxhr = $.getJSON(url, function(data, status){
           var defaultOp = " " + $("#match_type").val() + "<br/>";
           var results = dataToArray(data);

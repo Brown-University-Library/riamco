@@ -135,7 +135,7 @@ em {
 }
 
 .result-row > .separator {
-	border-bottom: 1px dotted #ddd;
+	border-bottom: 1px dotted #8f8d8d; /* darker gray */
 }
 
 .inventory-table {
@@ -146,7 +146,7 @@ em {
 }
 
 .inventory-table > tbody > tr > td {
-  border: 1px solid #e5e8f6;  /* gray-blueish */
+	border: 1px solid #c1c1c3;  /* dark gray */
   padding-left: 5px;
 	padding-right: 5px;
 	vertical-align: top;

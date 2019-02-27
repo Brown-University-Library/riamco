@@ -6,19 +6,19 @@
       <form id="search-advanced" class="form-horizontal" action="<%= advanced_proxy_path() %>" method="GET">
 
         <div class="form-group">
-          <label class="control-label col-md-2" for="anyField">Find items that</label>
-          <div class="col-md-10">
-            <div class="dropdown">
-              <button class="btn btn-default dropdown-toggle" type="button" name="match_select" id="match_select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                Match Any
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="match_select">
-                <li><a href="#">Match Any</a></li>
-                <li><a href="#">Match All</a></li>
-              </ul>
+            <label class="control-label col-md-2" for="anyField">Find items that</label>
+            <div class="col-md-10">
+              <div class="btn-group btn-group" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                  <button id="match_all" type="button" class="btn btn-info"
+                    title="Search will use boolean AND for multi-field searches.">Match All</button>
+                </div>
+                <div class="btn-group" role="group">
+                  <button id="match_any" type="button" class="btn btn-default"
+                    title="Search will use boolean OR for multi-field searches.">Match Any</button>
+                </div>
+              </div>
             </div>
-          </div>
         </div>
 
         <div class="form-group">
@@ -62,20 +62,46 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="collection">&nbsp;</label>
             <div class="col-md-10">
-                <button type="submit" class="btn btn-primary btn-lg sympl-search">
+                <button name="parse_query" id="parse_query" class="btn btn-lg sympl-search" title="Check the syntax of your search">
+                  <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+                  <span aria-only="true">Check</span>
+                </button>
+                <button type="submit" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     <span aria-only="true">Search</span>
                 </button>
             </div>
+
+            <div class="col-md-10">
+          </div>
         </div>
 
-        <input type="text" style="display:none;" name="match_type" id="match_type" value="Match Any">
+        <div class="form-group">
+            <label class="control-label col-md-2" for="collection">&nbsp;</label>
+            <div class="col-md-10">
+                <span id="parse_results"></span>
+            </div>
+        </div>
+
+        <input type="text" style="display:none;" name="match_type" id="match_type" value="AND">
 
       </form>
     </div>
 
     <div class="col-md-4">
-        <p>instructions on how the advanced search work go here</p>
+      <div class="panel panel-info">
+        <div class="panel-heading">Search tips</div>
+        <div class="panel-body">
+          <ul>
+            <li>Select "match all" to require all fields.
+            <li>Select "match any" to find at least one field.
+            <li>Use quotation marks to search as a phrase.
+            <li>Use OR, AND, and NOT to create boolean expressions. You can use parentheses in your complex expressions.
+            <li>Use the "Check" button to view the generated query with your search terms.
+            <li>Truncation and wildcards are not supported - word-stemming is done automatically.
+          </ul>
+        </div>
+      </div>
     </div>
 
   </div> <!-- row -->
@@ -83,18 +109,83 @@
 
 <script>
     $(function(){
-        // Make sure the dropdown list reflects the value in the form
-        // (needed when user comes back to this page via the back button)
-        var matchType = $("#match_type").val();
-        var newHtml = matchType + ' <span class="caret"></span>';
-        $("#match_select").html(newHtml);
+      // Copies the value from the data object to an array.
+      // The data object is the result of the AJAX call to validate the query.
+      var dataToArray = function(data) {
+        results = [];
+        if (data.keywords) {
+          results.push(data.keywords);
+        }
+        if (data.title) {
+          results.push(data.title);
+        }
+        if (data.call_no) {
+          results.push(data.call_no);
+        }
+        if (data.abstract) {
+          results.push(data.abstract);
+        }
+        return results;
+      };
 
-        $(".dropdown-menu li a").click(function(){
-            // Update the value in the form with the user's selection
-            var newValue = $(this).text();
-            var newHtml = newValue + ' <span class="caret"></span>';
-            $("#match_select").html(newHtml);
-            $("#match_type").val(newValue);
+      // Sends the parameters to the server for verification.
+      var parseQuery = function() {
+        var url, jqxhr;
+
+        $("#parse_results").html("Validating...");
+        url = "<%= advanced_parse_path() %>?";
+        url += "keywords=" + $("#keywords_t").val() + "&";
+        url += "title=" + $("#title_txt_en").val() + "&";
+        url += "call_no=" + $("#call_no_s").val() + "&";
+        url += "abstract=" + $("#abstract_txt_en").val() + "&";
+        jqxhr = $.getJSON(url, function(data, status){
+          var defaultOp = " " + $("#match_type").val() + "<br/>";
+          var results = dataToArray(data);
+          if (results.length > 0) {
+            $("#parse_results").html(results.join(defaultOp));
+          } else {
+            $("#parse_results").html("Nothing to check, enter one or more terms to search for.");
+          }
         });
+
+        jqxhr.fail(function() {
+          $("#parse_results").html("There were errors validating the query");
+        });
+      };
+
+      // Updates the match all/any buttons to be in-synch with the form value
+      var refreshMatchType = function(value) {
+        var matchType = $("#match_type").val();
+        if (matchType == "AND") {
+          $("#match_all").addClass("btn-info");
+          $("#match_all").removeClass("btn-default");
+          $("#match_any").addClass("btn-default");
+          $("#match_any").removeClass("btn-info");
+        } else {
+          $("#match_any").addClass("btn-info");
+          $("#match_any").removeClass("btn-default");
+          $("#match_all").addClass("btn-default");
+          $("#match_all").removeClass("btn-info");
+        }
+      };
+
+      // Make sure the match type reflects the value in the form
+      // (needed when user comes back to this page via the back button)
+      refreshMatchType();
+
+      $("#match_all").click(function(){
+        $("#match_type").val("AND");
+        refreshMatchType();
+      });
+
+      $("#match_any").click(function(){
+        $("#match_type").val("OR");
+        refreshMatchType();
+      });
+
+      $("#parse_query").click(function(btn) {
+        btn.preventDefault();
+        parseQuery();
+      });
     });
 </script>

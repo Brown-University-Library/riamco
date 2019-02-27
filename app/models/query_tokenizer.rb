@@ -1,4 +1,4 @@
-class Tokenizer
+class QueryTokenizer
   def initialize(text)
     @text = text
     @pos = 0
@@ -12,7 +12,11 @@ class Tokenizer
       token = get_quoted_text()
     else
       token = get_spaced_text()
+      if (token == "AND" || token == "OR") && peek_next_token() == "NOT"
+        token += " " + get_next_token()
+      end
     end
+    token
   end
 
   private
@@ -67,6 +71,13 @@ class Tokenizer
           @pos += 1
         end
       end
+      token
+    end
+
+    def peek_next_token()
+      saved_pos = @pos
+      token = get_next_token()
+      @pos = saved_pos
       token
     end
 end

@@ -1,3 +1,5 @@
+require "./app/models/query_parser.rb"
+
 class SearchController < ApplicationController
   def index
     @nav_active = "nav_browse"
@@ -32,20 +34,36 @@ class SearchController < ApplicationController
     @presenter = DefaultPresenter.new
   end
 
+  # Parses the values in the request and returns the Solr query
+  # that will be executed with those values.
+  def advanced_parse
+    begin
+      data = {
+        keywords: search_value(params["keywords"], "keywords"),
+        title: search_value(params["title"], "title"),
+        call_no: search_value(params["call_no"], "call_no"),
+        abstract: search_value(params["abstract"], "abstract")
+      }
+      render :json => data.to_json
+    rescue => ex
+      backtrace = ex.backtrace.join("\r\n")
+      Rails.logger.error("Error validating expression. Exception: #{ex} \r\n #{backtrace}")
+      render :json => {}, status: 400
+    end
+  end
+
+  # Transforms the parameters in the advanced search to the proper Solr
+  # parameters and executes the search via the normal search URL.
   def advanced_proxy
     # TODO: carry current facets in search (if any)
     #
-    match_type = " AND "
-    if params["match_type"] == "Match Any"
-      match_type = " OR "
-    end
+    match_type = params["match_type"] == "OR" ? " OR " : " AND "
     q_values = []
-    q_values << param_q(params, "keywords_t")
-    q_values << param_q(params, "title_txt_en")
-    q_values << param_q(params, "abstract_txt_en")
-    q_values << param_q(params, "call_no_s")
+    q_values << search_value(params["keywords_t"], "keywords_t")
+    q_values << search_value(params["title_txt_en"], "title_txt_en")
+    q_values << search_value(params["call_no_s"], "call_no_s")
+    q_values << search_value(params["abstract_txt_en"], "abstract_txt_en")
     q = q_values.compact.join(match_type)
-    puts q
     redirect_to search_url(q:q)
   end
 
@@ -111,12 +129,19 @@ class SearchController < ApplicationController
       url
     end
 
-    def param_q(params, name)
-      value = params[name]
-      if value == nil || value.empty?
+    # Converts a value and field to the proper Solr search syntax.
+    # For example:
+    #   hello world   => field:hello OR field:world
+    #   "hello world" => field:"hello world"
+    def search_value(value, field)
+      if value == nil || value.strip.empty?
         return nil
       end
-
-      name + ':"' + value + '"'
+      # Encode to prevent HTML injection but preserve quotes otherwise
+      # the parser won't detect phrases.
+      encoded = ERB::Util.h(value)
+      encoded.gsub!("&quot;", "\"")
+      parser = QueryParser.new(encoded)
+      parser.to_solr_query(field)
     end
 end

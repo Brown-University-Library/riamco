@@ -1,6 +1,6 @@
 <div class="container">
+  <!-- search form -->
   <div class="row">
-
     <h1>Advanced Search</h1>
     <div class="col-md-8">
       <form id="search-advanced" class="form-horizontal" action="<%= advanced_proxy_path() %>" method="GET">
@@ -59,36 +59,34 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-md-2" for="collection">&nbsp;</label>
-            <div class="col-md-10">
-                <button type="button" name="parse_query" id="parse_query" class="btn btn-lg sympl-search" title="Check the syntax of your search">
-                  <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-                  <span aria-only="true">Check</span>
-                </button>
-                <button type="submit" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    <span aria-only="true">Search</span>
-                </button>
-            </div>
-
-            <div class="col-md-10">
-          </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2" for="collection">&nbsp;</label>
-            <div class="col-md-10">
-                <span id="parse_results"></span>
-            </div>
-        </div>
-
         <input type="text" style="display:none;" name="match_type" id="match_type" value="AND">
+        <button type="submit" style="display:none;" id="submit_search"></button>
+
+        <!-- facets -->
+        <div class="col-md-4">
+            <% if @presenter.num_found > 0 %>
+              <%= render "advanced_facets" %>
+            <% end %>
+        </div>
+
+        <div class="col-md-8">
+          <span id="parse_results"></span>
+        </div>
 
       </form>
+
+      <!-- results of parsing search terms -->
+      <!-- <div class="form-group">
+          <label class="control-label col-md-2" for="collection">&nbsp;</label>
+          <div class="col-md-10">
+              <span id="parse_results"></span>
+          </div>
+      </div> -->
+
     </div>
 
     <div class="col-md-4">
+      <!-- instructions -->
       <div class="panel panel-info">
         <div class="panel-heading">Search tips</div>
         <div class="panel-body">
@@ -102,104 +100,193 @@
           </ul>
         </div>
       </div>
+      <!-- check and search buttons -->
+      <button type="button" name="parse_query" id="parse_query" class="btn btn-lg sympl-search" title="Check the syntax of your search">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+          <span aria-only="true">Check</span>
+        </button>
+        <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <span aria-only="true">Search</span>
+        </button>
     </div>
 
   </div> <!-- row -->
 </div> <!-- container -->
 
 <script>
-    $(function(){
-      // Copies the value from the data object to an array.
-      // The data object is the result of the AJAX call to validate the query.
-      var dataToArray = function(data) {
-        results = [];
-        if (data.keywords) {
-          results.push(data.keywords);
-        }
-        if (data.title) {
-          results.push(data.title);
-        }
-        if (data.call_no) {
-          results.push(data.call_no);
-        }
-        if (data.abstract) {
-          results.push(data.abstract);
-        }
-        if (data.year_range) {
-          results.push(data.year_range);
-        }
-        return results;
-      };
+  $(function(){
 
-      // Sends the parameters to the server for verification.
-      var parseQuery = function() {
-        var url, jqxhr;
+    var facets = ["institution_s", "creators_ss", "subjects_ss", "formats_ss", "languages_ss"];
 
-        $("#parse_results").html("Validating...");
+    // Copies the value from the data object to an array.
+    // The data object is the result of the AJAX call to validate the query.
+    var dataToArray = function(data) {
+      results = [];
+      if (data.keywords) {
+        results.push(data.keywords);
+      }
+      if (data.title) {
+        results.push(data.title);
+      }
+      if (data.call_no) {
+        results.push(data.call_no);
+      }
+      if (data.abstract) {
+        results.push(data.abstract);
+      }
+      if (data.year_range) {
+        results.push(data.year_range);
+      }
+      return results;
+    };
 
-        url = "<%= advanced_parse_path() %>?";
-        url += "keywords=" + $("#keywords_t").val() + "&";
-        url += "title=" + $("#title_txt_en").val() + "&";
-        url += "call_no=" + $("#call_no_s").val() + "&";
-        url += "abstract=" + $("#abstract_txt_en").val() + "&";
-        url += "year_from=" + $("#year_from").val() + "&";
-        url += "year_to=" + $("#year_to").val() + "&";
+    var facetValues = function(facetName) {
+      var i, value;
+      var values = [];
+      var htmlInput = $(".facet-checkbox-" + facetName);
+      for(i = 0; i < htmlInput.length; i++) {
+        if (htmlInput[i].checked) {
+          value = facetName + ':"' + htmlInput[i].value + '"';
+          values.push(value);
+        }
+      }
+      return values;
+    };
 
-        jqxhr = $.getJSON(url, function(data, status){
-          var defaultOp = " " + $("#match_type").val() + "<br/>";
-          var results = dataToArray(data);
-          if (results.length > 0) {
-            $("#parse_results").html(results.join(defaultOp));
+    var facetActive = function(facetName) {
+      var i;
+      var htmlInput = $(".facet-checkbox-" + facetName);
+      for(i = 0; i < htmlInput.length; i++) {
+        if (htmlInput[i].checked) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    var facetExpression = function(facetName) {
+      values = facetValues(facetName);
+      if (values.length > 0) {
+        return "(" + values.join(" OR ") + ")"
+      }
+      return null;
+    }
+
+    var facetExpressions = function() {
+      var i, facetName, expression;
+      var expressions = [];
+      for(i = 0; i < facets.length; i++) {
+        facetName = facets[i];
+        expression = facetExpression(facetName);
+        if (expression) {
+          expressions.push(expression);
+        }
+      }
+      return expressions;
+    }
+
+    var expandFacets = function(facets) {
+      var i, facetName;
+      for(i = 0; i < facets.length; i++) {
+        facetName = facets[i];
+        if (facetActive(facetName)) {
+          console.log("expand " + facetName);
+          $("#pg_" + facetName + ">div>div").collapse("toggle");
+        }
+      }
+    };
+
+    // Sends the search parameters to the server for verification.
+    var parseQuery = function() {
+      var url, jqxhr;
+
+      $("#parse_results").html("Validating...");
+
+      url = "<%= advanced_parse_path() %>?";
+      url += "keywords=" + $("#keywords_t").val() + "&";
+      url += "title=" + $("#title_txt_en").val() + "&";
+      url += "call_no=" + $("#call_no_s").val() + "&";
+      url += "abstract=" + $("#abstract_txt_en").val() + "&";
+      url += "year_from=" + $("#year_from").val() + "&";
+      url += "year_to=" + $("#year_to").val() + "&";
+
+      jqxhr = $.getJSON(url, function(data, status){
+        var defaultOp = " " + $("#match_type").val() + "<br/>";
+
+        // calculate the facet filters
+        var facets = facetExpressions();
+
+        // calculate the form value filters
+        var formValues = dataToArray(data);
+
+        var expression = "";
+        if (formValues.length == 0 && facets.length == 0) {
+          $("#parse_results").html("Nothing to check, enter one or more terms to search for.");
+        } else
+          if (formValues.length > 0 && facets.length == 0) {
+            expression = formValues.join(defaultOp);
+          } else if (formValues.length == 0 && facets.length > 0) {
+            expression = facets.join(" AND <br/>");
           } else {
-            $("#parse_results").html("Nothing to check, enter one or more terms to search for.");
+            expression = formValues.join(defaultOp) + " AND <br/>" + facets.join(" AND <br/>");
           }
-        });
+          $("#parse_results").html(expression);
+      });
 
-        jqxhr.fail(function() {
-          $("#parse_results").html("There were errors validating the query");
-        });
-      };
+      jqxhr.fail(function() {
+        $("#parse_results").html("There were errors validating the query");
+      });
+    };
 
-      // Updates the match all/any buttons to be in-synch with the form value
-      var refreshMatchType = function(value) {
-        var matchType = $("#match_type").val();
-        if (matchType == "AND") {
-          $("#match_all").addClass("btn-info");
-          $("#match_all").removeClass("btn-default");
-          $("#match_any").addClass("btn-default");
-          $("#match_any").removeClass("btn-info");
-        } else {
-          $("#match_any").addClass("btn-info");
-          $("#match_any").removeClass("btn-default");
-          $("#match_all").addClass("btn-default");
-          $("#match_all").removeClass("btn-info");
-        }
-      };
+    // Updates the match all/any buttons to be in-synch with the form value
+    var refreshMatchType = function(value) {
+      var matchType = $("#match_type").val();
+      if (matchType == "AND") {
+        $("#match_all").addClass("btn-info");
+        $("#match_all").removeClass("btn-default");
+        $("#match_any").addClass("btn-default");
+        $("#match_any").removeClass("btn-info");
+      } else {
+        $("#match_any").addClass("btn-info");
+        $("#match_any").removeClass("btn-default");
+        $("#match_all").addClass("btn-default");
+        $("#match_all").removeClass("btn-info");
+      }
+    };
 
-      // Make sure the match type reflects the value in the form
-      // (needed when user comes back to this page via the back button)
+    // Make sure the match type reflects the value in the form
+    // (needed when user comes back to this page via the back button)
+    refreshMatchType();
+
+    // Expand the facets that have any values selected
+    // (needed when user comes back to this page via the back button)
+    expandFacets(facets);
+
+    $("#match_all").click(function(){
+      $("#match_type").val("AND");
       refreshMatchType();
-
-      $("#match_all").click(function(){
-        $("#match_type").val("AND");
-        refreshMatchType();
-      });
-
-      $("#match_any").click(function(){
-        $("#match_type").val("OR");
-        refreshMatchType();
-      });
-
-      $("#parse_query").click(function(btn) {
-        btn.preventDefault();
-        parseQuery();
-      });
-
-      // Give focus to the first search field and move the cursor
-      // to the end of the line.
-      var theValue = $("#keywords_t").val();
-      $("#keywords_t").focus();
-      $("#keywords_t").val("");
-      $("#keywords_t").val(theValue);
     });
+
+    $("#match_any").click(function(){
+      $("#match_type").val("OR");
+      refreshMatchType();
+    });
+
+    $("#parse_query").click(function(btn) {
+      btn.preventDefault();
+      parseQuery();
+    });
+
+    $("#submit_button").click(function(btn) {
+      $("#submit_search").click();
+    });
+
+    // Give focus to the first search field and move the cursor
+    // to the end of the line.
+    var theValue = $("#keywords_t").val();
+    $("#keywords_t").focus();
+    $("#keywords_t").val("");
+    $("#keywords_t").val(theValue);
+  });
 </script>

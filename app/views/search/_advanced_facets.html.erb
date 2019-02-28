@@ -1,0 +1,49 @@
+<h2 class="sr-only">Refine</h2>
+<div id="facets" class="facet">
+
+  <% @presenter.facets.each do |facet| %>
+    <% next if facet.values.count == 0 %>
+
+    <div class="panel-group" id="pg_<%= facet.name %>">
+      <div class="panel panel-default">
+
+        <div class="collapse-toggle panel-heading <%= @presenter.facet_expanded?(facet) ? '' : 'collapsed' %>" data-toggle="collapse" data-target="#pv_<%= facet.name %>">
+          <div class="panel-title">
+            <h3 class="facetLabel"><%= facet.title %></h3>
+          </div>
+        </div>
+
+        <div id="pv_<%= facet.name %>" class="panel-body panel-collapse collapse <%= @presenter.facet_expanded?(facet) ? 'in' : '' %>">
+          <ul class="list-unstyled">
+              <% facet.values.each_with_index do |value, i| %>
+                <% if i < 10 || value.remove_url != nil %>
+                  <li>
+                    <span>
+                        <!-- careful, the class used here is referenced in the JavaScript to pick up
+                             the values -->
+                        <input type="checkbox"
+                          name="<%= value.add_url %>" id="<%= value.add_url %>"
+                          value="<%= value.text %>"
+                          class="facet-checkbox-<%= facet.name %>"/>
+                        <%= value.text %>
+                    </span>
+                    <% if @presenter.show_facet_counts %>
+                      <div class="no-orphans">
+                        ( <span class="categoryCount"><%= value.count %></span> )
+                      </div>
+                    <% end %>
+                  <% end %>
+                <% end %> <!-- facet.values.each_with_index -->
+            </ul>
+
+            <% if facet.values.count > 10 %>
+              <%= render "facets_more", facet: facet %>
+            <% end %>
+          </div> <!-- panel body -->
+
+        </div> <!-- panel -->
+      </div> <!-- panel-group -->
+
+    <% end %> <!-- @presenter.facets.each -->
+
+</div> <!-- facets -->

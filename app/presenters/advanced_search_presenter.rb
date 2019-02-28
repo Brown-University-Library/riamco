@@ -123,6 +123,8 @@ class AdvancedSearchPresenter
       @facets.each do |f|
         sequence = 0
         f.values.each do |v|
+          # TODO: Revisit this.
+          #
           # We overload the add_url field to have the key that we use for this
           # value in the checkboxes show in the Advanced Search.
           sequence += 1

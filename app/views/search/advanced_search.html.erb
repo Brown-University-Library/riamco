@@ -1,3 +1,8 @@
+<%= render "facets_javascript" %>
+<script>
+  facetsMoreObj.advanced = true;
+</script>
+
 <div class="container">
   <!-- search form -->
   <div class="row">
@@ -191,14 +196,13 @@
       for(i = 0; i < facets.length; i++) {
         facetName = facets[i];
         if (facetActive(facetName)) {
-          console.log("expand " + facetName);
           $("#pg_" + facetName + ">div>div").collapse("toggle");
         }
       }
     };
 
     // Sends the search parameters to the server for verification.
-    var parseQuery = function() {
+    var parseQuery = function(warnEmpty) {
       var url, jqxhr;
 
       $("#parse_results").html("Validating...");
@@ -209,10 +213,10 @@
       url += "call_no=" + $("#call_no_s").val() + "&";
       url += "abstract=" + $("#abstract_txt_en").val() + "&";
       url += "year_from=" + $("#year_from").val() + "&";
-      url += "year_to=" + $("#year_to").val() + "&";
+      url += "year_to=" + $("#year_to").val();
 
       jqxhr = $.getJSON(url, function(data, status){
-        var defaultOp = " " + $("#match_type").val() + "<br/>";
+        var defaultOp = " <b>" + $("#match_type").val() + "</b><br/>";
 
         // calculate the facet filters
         var facets = facetExpressions();
@@ -222,16 +226,21 @@
 
         var expression = "";
         if (formValues.length == 0 && facets.length == 0) {
-          $("#parse_results").html("Nothing to check, enter one or more terms to search for.");
-        } else
+          if (warnEmpty) {
+            $("#parse_results").html("Nothing to check, enter one or more terms to search for.");
+          } else {
+            $("#parse_results").html("");
+          }
+        } else {
           if (formValues.length > 0 && facets.length == 0) {
             expression = formValues.join(defaultOp);
           } else if (formValues.length == 0 && facets.length > 0) {
-            expression = facets.join(" AND <br/>");
+            expression = facets.join(" <b>AND</b><br/>");
           } else {
-            expression = formValues.join(defaultOp) + " AND <br/>" + facets.join(" AND <br/>");
+            expression = "(" + formValues.join(defaultOp) + ") <b>AND</b> <br/>" + facets.join(" <b>AND</b> <br/>");
           }
           $("#parse_results").html(expression);
+        }
       });
 
       jqxhr.fail(function() {
@@ -266,16 +275,18 @@
     $("#match_all").click(function(){
       $("#match_type").val("AND");
       refreshMatchType();
+      parseQuery(false);
     });
 
     $("#match_any").click(function(){
       $("#match_type").val("OR");
       refreshMatchType();
+      parseQuery(false);
     });
 
     $("#parse_query").click(function(btn) {
       btn.preventDefault();
-      parseQuery();
+      parseQuery(true);
     });
 
     $("#submit_button").click(function(btn) {

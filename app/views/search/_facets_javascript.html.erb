@@ -14,6 +14,8 @@
   // See AddFacetValue() below.
   facetsMoreObj.data = {};
 
+  facetsMoreObj.advanced = false;
+
   facetsMoreObj.AddFacetValue = function(facetName, value, count, addUrl, removeUrl) {
     if (facetsMoreObj.data[facetName] === undefined) {
       facetsMoreObj.data[facetName] = [];
@@ -63,7 +65,13 @@
     var items = [];
     var filterId = "#modal_form_" + facetName + "_filter";
     var filter = $(filterId).val();
-    var pageSize, start, stop, i, item, text_count, href, html, pageCount, itemCount;
+    var pageSize, start, stop, i, item, text_count, checkbox, label, href, html, pageCount, itemCount;
+
+    // Give each value a unique sequence so that we can ID them
+    // (this is needed for the advanced search)
+    for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
+      facetsMoreObj.data[facetName][i].sequence = i.toString();
+    }
 
     if (filter == "") {
       items = facetsMoreObj.data[facetName];
@@ -84,20 +92,39 @@
     pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
 
     $(ul).children().remove();
-    for(i = start; i < stop; i++) {
-      item = items[i];
-      if (item.removeUrl == null) {
-        // link hs the name of the facet to add
-        href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
+
+    if (facetsMoreObj.advanced) {
+      // Render each item as a checkbox + label.
+      for(i = start; i < stop; i++) {
+        item = items[i];
+        checkbox = '<input type="checkbox" ' +
+          'name="' + facetName + '_' + item.sequence + '" ' +
+          'id="' + facetName + '_' + item.sequence + '" ' +
+          'value="' + item.value + '" ' +
+          'class="facet-checkbox-' + facetName + '" ' +
+        '/>';
+        label = "<span class='facet-text-truncated'>" + item.value + "</span>";
         text_count = "(" + item.count + ")";
-        html = "<li><span class='facet-text-truncated'>" + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
-      } else {
-        // link has just the "X" to remove the facet
-        href = "<a href='" + item.removeUrl + "' title='" + item.value + "'><span class='glyphicon glyphicon-remove'></span></a>";
-        text_count = "(" + item.count + ")";
-        html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
+        html = "<li>" + checkbox + label + "</span> <span class='categoryCount'>" + text_count + "</span>"
+        $(ul).append(html);
       }
-      $(ul).append(html);
+    } else {
+      // Render each item as a hyperlink + label OR a hyperlink + remove icon.
+      for(i = start; i < stop; i++) {
+        item = items[i];
+        if (item.removeUrl == null) {
+          // link has the name of the facet to add
+          href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
+          text_count = "(" + item.count + ")";
+          html = "<li><span class='facet-text-truncated'>" + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
+        } else {
+          // link has just the "X" to remove the facet
+          href = "<a href='" + item.removeUrl + "' title='" + item.value + "'><span class='glyphicon glyphicon-remove'></span></a>";
+          text_count = "(" + item.count + ")";
+          html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
+        }
+        $(ul).append(html);
+      }
     }
 
     if (itemCount < pageSize) {

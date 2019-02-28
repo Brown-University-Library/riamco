@@ -43,7 +43,7 @@ class SearchController < ApplicationController
   def advanced_parse
     begin
       data = {
-        keywords: search_value(params["keywords"], "keywords"),
+        all_fields: search_value(params["all_fields"], "all_fields"),
         title: search_value(params["title"], "title"),
         call_no: search_value(params["call_no"], "call_no"),
         abstract: search_value(params["abstract"], "abstract"),
@@ -62,7 +62,7 @@ class SearchController < ApplicationController
   def advanced_proxy
     match_type = params["match_type"] == "OR" ? " OR " : " AND "
     q_values = []
-    q_values << search_value(params["keywords_t"], "keywords_t")
+    q_values << search_value(params["all_fields"], nil)
     q_values << search_value(params["title_txt_en"], "title_txt_en")
     q_values << search_value(params["call_no_s"], "call_no_s")
     q_values << search_value(params["abstract_txt_en"], "abstract_txt_en")
@@ -172,7 +172,11 @@ class SearchController < ApplicationController
       encoded.gsub!("&quot;", "\"")
       encoded.gsub!("&#39;", "'")
       parser = QueryParser.new(encoded)
-      parser.to_solr_query(field)
+      if field == nil
+        parser.to_query()
+      else
+        parser.to_solr_query(field)
+      end
     end
 
     def search_value_range(from, to, field)

@@ -27,9 +27,9 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="keywords_t">All Fields</label>
+            <label class="control-label col-md-2" for="all_fields">All Fields</label>
             <div class="col-md-10">
-            <input type="text" class="form-control" name="keywords_t" id="keywords_t" placeholder="">
+            <input type="text" class="form-control" name="all_fields" id="all_fields" placeholder="">
             </div>
         </div>
 
@@ -128,8 +128,8 @@
     // The data object is the result of the AJAX call to validate the query.
     var dataToArray = function(data) {
       results = [];
-      if (data.keywords) {
-        results.push(data.keywords);
+      if (data.all_fields) {
+        results.push(data.all_fields);
       }
       if (data.title) {
         results.push(data.title);
@@ -208,7 +208,7 @@
       $("#parse_results").html("Validating...");
 
       url = "<%= advanced_parse_path() %>?";
-      url += "keywords=" + $("#keywords_t").val() + "&";
+      url += "all_fields=" + $("#all_fields").val() + "&";
       url += "title=" + $("#title_txt_en").val() + "&";
       url += "call_no=" + $("#call_no_s").val() + "&";
       url += "abstract=" + $("#abstract_txt_en").val() + "&";
@@ -295,9 +295,10 @@
 
     // Give focus to the first search field and move the cursor
     // to the end of the line.
-    var theValue = $("#keywords_t").val();
-    $("#keywords_t").focus();
-    $("#keywords_t").val("");
-    $("#keywords_t").val(theValue);
+    var allFields = $("#all_fields");
+    var theValue = allFields.val();
+    allFields.focus();
+    allFields.val("");
+    allFields.val(theValue);
   });
 </script>

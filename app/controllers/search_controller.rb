@@ -60,8 +60,6 @@ class SearchController < ApplicationController
   # Transforms the parameters in the advanced search to the proper Solr
   # parameters and executes the search via the normal search URL.
   def advanced_proxy
-    # TODO: carry current facets in search (if any)
-    #
     match_type = params["match_type"] == "OR" ? " OR " : " AND "
     q_values = []
     q_values << search_value(params["keywords_t"], "keywords_t")
@@ -70,7 +68,26 @@ class SearchController < ApplicationController
     q_values << search_value(params["abstract_txt_en"], "abstract_txt_en")
     q_values << search_value_range(params["year_from"], params["year_to"], "start_year_i")
     q = q_values.compact.join(match_type)
-    redirect_to search_url(q:q)
+
+    fq_values = []
+    facets = ["institution_s", "creators_ss", "subjects_ss", "formats_ss", "languages_ss"]
+    facets.each do |facet_name|
+      values = []
+      params.keys.each do |key|
+        if key.start_with?(facet_name + "_")
+          values << params[key]
+        end
+      end
+      if values.count > 0
+        fq_values << facet_name + "|" + values.join("|")
+      end
+    end
+
+    url = search_url(q:q)
+    fq_values.each do |fq|
+      url += "&fq=" + fq
+    end
+    redirect_to url
   end
 
   # Returns the facet values (as JSON) for a search.

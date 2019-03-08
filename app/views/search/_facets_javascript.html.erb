@@ -58,23 +58,9 @@
     return parseInt($(pageNumId).text(), 10);
   };
 
-  facetsMoreObj.RenderFacet = function(facetName) {
-    if (facetsMoreObj.advanced) {
-      facetsMoreObj.RenderFacetAdvanced(facetName);
-    } else {
-      facetsMoreObj.RenderFacetNormal(facetName);
-    }
-  }
-
-  facetsMoreObj.RenderFacetNormal = function(facetName) {
-    var pageNum = facetsMoreObj.PageNum(facetName);
-    var ulId = "#modal_form_" + facetName + "_items";
-    var ul = $(ulId);
+  facetsMoreObj.FilterFacetValues = function(facetName, filter) {
+    var i;
     var items = [];
-    var filterId = "#modal_form_" + facetName + "_filter";
-    var filter = $(filterId).val();
-    var pageSize, start, stop, i, item, text_count, checkbox, label, href, html, pageCount, itemCount;
-
     if (filter == "") {
       items = facetsMoreObj.data[facetName];
     }
@@ -86,16 +72,49 @@
         }
       }
     }
+    return items;
+  }
 
+  facetsMoreObj.Paginate = function(items, pageNum, pageSize) {
+    var start = (pageNum - 1) * pageSize;
+    var stop = Math.min(items.length, start + pageSize);
+    var itemCount = (stop-start) + 1;
+    var pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
+    var page = {
+      start: start,
+      stop: stop,
+      itemCount: itemCount,
+      pageCount: pageCount,
+      pageNum: pageNum,
+      pageSize: pageSize,
+    };
+    return page;
+  }
+
+  facetsMoreObj.RenderFacet = function(facetName) {
+    if (facetsMoreObj.advanced) {
+      facetsMoreObj.RenderFacetAdvanced(facetName);
+    } else {
+      facetsMoreObj.RenderFacetNormal(facetName);
+    }
+  }
+
+  facetsMoreObj.RenderFacetNormal = function(facetName) {
+    var ulId = "#modal_form_" + facetName + "_items";
+    var ul = $(ulId);
+    var filterId = "#modal_form_" + facetName + "_filter";
+    var filter = $(filterId).val();
+    var items = facetsMoreObj.FilterFacetValues(facetName, filter);
+    var i, item, text_count, checkbox, label, href, html;
+    var pageNum, pageSize, page;
+
+    pageNum = facetsMoreObj.PageNum(facetName);
     pageSize = 20;
-    start = (pageNum - 1) * pageSize;
-    stop = Math.min(items.length, start + pageSize);
-    itemCount = (stop-start) + 1;
-    pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
+    page = facetsMoreObj.Paginate(items, pageNum, 20);
 
     // Render each item as a hyperlink + label OR a hyperlink + remove icon.
     $(ul).children().remove();
-    for(i = start; i < stop; i++) {
+    for(i = page.start; i < page.stop; i++) {
       item = items[i];
       if (item.removeUrl == null) {
         // link has the name of the facet to add
@@ -111,49 +130,31 @@
       $(ul).append(html);
     }
 
-    if (itemCount < pageSize) {
+    if (page.itemCount < page.pageSize) {
       // Insert stub rows to preserve the height of the modal constant,
       // this is useful since the navigation button (prev/next) are
       // at the bottom of the page.
-      for(i = itemCount; i <= pageSize; i++) {
+      for(i = page.itemCount; i <= page.pageSize; i++) {
         $(ul).append("<li style='list-style-type: none;'><span class='facet-text-truncated'>&nbsp;</span>");
       }
     }
 
-    facetsMoreObj.TooglePrevNextPage(facetName, pageCount);
+    facetsMoreObj.TooglePrevNextPage(facetName, page.pageCount);
   };
 
-
   facetsMoreObj.RenderFacetAdvanced = function(facetName) {
-    var pageNum = facetsMoreObj.PageNum(facetName);
     var ulId = "#modal_form_" + facetName + "_items";
     var ul = $(ulId);
-    var items = [];
+    var lis = $(ul).children();
     var filterId = "#modal_form_" + facetName + "_filter";
     var filter = $(filterId).val();
-    var pageSize, start, stop, i, item, text_count, checkbox, label, href, html, pageCount, itemCount;
+    var items = facetsMoreObj.FilterFacetValues(facetName, filter);
+    var i, li_class, item, text_count, checkbox, label, href, html;
+    var pageNum, pageSize, page;
 
-    if (filter == "") {
-      items = facetsMoreObj.data[facetName];
-    }
-    else {
-      for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
-        item = facetsMoreObj.data[facetName][i];
-        if (item.value.toUpperCase().includes(filter.toUpperCase())) {
-          items.push(item);
-        }
-      }
-    }
-
-    pageSize = 20;
-    start = (pageNum - 1) * pageSize;
-    stop = Math.min(items.length, start + pageSize);
-    itemCount = (stop-start) + 1;
-    pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
-
-    lis = $(ul).children();
     li_class = 'modal-li-' + facetName;
     if (lis.length == 0) {
+      // First time around, add the <li> elements for this facet
       for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
         item = facetsMoreObj.data[facetName][i];
         id = facetName + '_' + (item.sequence).toString();
@@ -171,32 +172,33 @@
       }
     }
 
-    // Hide them all
+    // Hide them all and then make visible the ones that fit on the page
     $("." + li_class).addClass("hidden");
-
-    // Make visible the ones for this page
-    for(i = start; i < stop; i++) {
+    pageNum = facetsMoreObj.PageNum(facetName);
+    pageSize = 20;
+    page = facetsMoreObj.Paginate(items, pageNum, 20);
+    for(i = page.start; i < page.stop; i++) {
       item = items[i];
       li_id = "#modal_li_" + facetName + '_' + item.sequence;
       $(li_id).removeClass("hidden");
     }
 
-    if (itemCount < pageSize) {
+    if (page.itemCount < page.pageSize) {
       // Insert stub rows to preserve the height of the modal constant,
       // this is useful since the navigation button (prev/next) are
       // at the bottom of the page.
       //
-      // TODO: This ends up adding more and more rows to the DOM as the
-      // user filters the facet values. However because we hide all <li>
-      // elements before we update the screen this is not visible to
-      // the user. Yet, those extra <li> elements are in the DOM. We
-      // should figure out a cleaner way to handle this.
+      // TODO: This ends up adding more and more <li> elements to the DOM
+      // as the user filters the facet values. However because we hide all
+      // <li> elements before we update the screen this is not visible to
+      // the user. Yet, those extra <li> elements are in the DOM. We should
+      // figure out a cleaner way to handle this.
       html = "<span class='facet-text-truncated'>&nbsp;</span>";
-      for(i = itemCount; i <= pageSize; i++) {
+      for(i = page.itemCount; i <= page.pageSize; i++) {
         $(ul).append('<li class="' + li_class + '" style="list-style-type: none;">' + html);
       }
     }
-    facetsMoreObj.TooglePrevNextPage(facetName, pageCount);
+    facetsMoreObj.TooglePrevNextPage(facetName, page.pageCount);
   };
 
   facetsMoreObj.TooglePrevNextPage = function(facetName, pageCount) {

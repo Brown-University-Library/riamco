@@ -70,7 +70,7 @@
     // Give each value a unique sequence so that we can ID them
     // (this is needed for the advanced search)
     for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
-      facetsMoreObj.data[facetName][i].sequence = i.toString();
+      facetsMoreObj.data[facetName][i].sequence = (i+1).toString();
     }
 
     if (filter == "") {

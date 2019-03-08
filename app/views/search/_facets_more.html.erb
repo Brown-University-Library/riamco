@@ -78,11 +78,59 @@
       }
     });
 
+    // If the user selected some facets in the modal window,
+    // we update the facets displayed on the screen after the
+    // modal has been closed.
     $("#<%= id_prefix %>").on("hide.bs.modal", function() {
-      if (facetsMoreObj.advanced) {
-        // TODO, force the query to be checked via parseQuery()
-        // Need parseQuery() to be available globally.
+      var facetName = "<%= facet.name %>";
+      var checkedItems, i, checkboxes, lis, ul, html;
+
+      if (!facetsMoreObj.advanced) {
+        return;
       }
+
+      checkedItems = false;
+      checkboxes = $(".facet-checkbox-" + facetName);
+      for(i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+          checkedItems = true;
+          break;
+        }
+      }
+
+      if (!checkedItems) {
+        return;
+      }
+
+      // Delete the existing facet values for this facet
+      ul = $("#pv_ul_" + facetName);
+      lis = ul.children();
+      for(i = 0; i < lis.length; i++) {
+        lis[i].remove();
+      }
+
+      // Add only the values that the user selected
+      // (we are not adding the counts, perhaps a future enhancement)
+      //
+      // TODO: The HTML here is duplicated with the one on _advanced_facets.html.erb.
+      // See if we can remove the duplication (e.g. render the facet values in the Advanced
+      // Search always via JavaScript)
+      for(i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+          html = '<li><span>' +
+              '<input type="checkbox" checked="true" name="{name}" id="{id}" value={value} class="facet-checkbox-"' + facetName + '/>' +
+              '{text}' +
+            '</span>';
+          html = html.replace("{name}", checkboxes[i].id);
+          html = html.replace("{id}", checkboxes[i].id);
+          html = html.replace("{value}", checkboxes[i].value);
+          html = html.replace("{text}", checkboxes[i].value);
+          $(ul).append(html);
+        }
+      }
+
+      // TODO, force the query to be checked via parseQuery()
+      // Need parseQuery() to be available globally.
     });
   });
 </script>

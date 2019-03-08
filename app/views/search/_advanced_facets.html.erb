@@ -14,13 +14,13 @@
         </div>
 
         <div id="pv_<%= facet.name %>" class="panel-body panel-collapse collapse <%= @presenter.facet_expanded?(facet) ? 'in' : '' %>">
-          <ul class="list-unstyled">
+          <ul id="pv_ul_<%= facet.name %>" class="list-unstyled">
+              <!-- beaware that the class "facet-checkbox-*" is referenced in
+                the JavaScript to pick up the values -->
               <% facet.values.each_with_index do |value, i| %>
                 <% if i < 10 || value.remove_url != nil %>
                   <li>
                     <span>
-                        <!-- careful, the class used here is referenced in the JavaScript to pick up
-                             the values -->
                         <input type="checkbox"
                           name="<%= value.add_url %>" id="<%= value.add_url %>"
                           value="<%= value.text %>"

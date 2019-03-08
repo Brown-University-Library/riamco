@@ -127,9 +127,9 @@ class AdvancedSearchPresenter
           #
           # We overload the add_url field to have the key that we use for this
           # value in the checkboxes show in the Advanced Search.
-          sequence += 1
           value_key = "#{f.name}_#{sequence}"
           v.add_url = value_key
+          sequence += 1
         end
       end
     end

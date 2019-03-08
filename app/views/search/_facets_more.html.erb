@@ -45,10 +45,8 @@
 
 <script type="text/javascript">
   $(function() {
-    // wire the filter textbox
     $("#<%= id_prefix %>_filter").on("input", function() {
       facetsMoreObj.GoFirstPage("<%= facet.name %>");
-      facetsMoreObj.RenderFacet("<%= facet.name %>");
     });
 
     $("#<%= id_prefix %>").on("shown.bs.modal", function() {
@@ -63,11 +61,12 @@
         $(loadedId).text("true");
         var fetchDataUrl = '<%= (@presenter.facetSearchBaseUrl + "&f_name=" + facet.name).html_safe %>';
         $.getJSON(fetchDataUrl, function(values) {
-          $.each(values, function(key, value) {
-            facetsMoreObj.AddFacetValue("<%= facet.name %>", value.text, value.count, value.add_url, value.remove_url);
-          });
+          var i, value;
+          for(i = 0; i < values.length; i++) {
+            value = values[i];
+            facetsMoreObj.AddFacetValue("<%= facet.name %>", value.text, value.count, value.add_url, value.remove_url, i);
+          }
           facetsMoreObj.SortFacetByCount("<%= facet.name %>");
-          facetsMoreObj.RenderFacet("<%= facet.name %>");
         })
         .done(function() {
           $(loadingId).addClass("hidden");
@@ -90,7 +89,7 @@
       }
 
       checkedItems = false;
-      checkboxes = $(".facet-checkbox-" + facetName);
+      checkboxes = $(".modal-facet-checkbox-" + facetName);
       for(i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
           checkedItems = true;
@@ -118,13 +117,14 @@
       for(i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
           html = '<li><span>' +
-              '<input type="checkbox" checked="true" name="{name}" id="{id}" value={value} class="facet-checkbox-"' + facetName + '/>' +
+              '<input type="checkbox" name="{name}" id="{id}" value="{value}" class="{cssClass}" checked />' +
               '{text}' +
             '</span>';
           html = html.replace("{name}", checkboxes[i].id);
           html = html.replace("{id}", checkboxes[i].id);
           html = html.replace("{value}", checkboxes[i].value);
           html = html.replace("{text}", checkboxes[i].value);
+          html = html.replace("{cssClass}", "facet-checkbox-" + facetName);
           $(ul).append(html);
         }
       }

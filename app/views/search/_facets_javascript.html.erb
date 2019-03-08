@@ -16,11 +16,11 @@
 
   facetsMoreObj.advanced = false;
 
-  facetsMoreObj.AddFacetValue = function(facetName, value, count, addUrl, removeUrl) {
+  facetsMoreObj.AddFacetValue = function(facetName, value, count, addUrl, removeUrl, sequence) {
     if (facetsMoreObj.data[facetName] === undefined) {
       facetsMoreObj.data[facetName] = [];
     }
-    item = {value: value, count: count, addUrl: addUrl, removeUrl: removeUrl};
+    item = {value: value, count: count, addUrl: addUrl, removeUrl: removeUrl, sequence: sequence};
     facetsMoreObj.data[facetName].push(item);
   };
 
@@ -59,6 +59,14 @@
   };
 
   facetsMoreObj.RenderFacet = function(facetName) {
+    if (facetsMoreObj.advanced) {
+      facetsMoreObj.RenderFacetAdvanced(facetName);
+    } else {
+      facetsMoreObj.RenderFacetNormal(facetName);
+    }
+  }
+
+  facetsMoreObj.RenderFacetNormal = function(facetName) {
     var pageNum = facetsMoreObj.PageNum(facetName);
     var ulId = "#modal_form_" + facetName + "_items";
     var ul = $(ulId);
@@ -66,12 +74,6 @@
     var filterId = "#modal_form_" + facetName + "_filter";
     var filter = $(filterId).val();
     var pageSize, start, stop, i, item, text_count, checkbox, label, href, html, pageCount, itemCount;
-
-    // Give each value a unique sequence so that we can ID them
-    // (this is needed for the advanced search)
-    for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
-      facetsMoreObj.data[facetName][i].sequence = (i+1).toString();
-    }
 
     if (filter == "") {
       items = facetsMoreObj.data[facetName];
@@ -91,40 +93,22 @@
     itemCount = (stop-start) + 1;
     pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
 
+    // Render each item as a hyperlink + label OR a hyperlink + remove icon.
     $(ul).children().remove();
-
-    if (facetsMoreObj.advanced) {
-      // Render each item as a checkbox + label.
-      for(i = start; i < stop; i++) {
-        item = items[i];
-        checkbox = '<input type="checkbox" ' +
-          'name="' + facetName + '_' + item.sequence + '" ' +
-          'id="' + facetName + '_' + item.sequence + '" ' +
-          'value="' + item.value + '" ' +
-          'class="facet-checkbox-' + facetName + '" ' +
-        '/>';
-        label = "<span class='facet-text-truncated'>" + item.value + "</span>";
+    for(i = start; i < stop; i++) {
+      item = items[i];
+      if (item.removeUrl == null) {
+        // link has the name of the facet to add
+        href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
         text_count = "(" + item.count + ")";
-        html = "<li>" + checkbox + label + "</span> <span class='categoryCount'>" + text_count + "</span>"
-        $(ul).append(html);
+        html = "<li><span class='facet-text-truncated'>" + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
+      } else {
+        // link has just the "X" to remove the facet
+        href = "<a href='" + item.removeUrl + "' title='" + item.value + "'><span class='glyphicon glyphicon-remove'></span></a>";
+        text_count = "(" + item.count + ")";
+        html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
       }
-    } else {
-      // Render each item as a hyperlink + label OR a hyperlink + remove icon.
-      for(i = start; i < stop; i++) {
-        item = items[i];
-        if (item.removeUrl == null) {
-          // link has the name of the facet to add
-          href = "<a href='" + item.addUrl + "' title='" + item.value + "'>" + item.value + "</a>";
-          text_count = "(" + item.count + ")";
-          html = "<li><span class='facet-text-truncated'>" + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
-        } else {
-          // link has just the "X" to remove the facet
-          href = "<a href='" + item.removeUrl + "' title='" + item.value + "'><span class='glyphicon glyphicon-remove'></span></a>";
-          text_count = "(" + item.count + ")";
-          html = "<li><span class='facet-text-truncated'>" + item.value + " " + href + "</span> <span class='categoryCount'>" + text_count + "</span>"
-        }
-        $(ul).append(html);
-      }
+      $(ul).append(html);
     }
 
     if (itemCount < pageSize) {
@@ -136,6 +120,82 @@
       }
     }
 
+    facetsMoreObj.TooglePrevNextPage(facetName, pageCount);
+  };
+
+
+  facetsMoreObj.RenderFacetAdvanced = function(facetName) {
+    var pageNum = facetsMoreObj.PageNum(facetName);
+    var ulId = "#modal_form_" + facetName + "_items";
+    var ul = $(ulId);
+    var items = [];
+    var filterId = "#modal_form_" + facetName + "_filter";
+    var filter = $(filterId).val();
+    var pageSize, start, stop, i, item, text_count, checkbox, label, href, html, pageCount, itemCount;
+
+    if (filter == "") {
+      items = facetsMoreObj.data[facetName];
+    }
+    else {
+      for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
+        item = facetsMoreObj.data[facetName][i];
+        if (item.value.toUpperCase().includes(filter.toUpperCase())) {
+          items.push(item);
+        }
+      }
+    }
+
+    pageSize = 20;
+    start = (pageNum - 1) * pageSize;
+    stop = Math.min(items.length, start + pageSize);
+    itemCount = (stop-start) + 1;
+    pageCount = parseInt(items.length / pageSize) + ((items.length % pageSize) == 0 ? 0 : 1);
+
+    lis = $(ul).children();
+    li_class = 'modal-li-' + facetName;
+    if (lis.length == 0) {
+      for(i = 0; i < facetsMoreObj.data[facetName].length; i++) {
+        item = facetsMoreObj.data[facetName][i];
+        id = facetName + '_' + (item.sequence).toString();
+        li_id = 'modal_li_' + id;
+        checkbox = '<input type="checkbox" ' +
+          'name="' + id + '" ' +
+          'id="' + id + '" ' +
+          'value="' + item.value + '" ' +
+          'class="modal-facet-checkbox-' + facetName + '" ' +
+        '/>';
+        label = "<span class='facet-text-truncated'>" + item.value + "</span>";
+        text_count = "(" + item.count + ")";
+        html = '<li class="' + li_class + '" id="' + li_id + '" >' + checkbox + label + "</span> <span class='categoryCount'>" + text_count + "</span>"
+        $(ul).append(html);
+      }
+    }
+
+    // Hide them all
+    $("." + li_class).addClass("hidden");
+
+    // Make visible the ones for this page
+    for(i = start; i < stop; i++) {
+      item = items[i];
+      li_id = "#modal_li_" + facetName + '_' + item.sequence;
+      $(li_id).removeClass("hidden");
+    }
+
+    if (itemCount < pageSize) {
+      // Insert stub rows to preserve the height of the modal constant,
+      // this is useful since the navigation button (prev/next) are
+      // at the bottom of the page.
+      //
+      // TODO: This ends up adding more and more rows to the DOM as the
+      // user filters the facet values. However because we hide all <li>
+      // elements before we update the screen this is not visible to
+      // the user. Yet, those extra <li> elements are in the DOM. We
+      // should figure out a cleaner way to handle this.
+      html = "<span class='facet-text-truncated'>&nbsp;</span>";
+      for(i = itemCount; i <= pageSize; i++) {
+        $(ul).append('<li class="' + li_class + '" style="list-style-type: none;">' + html);
+      }
+    }
     facetsMoreObj.TooglePrevNextPage(facetName, pageCount);
   };
 

@@ -51,13 +51,8 @@ class AdvancedSearchPresenter
     @fq_date_range = @fq.find {|fq| fq.field == "date_range_s"}
     @fq_start_year = @fq.find {|fq| fq.field == "start_year_i"}
     if fq_start_year != nil
-      # TODO: remove this logic once FilterQuery is capable of returning
-      # range from and to values.
-      tokens = fq_start_year.value.split(" - ")
-      if tokens.count == 2
-        @start_year_from = tokens[0].gsub("*","")
-        @start_year_to = tokens[1].gsub("*","")
-      end
+      @start_year_from = @fq_start_year.range_from
+      @start_year_to = @fq_start_year.range_to
     end
 
     @page = results.page

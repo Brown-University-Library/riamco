@@ -3,6 +3,18 @@
   facetsMoreObj.advanced = true;
 </script>
 
+<style>
+  .parse_results {
+    background-color: #efeded;
+    margin-top: 30px;
+    border-style: dotted;
+    border-width: thin;
+    padding: 5px;
+    font-family: courier;
+    font-size: 14px;
+  }
+</style>
+
 <div class="container">
   <!-- search form -->
   <div class="row">
@@ -69,19 +81,14 @@
 
         <!-- facets -->
         <p><b>AND have these attributes</b></p>
-        <div class="col-md-4">
-            <% if @presenter.num_found > 0 %>
-              <%= render "advanced_facets" %>
-            <% end %>
+        <div class="col-md-8">
+            <%= render "advanced_facets" %>
             <a href="" name="clear_search" id="clear_search" class="btn btn-danger btn-sm" title="Clear the current search parameters">
               <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
               <span aria-only="true">Clear</span>
             </a>
         </div>
         <!-- result of parsing the expression -->
-        <div class="col-md-8">
-          <span id="parse_results"></span>
-        </div>
       </form>
     </div> <!-- class="col-md-8" -->
 
@@ -101,19 +108,22 @@
           </ul>
         </div>
       </div>
-      <!-- clear, check, and search buttons -->
 
-      <span style="float:right;" >
-        <button type="button" name="parse_query" id="parse_query" class="btn btn-default btn-lg sympl-search" title="Check the syntax of your search">
-          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-          <span aria-only="true">Check</span>
-        </button>
-        <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
-          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-          <span aria-only="true">Search</span>
-        </button>
-      </span>
-    </div>
+      <!-- clear, check, and search buttons -->
+      <div>
+        <span>
+          <button type="button" name="parse_query" id="parse_query" class="btn btn-default btn-lg sympl-search" title="Check the syntax of your search">
+            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+            <span aria-only="true">Check</span>
+          </button>
+          <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <span aria-only="true">Search</span>
+          </button>
+        </span>
+      </div>
+      <div class="parse_results hidden" id="parse_results"></div>
+    </div> <!-- class=cold-md-4 -->
   </div> <!-- row -->
 </div> <!-- container -->
 
@@ -203,6 +213,7 @@
     var parseQuery = function(warnEmpty) {
       var url, jqxhr;
 
+      $("#parse_results").removeClass("hidden");
       $("#parse_results").html("Validating...");
 
       url = "<%= advanced_parse_path() %>?";

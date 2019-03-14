@@ -68,27 +68,22 @@
         <button type="submit" style="display:none;" id="submit_search"></button>
 
         <!-- facets -->
+        <p><b>AND have these attributes</b></p>
         <div class="col-md-4">
             <% if @presenter.num_found > 0 %>
               <%= render "advanced_facets" %>
             <% end %>
+            <a href="" name="clear_search" id="clear_search" class="btn btn-danger btn-sm" title="Clear the current search parameters">
+              <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+              <span aria-only="true">Clear</span>
+            </a>
         </div>
-
+        <!-- result of parsing the expression -->
         <div class="col-md-8">
           <span id="parse_results"></span>
         </div>
-
       </form>
-
-      <!-- results of parsing search terms -->
-      <!-- <div class="form-group">
-          <label class="control-label col-md-2" for="collection">&nbsp;</label>
-          <div class="col-md-10">
-              <span id="parse_results"></span>
-          </div>
-      </div> -->
-
-    </div>
+    </div> <!-- class="col-md-8" -->
 
     <div class="col-md-4">
       <!-- instructions -->
@@ -96,30 +91,29 @@
         <div class="panel-heading">Search tips</div>
         <div class="panel-body">
           <ul style="margin-top: 15px;">
-            <li>Select "match all" to require all fields.
-            <li>Select "match any" to find at least one field.
+            <li>Select "Match All" to require all fields.
+            <li>Select "Match Any" to find at least one field.
             <li>Use quotation marks to search as a phrase.
-            <li>Use OR, AND, and NOT to create boolean expressions. You can use parentheses in your complex expressions.
+            <li>Use OR, AND, and NOT to create boolean expressions. You can use parentheses in your expressions.
             <li>Use the "Check" button to view the generated query with your search terms.
-            <li>Truncation and wildcards are not supported - word-stemming is done automatically.
+            <li>Truncation and wildcards are not supported.
+            <li>Word-stemming is done automatically.
           </ul>
         </div>
       </div>
-      <!-- check and search buttons -->
-      <button type="button" name="parse_query" id="parse_query" class="btn btn-lg sympl-search" title="Check the syntax of your search">
-        <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-        <span aria-only="true">Check</span>
-      </button>
-      <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
-        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-        <span aria-only="true">Search</span>
-      </button>
-      <a href="" name="clear_search" id="clear_search" class="btn btn-danger btn-lg sympl-search" title="Clear the current search parameters">
-        <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-        <span aria-only="true">Clear</span>
-      </a>
-    </div>
+      <!-- clear, check, and search buttons -->
 
+      <span style="float:right;" >
+        <button type="button" name="parse_query" id="parse_query" class="btn btn-default btn-lg sympl-search" title="Check the syntax of your search">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+          <span aria-only="true">Check</span>
+        </button>
+        <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          <span aria-only="true">Search</span>
+        </button>
+      </span>
+    </div>
   </div> <!-- row -->
 </div> <!-- container -->
 

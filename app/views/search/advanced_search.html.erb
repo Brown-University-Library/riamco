@@ -16,47 +16,51 @@
 </style>
 
 <div class="container">
-  <!-- search form -->
   <div class="row">
     <h1>Advanced Search</h1>
     <div class="col-md-8">
+      <!--
+        Notice that the facets MUST be inside the HTML FORM so that the
+        selected values (checkboxes) are submitted when the user hits
+        "Search"
+      -->
       <form id="search-advanced" class="form-horizontal" action="<%= advanced_proxy_path() %>" method="GET">
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="anyField">Find items that</label>
-            <div class="col-md-10">
-              <div class="btn-group btn-group" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                  <button id="match_all" type="button" class="btn btn-info"
-                    title="Search will use boolean AND for multi-field searches.">Match All</button>
-                </div>
-                <div class="btn-group" role="group">
-                  <button id="match_any" type="button" class="btn btn-default"
-                    title="Search will use boolean OR for multi-field searches.">Match Any</button>
-                </div>
+          <label class="control-label col-md-2" for="anyField">Find items that</label>
+          <div class="col-md-10">
+            <div class="btn-group btn-group" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                <button id="match_all" type="button" class="btn btn-info"
+                  title="Search will use boolean AND for multi-field searches.">Match All</button>
+              </div>
+              <div class="btn-group" role="group">
+                <button id="match_any" type="button" class="btn btn-default"
+                  title="Search will use boolean OR for multi-field searches.">Match Any</button>
               </div>
             </div>
+          </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="all_fields">All Fields</label>
-            <div class="col-md-10">
+          <label class="control-label col-md-2" for="all_fields">All Fields</label>
+          <div class="col-md-10">
             <input type="text" class="form-control" name="all_fields" id="all_fields" placeholder="">
-            </div>
+          </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="title_txt_en">Title</label>
-            <div class="col-md-10">
-              <input type="text" class="form-control" name="title_txt_en" id="title_txt_en" placeholder="">
-            </div>
+          <label class="control-label col-md-2" for="title_txt_en">Title</label>
+          <div class="col-md-10">
+            <input type="text" class="form-control" name="title_txt_en" id="title_txt_en" placeholder="">
+          </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="call_no_s">Call No.</label>
-            <div class="col-md-10">
-              <input type="text" class="form-control" name="call_no_s" id="call_no_s" placeholder="">
-            </div>
+          <label class="control-label col-md-2" for="call_no_s">Call No.</label>
+          <div class="col-md-10">
+            <input type="text" class="form-control" name="call_no_s" id="call_no_s" placeholder="">
+          </div>
         </div>
 
         <div class="form-group">
@@ -76,6 +80,7 @@
             </div>
         </div>
 
+        <!-- hidden but their values are set via JavaScript and submitted to the server -->
         <input type="text" style="display:none;" name="match_type" id="match_type" value="AND">
         <button type="submit" style="display:none;" id="submit_search"></button>
 
@@ -83,12 +88,14 @@
         <p><b>AND have these attributes</b></p>
         <div class="col-md-8">
             <%= render "advanced_facets" %>
-            <a href="" name="clear_search" id="clear_search" class="btn btn-danger btn-sm" title="Clear the current search parameters">
-              <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
-              <span aria-only="true">Clear</span>
-            </a>
         </div>
-        <!-- result of parsing the expression -->
+        <!-- clear button -->
+        <div class="col-md-8">
+          <a href="" name="clear_search" id="clear_search" class="btn btn-danger btn-sm" title="Clear the current search parameters">
+            <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+            <span aria-only="true">Clear</span>
+          </a>
+        </div>
       </form>
     </div> <!-- class="col-md-8" -->
 
@@ -109,19 +116,20 @@
         </div>
       </div>
 
-      <!-- clear, check, and search buttons -->
+      <!-- Notice that the Clear and Check buttons are outside the form but the
+           Search button is wired via JavaScript to "click" the button inside
+           the HTML FORM. -->
       <div>
-        <span>
-          <button type="button" name="parse_query" id="parse_query" class="btn btn-default btn-lg sympl-search" title="Check the syntax of your search">
-            <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
-            <span aria-only="true">Check</span>
-          </button>
-          <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
-            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            <span aria-only="true">Search</span>
-          </button>
-        </span>
+        <button type="button" name="parse_query" id="parse_query" class="btn btn-default btn-lg sympl-search" title="Check the syntax of your search">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+          <span aria-only="true">Check</span>
+        </button>
+        <button type="submit" id="submit_button" class="btn btn-primary btn-lg sympl-search" title="Submit your search">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          <span aria-only="true">Search</span>
+        </button>
       </div>
+      <!-- result of parsing the expression -->
       <div class="parse_results hidden" id="parse_results"></div>
     </div> <!-- class=cold-md-4 -->
   </div> <!-- row -->

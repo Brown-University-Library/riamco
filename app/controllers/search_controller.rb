@@ -130,7 +130,9 @@ class SearchController < ApplicationController
 
     def facets_fields()
       f = []
-      f << SolrLite::FacetField.new("institution_s", "Institution")
+      inst = SolrLite::FacetField.new("institution_s", "Institution")
+      inst.limit = 30
+      f << inst
       f << SolrLite::FacetField.new("creators_ss", "Creator")
       f << SolrLite::FacetField.new("date_range_s", "Date Range")
       f << SolrLite::FacetField.new("subjects_ss", "Subject")

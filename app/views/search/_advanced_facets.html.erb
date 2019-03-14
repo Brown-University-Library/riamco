@@ -18,7 +18,7 @@
               <!-- beaware that the class "facet-checkbox-*" is referenced in
                 the JavaScript to pick up the values -->
               <% facet.values.each_with_index do |value, i| %>
-                <% if i < 10 || value.remove_url != nil %>
+                <% if i < (facet.limit || 10) || value.remove_url != nil %>
                   <li>
                     <span>
                         <input type="checkbox"
@@ -36,7 +36,7 @@
                 <% end %> <!-- facet.values.each_with_index -->
             </ul>
 
-            <% if facet.values.count > 10 %>
+            <% if facet.values.count > (facet.limit || 10) %>
               <%= render "facets_more", facet: facet %>
             <% end %>
           </div> <!-- panel body -->

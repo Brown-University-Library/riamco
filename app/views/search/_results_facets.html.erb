@@ -22,7 +22,7 @@
 
               <% if facet.name != "date_range_s" || (facet.name == "date_range_s" && @presenter.fq_start_year == nil) %>
                 <% facet.values.each_with_index do |value, i| %>
-                  <% if i < 10 || value.remove_url != nil %>
+                  <% if i < (facet.limit || 10) || value.remove_url != nil %>
                     <li>
                       <span>
                         <% if value.remove_url == nil %>
@@ -45,7 +45,7 @@
                 <% end %>
               </ul>
 
-              <% if facet.values.count > 10 %>
+              <% if facet.values.count > (facet.limit || 10) %>
                 <%= render "facets_more", facet: facet %>
               <% end %>
             </div> <!-- panel body -->

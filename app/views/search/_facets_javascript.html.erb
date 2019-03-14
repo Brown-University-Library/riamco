@@ -149,7 +149,7 @@
     var filterId = "#modal_form_" + facetName + "_filter";
     var filter = $(filterId).val();
     var items = facetsMoreObj.FilterFacetValues(facetName, filter);
-    var i, li_class, item, text_count, checkbox, label, href, html;
+    var i, li_class, item, span_count, span_checkbox, href, html, value;
     var pageNum, pageSize, page;
 
     li_class = 'modal-li-' + facetName;
@@ -159,15 +159,18 @@
         item = facetsMoreObj.data[facetName][i];
         id = facetName + '_' + (item.sequence).toString();
         li_id = 'modal_li_' + id;
-        checkbox = '<input type="checkbox" ' +
-          'name="' + id + '" ' +
-          'id="' + id + '" ' +
-          'value="' + item.value + '" ' +
-          'class="modal-facet-checkbox-' + facetName + '" ' +
-        '/>';
-        label = "<span class='facet-text-truncated'>" + item.value + "</span>";
-        text_count = "(" + item.count + ")";
-        html = '<li class="' + li_class + '" id="' + li_id + '" >' + checkbox + label + "</span> <span class='categoryCount'>" + text_count + "</span>"
+        value = item.value;
+        if (value.indexOf('"') != -1) {
+          value = value.replace(/\"/g, "&quot;")
+        }
+        span_checkbox = '<span class="facet-text-truncated">' +
+          '<input type="checkbox" name="' + id + '" id="' + id + '" ' +
+          'value="' + value + '" ' +
+          'style="margin-right:5px" ' +
+          'class="modal-facet-checkbox-' + facetName + '" />' +
+          value + '</span>';
+        span_count = '<span class="categoryCount"> (' + item.count + ') </span>';
+        html = '<li class="' + li_class + '" id="' + li_id + '" >' + span_checkbox + span_count;
         $(ul).append(html);
       }
     }

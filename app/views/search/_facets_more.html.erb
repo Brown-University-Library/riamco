@@ -12,7 +12,9 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal" title="close window">
+          <span title="Close this window" class="glyphicon glyphicon-remove"></span>
+        </button>
         <h4 class="modal-title"><%= facet.title %></h4>
       </div>
       <div class="modal-body">
@@ -26,6 +28,9 @@
         <span id="<%= id_prefix %>_loading">
           <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>
           Loading...
+          <% if facet.name == "subjects_ss" %>
+            (subjects take a bit longer than other facets, please be patient)
+          <% end %>
         </span>
         <div>
           <ul id="<%= id_prefix %>_items">
@@ -82,7 +87,7 @@
     // modal has been closed.
     $("#<%= id_prefix %>").on("hide.bs.modal", function() {
       var facetName = "<%= facet.name %>";
-      var checkedItems, i, checkboxes, lis, ul, html;
+      var checkedItems, i, checkboxes, lis, ul, html, value;
 
       if (!facetsMoreObj.advanced) {
         return;
@@ -120,17 +125,18 @@
               '<input type="checkbox" name="{name}" id="{id}" value="{value}" class="{cssClass}" checked />' +
               '{text}' +
             '</span>';
+          value = checkboxes[i].value
+          value = value.replace(/\"/g, "&quot;")
           html = html.replace("{name}", checkboxes[i].id);
           html = html.replace("{id}", checkboxes[i].id);
-          html = html.replace("{value}", checkboxes[i].value);
-          html = html.replace("{text}", checkboxes[i].value);
+          html = html.replace("{value}", value);
+          html = html.replace("{text}", value);
           html = html.replace("{cssClass}", "facet-checkbox-" + facetName);
           $(ul).append(html);
         }
       }
 
-      // TODO, force the query to be checked via parseQuery()
-      // Need parseQuery() to be available globally.
+      $("#parse_query").click();
     });
   });
 </script>

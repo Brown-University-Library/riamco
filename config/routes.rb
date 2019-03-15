@@ -19,12 +19,14 @@ Rails.application.routes.draw do
   get 'help.html' => 'legacy#help'
   get 'index.html' => 'legacy#home'
   get 'links.html' => 'legacy#links'
+  get 'render_pending.php' => 'legacy#render_pending'
   get 'render.php' => 'legacy#render'
   get 'resources.html' => 'legacy#resources'
   get 'search.php' => 'legacy#search'
   get 'visit.html' => 'legacy#visit'
 
   # New URLs (without .php or .html)
+  get 'render_pending' => 'ead#show_pending', as: :ead_show_pending
   get 'render' => 'ead#show', as: :ead_show
   get 'download' => 'ead#download', as: :ead_download
 

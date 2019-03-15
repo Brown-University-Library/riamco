@@ -53,6 +53,12 @@ class LegacyController < ApplicationController
         redirect_to ead_show_path(eadid: eadid, view: view)
     end
 
+    def render_pending
+        eadid = request.params["eadid"]
+        view = request.params["view"]
+        redirect_to ead_show_pending_path(eadid: eadid, view: view)
+    end
+
     def resources
         redirect_to home_resources_path()
     end

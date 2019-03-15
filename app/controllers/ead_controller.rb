@@ -15,6 +15,24 @@ class EadController < ApplicationController
     render "error", status: 500
   end
 
+  # Pending EADs are on their own folder and available if the user has the
+  # ID for it. They are not indexed in Solr, though.
+  def show_pending
+    id = params["eadid"]
+    view = params["view"] || "title"
+    if valid_id?(id) && valid_view?(view)
+      html = load_pending_ead_html(id, view)
+      render text: html
+    else
+      Rails.logger.error("Invalid id (#{id}) or view (#{view}) in ead#show")
+      render "not_found", status: 404
+    end
+  rescue => ex
+    backtrace = ex.backtrace.join("\r\n")
+    Rails.logger.error("Could not render pending finding aid #{id}, view #{view}. Exception: #{ex} \r\n #{backtrace}")
+    render "error", status: 500
+  end
+
   def download
     id = params["eadid"]
     if valid_id?(id)
@@ -78,5 +96,14 @@ class EadController < ApplicationController
         File.write(html_file, html)
       end
       html
+    end
+
+    def load_pending_ead_html(id, view)
+      Rails.logger.info("Generating HTML for pending file #{id}, #{view}")
+      xml_file = ENV["EAD_XML_PENDING_FILES_PATH"] + "/#{id}.xml"
+      xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}_pending.xsl"
+      document = Nokogiri::XML(File.read(xml_file))
+      template = Nokogiri::XSLT(File.read(xsl_file))
+      html = template.transform(document)
     end
 end

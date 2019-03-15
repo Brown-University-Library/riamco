@@ -2,7 +2,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink">
     <xsl:param name="eadid">
         <xsl:value-of select="/ead:ead/ead:eadheader/ead:eadid"/>
-    </xsl:param>    
+    </xsl:param>
 
 
 <xsl:include href="riamco_nav1.xsl" />
@@ -14,6 +14,7 @@
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
+                <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
 
 <script type="text/javascript">
 
@@ -33,33 +34,19 @@
             </head>
             <body>
                 <div id="wrapper">
-                    <div id="header">
-                        <a href="index.html">
-                            <img src="img/RIAMCO_header_graphic.gif" alt="RIAMCO"/>
-                        </a>
+                    <div class="navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="browse.html">Browse</a></li>
+                            <li><a href="advanced_search.html">Advanced Search</a></li>
+                            <li><a href="about.html">About</a></li>
+                            <li><a href="help.html">Help</a></li>
+                            <li><a href="contact.html">Contact</a></li>
+                        </ul>
                     </div>
-                    <div id="horizontal_nav_bar">
-                        <a href="index.html">
-                            <img src="img/nav_buttons/Home_button.gif" alt="Home"/>
-                        </a>
-                        <a href="browse.html">
-                            <img src="img/nav_buttons/Browse_button.gif" alt="Browse"/>
-                        </a>
-                        <a href="advanced_search.html">
-                            <img src="img/nav_buttons/Advanced_search_button.gif" alt="Advanced Search"/>
-                        </a>
-                        <a href="about.html">
-                            <img src="img/nav_buttons/About_button.gif" alt="About"/>
-                        </a>
-                        <a href="help.html">
-                            <img src="img/nav_buttons/Help_button.gif" alt="Help"/>
-                        </a>
-                        <a href="contact.html">
-                            <img src="img/nav_buttons/Contact_button.gif" alt="Contact"/>
-                        </a>
-                    </div>
-                    <div id="content">
-                        <div id="main_text">
+                </div>
+                <div id="content">
+                    <div id="main_text">
 
 <xsl:call-template name="nav_template" />
 
@@ -70,15 +57,15 @@
                             <center>
                                 <h1>
                                    <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper"/>
-                                   <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@inclusive"/>  
-                                  <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@bulk"/>                           
+                                   <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@inclusive"/>
+                                  <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@bulk"/>
                                 </h1>
                                 </center>
                                 <center>
                                     <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/>
 
                                     <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:repository"/>
-                                    
+
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>
                                 </center>
                             </div>
@@ -105,7 +92,7 @@
         </p>
     </xsl:template>
 
-   
+
 <xsl:template match="ead:date[@type='inclusive']">
 <xsl:text>, </xsl:text>
 <xsl:apply-templates/>
@@ -114,7 +101,7 @@
     <xsl:template match="ead:repository">
         <p>
             <br/>
-            <xsl:apply-templates/> 
+            <xsl:apply-templates/>
         </p>
     </xsl:template>
 
@@ -122,7 +109,7 @@
 <xsl:text>, </xsl:text>
 <xsl:apply-templates/>
 </xsl:template>
-    
+
     <xsl:template match="ead:addressline[ead:extptr]">
         <a href="{ead:extptr/@xlink:href}">
             <xsl:apply-templates/>
@@ -151,6 +138,6 @@
         <xsl:apply-templates/>
         <br/>
     </xsl:template>
-    
-    
+
+
     </xsl:stylesheet>

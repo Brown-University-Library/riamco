@@ -21,7 +21,11 @@
 
           <div class="result-row">
             <div class="result-title">
-                <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_hl.html_safe %></a>
+                <% if item.title == "" %>
+                  <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>">(untitled)</a>
+                <% else %>
+                  <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_hl.html_safe %></a>
+                <% end %>
             </div>
 
             <dl>

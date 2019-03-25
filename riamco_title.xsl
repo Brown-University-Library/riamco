@@ -35,6 +35,7 @@
             <body>
                 <div id="wrapper">
                     <div class="navbar-collapse">
+                        <span class="logo"><a href="/">RIAMCO</a></span>
                         <ul class="nav navbar-nav">
                             <li><a href="index.html">Home</a></li>
                             <li><a href="browse.html">Browse</a></li>

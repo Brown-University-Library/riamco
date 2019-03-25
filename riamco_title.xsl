@@ -37,12 +37,12 @@
                     <div class="navbar-collapse">
                         <span class="logo"><a href="/">RIAMCO</a></span>
                         <ul class="nav navbar-nav">
-                            <li><a href="index.html">Home</a></li>
-                            <li><a href="browse.html">Browse</a></li>
-                            <li><a href="advanced_search.html">Advanced Search</a></li>
-                            <li><a href="about.html">About</a></li>
-                            <li><a href="help.html">Help</a></li>
-                            <li><a href="contact.html">Contact</a></li>
+                            <li><a href="index.html" alt="Home">Home</a></li>
+                            <li><a href="browse.html" alt="Browse">Browse</a></li>
+                            <li><a href="advanced_search.html" alt="Advanced Search">Advanced Search</a></li>
+                            <li><a href="about.html" alt="About">About</a></li>
+                            <li><a href="help.html" alt="Help">Help</a></li>
+                            <li><a href="contact.html" alt="Contact">Contact</a></li>
                         </ul>
                     </div>
                 </div>

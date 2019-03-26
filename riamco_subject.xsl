@@ -27,30 +27,16 @@
             </head>
             <body>
                 <div id="wrapper">
-                    <div id="header">
-                        <a href="index.html">
-                              <img src="/riamco/img/RIAMCO_header_graphic.gif" alt="RIAMCO"/>
-                        </a>
-                    </div>
-                    <div id="horizontal_nav_bar">
-                        <a href="index.html">
-                            <img src="/riamco/img/nav_buttons/Home_button.gif" alt="Home"/>
-                        </a>
-                        <a href="browse.html">
-                            <img src="/riamco/img/nav_buttons/Browse_button.gif" alt="Browse"/>
-                        </a>
-                        <a href="advanced_search.html">
-                            <img src="/riamco/img/nav_buttons/Advanced_search_button.gif" alt="Advanced Search"/>
-                        </a>
-                        <a href="about.html">
-                            <img src="/riamco/img/nav_buttons/About_button.gif" alt="About"/>
-                        </a>
-                        <a href="help.html">
-                            <img src="/riamco/img/nav_buttons/Help_button.gif" alt="Help"/>
-                        </a>
-                        <a href="contact.html">
-                            <img src="/riamco/img/nav_buttons/Contact_button.gif" alt="Contact"/>
-                        </a>
+                    <div class="top_menu">
+                        <ul class="nav navbar-nav">
+                            <li><a href="index.html" alt="RIAMCO">RIAMCO</a></li>
+                            <li><a href="index.html" alt="Home">Home</a></li>
+                            <li><a href="browse.html" alt="Browse">Browse</a></li>
+                            <li><a href="advanced_search.html" alt="Advanced Search">Advanced Search</a></li>
+                            <li><a href="about.html" alt="About">About</a></li>
+                            <li><a href="help.html" alt="Help">Help</a></li>
+                            <li><a href="contact.html" alt="Contact">Contact</a></li>
+                        </ul>
                     </div>
                     <div id="content">
                         <div id="main_text">
@@ -133,15 +119,15 @@
                             <div class="right_two_thirds">
                                 <h1>
                                     <a href="render.php?eadid={$eadid}&amp;view=title">
-                                        <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>         
+                                        <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
 </a>
-                                    
+
                                 </h1>
-                                
-                                
+
+
 <h3>Search Terms</h3>
-                               
-                                    
+
+
                             </div>
                             <div id="sponsor_footer">
                                 <p>Sponsors:&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.neh.gov/">
@@ -149,7 +135,7 @@
                                 </a>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.wethepeople.gov/">
                                     <img src="/riamco/img/wtp_logo.gif" alt="We the People"/>
                                 </a></p>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -157,8 +143,8 @@
             </body>
         </html>
     </xsl:template>
-    
-    <xsl:template match="/ead">    
+
+    <xsl:template match="/ead">
 
     <table width="705" border="0" cellpadding="0" cellspacing="0">
         <tr>
@@ -169,12 +155,12 @@
         </tr>
     </table>
     <table width="705" border="0" cellpadding="0" cellspacing="0">
-        
+
         <tr><td colspan="2">
             This collection is indexed under the following headings.  People, families, and organizations are listed under "Names" when they are creators or contributors, and under "Subjects" when they are the topic of collection contents:</td></tr>
-        
-    </table>   
-    
+
+    </table>
+
         <xsl:template match="controlaccess">
             <xsl:apply-templates/>
         <tr><td colspan="2"> </td></tr>
@@ -182,19 +168,19 @@
             <xsl:call-template name="opac"/>
         </xsl:if>
         </xsl:template>
-        
+
     </xsl:template>
-                               
+
                                     <xsl:template name="controlaccess">
                                         <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/controlaccess">
                                             <xsl:call-template name="subject"/>
                                         </xsl:if>
                                     </xsl:template>
-                                    
+
                                     <xsl:template name="opac">
                                         <tr><td colspan="2">Researchers seeking materials about topics, places, or names related to this collection may search the <xsl:value-of select="ead:ead/ead:archdesc/ead:did/ead:repository/ead:corpname"/> catalog via this link: <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp[@type='add']/ead:odd[@type='opac']/ead:p/ead:archref"/></td></tr>
                                     </xsl:template>
-                                    
+
                                     <xsl:template name="subject">
                                         <tr>
                                             <td valign="top"><b><xsl:text>Names:</xsl:text></b></td>
@@ -207,8 +193,8 @@
                                             </td>
                                         </tr>
                                     </xsl:template>
-                                    
-                                    
+
+
 
 
 
@@ -220,12 +206,12 @@
 <p/>
 </xsl:template>
 
-                                    
+
  <xsl:template match="ead:date[@type='inclusive']">
 <xsl:text>, </xsl:text>
 <xsl:apply-templates/>
 </xsl:template>
-                                   
+
  <xsl:template match="ead:extref[@xlink:href]">
         <a href="{@xlink:href}">
             <xsl:apply-templates/>
@@ -236,12 +222,12 @@
         <a href="{@xlink:href}">
             <xsl:apply-templates/>
         </a>
-</xsl:template>                             
-                           
-         
-                   
+</xsl:template>
 
-    
+
+
+
+
 
 
 </xsl:stylesheet>

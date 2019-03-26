@@ -38,33 +38,16 @@
             </head>
             <body>
                 <div id="wrapper">
-                    <div id="header">
-                        <a href="index.html">
-                            <img src="img/RIAMCO_header_graphic.gif" alt="RIAMCO"/>
-                        </a>
-                    </div>
- 
-
-
-                   <div id="horizontal_nav_bar">
-                        <a href="index.html">
-                            <img src="img/nav_buttons/Home_button.gif" alt="Home"/>
-                        </a>
-                        <a href="browse.html">
-                            <img src="img/nav_buttons/Browse_button.gif" alt="Browse"/>
-                        </a>
-                        <a href="advanced_search.html">
-                            <img src="img/nav_buttons/Advanced_search_button.gif" alt="Advanced Search"/>
-                        </a>
-                        <a href="about.html">
-                            <img src="img/nav_buttons/About_button.gif" alt="About"/>
-                        </a>
-                        <a href="help.html">
-                            <img src="img/nav_buttons/Help_button.gif" alt="Help"/>
-                        </a>
-                        <a href="contact.html">
-                            <img src="img/nav_buttons/Contact_button.gif" alt="Contact"/>
-                        </a>
+                    <div class="top_menu">
+                        <ul class="nav navbar-nav">
+                            <li><a href="index.html" alt="RIAMCO">RIAMCO</a></li>
+                            <li><a href="index.html" alt="Home">Home</a></li>
+                            <li><a href="browse.html" alt="Browse">Browse</a></li>
+                            <li><a href="advanced_search.html" alt="Advanced Search">Advanced Search</a></li>
+                            <li><a href="about.html" alt="About">About</a></li>
+                            <li><a href="help.html" alt="Help">Help</a></li>
+                            <li><a href="contact.html" alt="Contact">Contact</a></li>
+                        </ul>
                     </div>
                     <div id="content">
                         <div id="main_text">
@@ -78,7 +61,7 @@
                             <div class="right_two_thirds">
                                 <h1>
                                     <a href="render.php?eadid={$eadid}&amp;view=title">
-                                        <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>         
+                                        <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
  </a>
                                                                     </h1>
                                 <h3>Scope &amp; content</h3>
@@ -110,13 +93,13 @@
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-    
+
     <xsl:template match="ead:list">
         <ul>
             <xsl:apply-templates/>
         </ul>
     </xsl:template>
-    
+
 <xsl:template match="ead:item">
         <li>
             <xsl:apply-templates/>
@@ -139,15 +122,15 @@
             <xsl:apply-templates/>
         </a>
 </xsl:template>
-    
+
 <xsl:template match="ead:title">
        <i>
            <xsl:apply-templates/>
        </i>
 </xsl:template>
-    
+
     <!-- The following general templates format the display of various RENDER attributes.-->
-    
+
     <xsl:template match="ead:emph[@render='bold']">
         <b>
             <xsl:apply-templates/>
@@ -173,13 +156,13 @@
             <xsl:apply-templates/>
         </super>
     </xsl:template>
-    
+
     <xsl:template match="ead:emph[@render='quoted']">
         <xsl:text>"</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>"</xsl:text>
     </xsl:template>
-    
+
     <xsl:template match="ead:emph[@render='doublequote']">
         <xsl:text>"</xsl:text>
         <xsl:apply-templates/>
@@ -230,6 +213,6 @@
             <xsl:apply-templates/>
         </font>
     </xsl:template>
-   
+
 
 </xsl:stylesheet>

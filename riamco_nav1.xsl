@@ -5,25 +5,15 @@
         <xsl:value-of select="/ead:ead/ead:eadheader/ead:eadid"/>
     </xsl:param>
 
-<xsl:template name="nav_template" > 
+<xsl:template name="nav_template" >
 
                             <div class="nav_column">
                               <h3>View Options:</h3>
                                 <ul>
-                                    <!-- <li>
-                                        <a href="render.php?eadid={$eadid}">Standard</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Entire finding aid</a>
-                                    </li> -->
-                                
                                     <li>
                                    <a onclick="window.open('pdfCreation.html','welcome','width=600,height=40')" href="mkpdf.php?eadd={$eadid}">
-				Printer-friendly (PDF)</a> 
+				Printer-friendly (PDF)</a>
                                     </li>
-                                   <!-- <li>
-                                        <a href="#">E-mail this finding aid</a>
-                                    </li> -->
                                 </ul>
                                 <h3>Sections:</h3>
                                 <ul>
@@ -69,16 +59,6 @@
                                         </li>
                                     </xsl:if>
                                 </ul>
-                               <!-- <h3>Search within document:</h3>
-                                <input name="search" type="text"/>
-                                <input name="go" type="submit" value="Search"/>
-                                <ul>
-                                    <li>
-                                        <a href="render.php?eadid={$eadid}">Top of finding aid</a>
-                                    </li>
-                                </ul>-->
-                                
-                                
                             </div>
 
 </xsl:template>

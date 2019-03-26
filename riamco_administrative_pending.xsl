@@ -3,14 +3,15 @@
     <xsl:param name="eadid">
         <xsl:value-of select="/ead:ead/ead:eadheader/ead:eadid"/>
     </xsl:param>
-    
-       
+
+
     <xsl:template match="/">
         <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
+                <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
 
 <script type="text/javascript">
 
@@ -58,9 +59,9 @@
                     </div>
                     <div id="content">
                         <div id="main_text">
-                            
-                            
-                            
+
+
+
                             <div class="nav_column">
                                 <h3>View Options:</h3>
                                 <ul>
@@ -70,18 +71,18 @@
                                         <li>
                                         <a href="#">Entire finding aid</a>
                                         </li> -->
-                                    
+
                                     <li>
-                                        <a onclick="window.open('pdfCreation.html','welcome','width=600,height=40')" href="mkpdf.php?eadd={$eadid}">Printer-friendly (PDF)</a> 
+                                        <a onclick="window.open('pdfCreation.html','welcome','width=600,height=40')" href="mkpdf.php?eadd={$eadid}">Printer-friendly (PDF)</a>
                                     </li>
                                     <!-- <li>
                                         <a href="#">E-mail this finding aid</a>
                                         </li> -->
                                 </ul>
-                                
-                                
-                                
-                                
+
+
+
+
                                 <h3>Sections:</h3>
                                 <ul>
                                     <li>
@@ -154,21 +155,21 @@
                                     aid</a>
                                     </li>
                                     </ul>-->
-                                
-                                
-                            </div>                      
-                            
+
+
+                            </div>
+
                             <div class="right_two_thirds">
                                 <h1>
                                     <a href="render_pending.php?eadid={$eadid}">
                                         <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
                                     </a>
-                                    
+
                                 </h1>
                                 <h3>Administrative Information</h3>
                                 <table width="695" border="0" cellpadding="0" cellspacing="0">
-                                   
-                                    
+
+
                                     <tr>
                                         <td class="category_column">ABOUT THE COLLECTION</td>
                                         <td class="table_section_header">&#160;</td>
@@ -217,12 +218,12 @@
                                         <td class="category_column"></td>
                                         <td class="info_column"></td>
                                     </tr>
-                                
+
                                          <tr>
                                             <td class="category_column"></td>
                                             <td class="info_column"></td>
                                         </tr>
-                                   
+
                                     <tr>
                                         <td class="category_column">ABOUT THE FINDING AID</td>
                                         <td class="table_section_header">&#160;</td>
@@ -292,7 +293,7 @@
                                                 <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:notestmt"/>
                                             </td>
                                         </tr>
-                                    </xsl:if>    
+                                    </xsl:if>
                                 </table>
                             </div>
                         </div>
@@ -314,19 +315,19 @@
             <xsl:apply-templates/>
         </ul>
     </xsl:template>
-    
+
     <xsl:template match="ead:item">
         <li>
             <xsl:apply-templates/>
         </li>
     </xsl:template>
-    
+
     <xsl:template match="ead:title">
         <i>
             <xsl:apply-templates/>
         </i>
     </xsl:template>
-    
+
     <xsl:template match="ead:seriesstmt/ead:p">
         <xsl:apply-templates/>
     </xsl:template>
@@ -346,7 +347,7 @@
  <xsl:template match="ead:processinfo/ead:p">
         <xsl:apply-templates/>
     </xsl:template>
-    
+
     <xsl:template match="ead:custodhist">
         <xsl:apply-templates/>
     </xsl:template>
@@ -358,7 +359,7 @@
     </xsl:template>
 
     <!-- The following general templates format the display of various RENDER attributes.-->
-    
+
     <xsl:template match="ead:emph[@render='bold']">
         <b>
             <xsl:apply-templates/>
@@ -384,13 +385,13 @@
             <xsl:apply-templates/>
         </super>
     </xsl:template>
-    
+
     <xsl:template match="ead:emph[@render='quoted']">
         <xsl:text>"</xsl:text>
         <xsl:apply-templates/>
         <xsl:text>"</xsl:text>
     </xsl:template>
-    
+
     <xsl:template match="ead:emph[@render='doublequote']">
         <xsl:text>"</xsl:text>
         <xsl:apply-templates/>

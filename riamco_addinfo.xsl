@@ -13,6 +13,8 @@
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
+                <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+
 <script type="text/javascript">
 
   var _gaq = _gaq || [];

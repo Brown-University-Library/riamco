@@ -14,6 +14,7 @@
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
                 <link href="css/inventory.css" rel="stylesheet" type="text/css"/>
+                <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
             </head>
             <body>
                 <div id="wrapper">

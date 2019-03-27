@@ -81,8 +81,8 @@
     <xsl:template name="series">
        <div class="series">
             <p>
-                <xsl:variable name="series_id" select="./@id" />
-                <a name="{$series_id}"></a>
+                <xsl:variable name="inventory_id" select="./@id" />
+                <a name="{$inventory_id}"></a>
                 <strong>
                     <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp']"/>
                     <xsl:choose>
@@ -193,6 +193,8 @@
 
     <xsl:template name="subseries">
         <p>
+            <xsl:variable name="inventory_id" select="./@id" />
+            <a name="{$inventory_id}"></a>
             <span class="indent_1">
                 <strong>
                     <xsl:apply-templates select="ead:did/ead:unitid[@type='subseries']"/>
@@ -293,6 +295,8 @@
 
 
     <xsl:template name="item">
+        <xsl:variable name="inventory_id" select="./@id" />
+        <a name="{$inventory_id}"></a>
         <xsl:choose>
         <xsl:when test="ead:c[@id='c1']">
 

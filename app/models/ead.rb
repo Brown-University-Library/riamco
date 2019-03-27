@@ -102,6 +102,7 @@ class Ead
                 institution_s: core_doc[:institution_s],
                 institution_id_s: core_doc[:institution_id_s],
                 timestamp_s: DateTime.now.to_s,
+                inventory_id_s:inv[:id],
                 inventory_container_txt_en: inv[:container_text],
                 inventory_scope_content_txt_en: inv[:scope_content],
                 inventory_label_txt_en: inv[:label],

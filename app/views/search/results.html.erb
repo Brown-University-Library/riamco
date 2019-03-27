@@ -90,7 +90,13 @@
                 <% item.children_sorted.each do |inv_item| %>
                   <tr>
                     <td class="inv-level"><%= inv_item.inv_level %></td>
-                    <td class="inv-container"><%= inv_item.inv_container %></td>
+                    <td class="inv-container">
+                      <% if inv_item.inv_id == nil %>
+                        <%= inv_item.inv_container %>
+                      <% else %>
+                        <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_container %></a>
+                      <% end %>
+                    </td>
                     <td class="inv-scope">
                       <%= inv_item.inv_label_hl.html_safe %><br/>
                       <%= inv_item.inv_scope_content_hl.html_safe %>

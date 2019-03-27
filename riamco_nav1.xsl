@@ -54,8 +54,8 @@
                         <xsl:variable name="toc_id" select="./@id" />
                         <li>
                             <a href="render.php?eadid={$eadid}&amp;view=inventory#{$toc_id}">
-                                <xsl:value-of select="./ead:did/ead:unittitle"/>.
                                 <xsl:value-of select="./ead:did/ead:unitid"/>.
+                                <xsl:value-of select="./ead:did/ead:unittitle"/>.
                                 <xsl:value-of select="./ead:did/ead:unitdate"/>
                             </a>
                         </li>

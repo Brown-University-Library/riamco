@@ -81,6 +81,8 @@
     <xsl:template name="series">
        <div class="series">
             <p>
+                <xsl:variable name="series_id" select="./@id" />
+                <a name="{$series_id}"></a>
                 <strong>
                     <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp']"/>
                     <xsl:choose>

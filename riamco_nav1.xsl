@@ -49,6 +49,18 @@
         <xsl:if test="/ead:ead/ead:archdesc/ead:dsc">
             <li>
                 <a href="render.php?eadid={$eadid}&amp;view=inventory">Inventory</a>
+                <ul>
+                    <xsl:for-each select="/ead:ead/ead:archdesc/ead:dsc/ead:c[@level='series']">
+                        <xsl:variable name="toc_id" select="./@id" />
+                        <li>
+                            <a href="render.php?eadid={$eadid}&amp;view=inventory#{$toc_id}">
+                                <xsl:value-of select="./ead:did/ead:unittitle"/>.
+                                <xsl:value-of select="./ead:did/ead:unitid"/>.
+                                <xsl:value-of select="./ead:did/ead:unitdate"/>
+                            </a>
+                        </li>
+                    </xsl:for-each>
+                </ul>
             </li>
         </xsl:if>
     </ul>

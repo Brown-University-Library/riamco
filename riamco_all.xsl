@@ -14,8 +14,7 @@
             </head>
             <body>
                 <div id="wrapper">
-                    <div class="top_menu">
-                    </div>
+                    <!-- <div class="top_menu"></div> -->
                     <div id="content">
                         <div id="main_text">
                             <div class="right_two_thirds">

@@ -55,8 +55,8 @@
                             <xsl:variable name="toc_id" select="./@id" />
                             <li>
                                 <a href="render.php?eadid={$eadid}&amp;view=inventory#{$toc_id}">
-                                    <xsl:value-of select="./ead:did/ead:unitid"/>.
-                                    <xsl:value-of select="./ead:did/ead:unittitle"/>.
+                                    <xsl:value-of select="./ead:did/ead:unitid"/>&#160;
+                                    <xsl:value-of select="./ead:did/ead:unittitle"/>&#160;
                                     <xsl:value-of select="./ead:did/ead:unitdate"/>
                                 </a>
                             </li>
@@ -68,9 +68,15 @@
     </ul>
 
     <h3>View Options</h3>
-    <ul>
+    <ul class="nav_section">
         <li>
-            <a href="render.php?eadid={$eadid}&amp;view=all" target="_blank">View All (printer friendly)</a>
+            <a href="download?eadid={$eadid}" target="_blank" title="Download the XML for this finding aid">Download XML</a>
+        </li>
+        <li>
+            <a href="http://riamco.org/render.php?eadid={$eadid}&amp;view=title" target="_blank" title="View this finding aid in the original riamco.org site">View in riamco.org</a>
+        </li>
+        <li>
+            <a href="render.php?eadid={$eadid}&amp;view=all" target="_blank" title="View all the information for this finding aid in a single page">View All (printer friendly)</a>
         </li>
     </ul>
 </div>

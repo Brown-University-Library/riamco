@@ -9,7 +9,7 @@
 
 <div class="nav_column">
     <h3>Sections</h3>
-    <ul>
+    <ul class="nav_section">
         <li>
             <a href="render.php?eadid={$eadid}&amp;view=title">Title</a>
         </li>
@@ -50,7 +50,7 @@
             <li>
                 <a href="render.php?eadid={$eadid}&amp;view=inventory">Inventory</a>
                 <xsl:if test="/ead:ead/ead:archdesc/ead:dsc/ead:c[@level='series']">
-                    <ul>
+                    <ul class="nav_inv_series">
                         <xsl:for-each select="/ead:ead/ead:archdesc/ead:dsc/ead:c[@level='series']">
                             <xsl:variable name="toc_id" select="./@id" />
                             <li>

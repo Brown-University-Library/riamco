@@ -60,6 +60,27 @@
 
                     </div>
                 </div>
+
+
+                <script type="text/javascript">
+                    window.onload = function() {
+                        // If we get an inventory ID in the "fragment identifier" of the URL
+                        // (the stuff after the # sign)...
+                        var id = window.location.toString().split("#")[1];
+                        if (id === undefined) {
+                            // no inventory id received
+                            return;
+                        }
+
+                        // ...highlight the "wrapper" for that inventory ID.
+                        var el = document.getElementById(id + "_wrapper");
+                        if (el != null) {
+                            // light yellow
+                            el.style = "background-color: #F3F5B3;"
+                        }
+                    };
+                </script>
+
             </body>
         </html>
     </xsl:template>
@@ -80,9 +101,9 @@
 
     <xsl:template name="series">
        <div class="series">
-            <p>
-                <xsl:variable name="inventory_id" select="./@id" />
-                <a name="{$inventory_id}"></a>
+            <xsl:variable name="inventory_id" select="./@id" />
+            <a name="{$inventory_id}" id="{$inventory_id}"></a>
+            <p id="{$inventory_id}_wrapper">
                 <strong>
                     <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp']"/>
                     <xsl:choose>
@@ -192,9 +213,9 @@
     </xsl:template>
 
     <xsl:template name="subseries">
-        <p>
-            <xsl:variable name="inventory_id" select="./@id" />
-            <a name="{$inventory_id}"></a>
+        <xsl:variable name="inventory_id" select="./@id" />
+        <a name="{$inventory_id}" id="{$inventory_id}"></a>
+        <p id = "{$inventory_id}_wrapper">
             <span class="indent_1">
                 <strong>
                     <xsl:apply-templates select="ead:did/ead:unitid[@type='subseries']"/>
@@ -296,11 +317,10 @@
 
     <xsl:template name="item">
         <xsl:variable name="inventory_id" select="./@id" />
-        <a name="{$inventory_id}"></a>
+        <a name="{$inventory_id}" id="{$inventory_id}"></a>
         <xsl:choose>
         <xsl:when test="ead:c[@id='c1']">
-
-                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
+                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2" id="{$inventory_id}_wrapper">
                     <tr class="table_section_header">
                         <td width="111">Container</td>
                         <td width="3"/>
@@ -312,7 +332,7 @@
                 </table>
                 </xsl:when>
 <xsl:otherwise>
-<table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
+<table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2" id="{$inventory_id}_wrapper">
         <tr>
             <td width="111" valign="top">
                 <xsl:apply-templates select="ead:did/ead:container"/>

@@ -3,9 +3,16 @@ Sources:
     Two-column layout: https://www.thesitewizard.com/css/design-2-column-layout.shtml
     Horizontal menu: http://css-snippets.com/simple-horizontal-navigation/
 */
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
 .top_menu {
     width: 100%;
-    height: 50px;
+    height: 52px;
     margin-top: -20px;
     margin-bottom: 20px;
     background-color:rgb(248, 248, 248);
@@ -61,13 +68,18 @@ Sources:
     cursor: default;
 }
 
+/* .nav li:hover {
+    background-color: darkgray;
+    margin: 0px 0px 0px 0px;
+    margin-bottom: -55px;
+} */
+
 .nav li {
     display: inline-block;
     border-bottom: none;
     height: 50px;
     line-height: 25px;
     padding: 15px;
-    margin-right: -4px;
 }
 
 /* TODO: rename "nav" to left_menu */
@@ -77,6 +89,7 @@ Sources:
 
 .nav_section li {
     list-style: none;
+    padding-bottom: 5px;
 }
 
 .nav_inv_series {
@@ -85,6 +98,16 @@ Sources:
 
 .nav_inv_series li {
     list-style: disc;
+}
+
+h1 {
+    margin-top: 0px;
+}
+
+h2 {
+    margin-top: -20px;
+    margin-bottom: 0px;
+    color: #254085;
 }
 
 h3 {
@@ -124,9 +147,8 @@ td {
 
 #sponsor_footer {
     width: 100%;
-    background-color:#f0f2f7;
+    background-color:#e4e8f0;
 }
-
 
 #main_text a:link {
     color: #254085;

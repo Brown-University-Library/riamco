@@ -8,6 +8,7 @@
 
 
 <xsl:include href="riamco_nav1.xsl" />
+<xsl:include href="riamco_html_title.xsl" />
 
 
 
@@ -16,7 +17,7 @@
         <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-                <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>
+                <xsl:call-template name="html_title_template" />
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
                 <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
 
@@ -65,6 +66,7 @@
                                         <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
  </a>
                                                                     </h1>
+                                <h2><xsl:value-of select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/></h2>
                                 <h3>Scope &amp; content</h3>
                                 <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:scopecontent"/>
 

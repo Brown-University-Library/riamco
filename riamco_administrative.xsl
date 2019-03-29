@@ -13,6 +13,7 @@
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <xsl:call-template name="html_title_template" />
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
+                <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
 
 <script type="text/javascript">
 

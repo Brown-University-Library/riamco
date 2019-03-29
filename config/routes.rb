@@ -29,7 +29,6 @@ Rails.application.routes.draw do
   get 'render_pending' => 'ead#show_pending', as: :ead_show_pending
   get 'render' => 'ead#show', as: :ead_show
   get 'download' => 'ead#download', as: :ead_download
-
   get 'about' => 'home#about', as: :home_about
   get 'contact' => 'home#contact', as: :home_contact
   get 'copyright' => 'home#copyright', as: :home_copyright
@@ -42,6 +41,7 @@ Rails.application.routes.draw do
   get 'participating' => 'home#participating', as: :home_participating
   get 'resources' => 'home#resources', as: :home_resources
   get 'visit' => 'home#visit', as: :home_visit
+  get 'status' => 'home#status', as: :home_status
 
   # Search URLs
   get 'advanced_proxy' => 'search#advanced_proxy', as: :advanced_proxy

@@ -46,8 +46,6 @@ class EadImport
                     import_one_file(file_name)
                     log_elapsed(start_file, "  File: #{File.basename(file_name)}")
                     count += 1
-                else
-                    Rails.logger.info("File: #{File.basename(file_name)} skipped #{mtime}")
                 end
             rescue => ex
                 # log_elapsed(start_file, "  Error on file: #{File.basename(file_name)}")

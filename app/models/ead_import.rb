@@ -53,7 +53,7 @@ class EadImport
             end
         end
         log_elapsed(start_all, "Import ended, #{count} files were imported")
-        return errors
+        return {count: count, errors: errors}
     end
 
     # Parses the XML files in the indicated path and outputs to the console the resulting JSON

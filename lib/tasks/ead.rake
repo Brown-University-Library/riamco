@@ -15,6 +15,8 @@ namespace :riamco do
 
     importer = EadImport.new(files_path, solr_url)
     errors = importer.import_files()
+    FindingAids.reload_cache()
+
     errors.each do |err|
         puts err
     end
@@ -34,9 +36,15 @@ namespace :riamco do
     end
 
     importer = EadImport.new(files_path, solr_url)
-    errors = importer.import_updated()
-    errors.each do |err|
-        puts err
+    result = importer.import_updated()
+    if result[:count] > 0
+      FindingAids.reload_cache()
+    end
+
+    if result[:errors]
+        errors.each do |err|
+          puts err
+      end
     end
   end
 

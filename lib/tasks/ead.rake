@@ -41,8 +41,8 @@ namespace :riamco do
       FindingAids.reload_cache()
     end
 
-    if result[:errors]
-        errors.each do |err|
+    if result[:errors].count > 0
+      result[:errors].each do |err|
           puts err
       end
     end

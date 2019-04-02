@@ -42,6 +42,12 @@ class AdvancedSearchPresenter
     # free form fields in the advanced search form.
     @facets = results.facets.select {|f| f.name != "title_s" && f.name != "date_range_s" }
 
+    @facets.each do |facet|
+      if facet.name == "institution_s"
+        facet.values.sort_by! {|value| value.text}
+      end
+    end
+
     @results = results.items
     set_urls_in_facets()
     set_remove_url_in_facets()

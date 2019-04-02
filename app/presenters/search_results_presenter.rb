@@ -52,8 +52,11 @@ class SearchResultsPresenter
     @facets = results.facets
 
     @facets.each do |facet|
-      if facet.name == "date_range_s"
+      case
+      when facet.name == "date_range_s"
         facet.values.sort_by! {|value| value.text}.reverse!
+      when facet.name == "institution_s"
+        facet.values.sort_by! {|value| value.text}
       end
     end
 

@@ -45,4 +45,4 @@ See [this document](https://docs.google.com/document/d/1zQG6yT5sITz8JeCn4ILDOLy1
 
 
 # Solr Index
-The code to convert the finding aids from XML to Solr documents is in the `models/ead.rb` file.
+The code to convert the finding aids from XML to Solr documents is in the `./app/models/ead.rb` file.

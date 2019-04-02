@@ -4,11 +4,6 @@ class HomeController < ApplicationController
     @presenter = HomePresenter.new()
   end
 
-  def advanced_search
-    @nav_active = "nav_advanced"
-    render text: "Advanced Search TBD"
-  end
-
   def contact
     @nav_active = "nav_contact"
     @presenter = HomePresenter.new()
@@ -34,6 +29,10 @@ class HomeController < ApplicationController
 
   def help
     @nav_active = "nav_help"
+    @presenter = HomePresenter.new()
+  end
+
+  def help_advanced_search
     @presenter = HomePresenter.new()
   end
 

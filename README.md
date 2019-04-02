@@ -40,7 +40,8 @@ You can pass `false` as the second argument to skip the pushing of the data to S
 
 
 # General Architecture
-See [https://docs.google.com/document/d/1zQG6yT5sITz8JeCn4ILDOLy1nT5XAY6MwSRHm36Pwog/edit?usp=sharing](this document).
+
+See [this document](https://docs.google.com/document/d/1zQG6yT5sITz8JeCn4ILDOLy1nT5XAY6MwSRHm36Pwog/).
 
 
 # Solr Index

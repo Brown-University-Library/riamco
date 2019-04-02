@@ -9,24 +9,24 @@
 
     <h1>Help</h1>
     <h2>How to Search or Browse</h2>
-    <p>Use the search box on the <a href="<%= root_path() %>">RIAMCO Home page</a> to find a word (or words) 
-    appearing anywhere within RIAMCO finding aids. <a href="advanced_search.html">Advanced Search</a> 
-    will allow you to specify where in the documents to look for the words you enter and to limit 
-    your search to one or more specific institutions. Use <a href="browse.html">Browse</a> to find 
-    lists of archival collections under the name of an institution or by the subject of the 
-    collections. The <a href="advanced_search_help.html">Advanced Search Help</a> page provides 
+    <p>Use the search box on the <a href="<%= root_path() %>">RIAMCO Home page</a> to find a word (or words)
+    appearing anywhere within RIAMCO finding aids. <a href="advanced_search.html">Advanced Search</a>
+    will allow you to specify where in the documents to look for the words you enter and to limit
+    your search to one or more specific institutions. Use <a href="browse.html">Browse</a> to find
+    lists of archival collections under the name of an institution or by the subject of the
+    collections. The <a href="help_advanced_search">Advanced Search Help</a> page provides
     explanations of advanced search terms and search tips.</p>
 
 
     <h2>Additional Help</h2>
     <p>Please contact the <a href="<%= home_participating_path() %>">Participating Institution</a> with questions about specific collections. The name of the Participating Institution appears at the beginning of each finding aid. </p>
-    
+
     <h2>Frequently Asked Questions </h2>
     <p>The <a href="<%= home_faq_path() %>">FAQ page</a> provides answers to other common questions about using archival collections.</p>
   </div>
 </div>
 
-<script> 
+<script>
   $(function() {
     $("#q").focus(); // Force focus to the search textbox
     $("#nav_help").addClass("active");

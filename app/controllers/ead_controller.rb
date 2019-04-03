@@ -101,7 +101,7 @@ class EadController < ApplicationController
     def load_pending_ead_html(id, view)
       Rails.logger.info("Generating HTML for pending file #{id}, #{view}")
       xml_file = ENV["EAD_XML_PENDING_FILES_PATH"] + "/#{id}.xml"
-      xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}_pending.xsl"
+      xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
       document = Nokogiri::XML(File.read(xml_file))
       template = Nokogiri::XSLT(File.read(xsl_file))
       html = template.transform(document)

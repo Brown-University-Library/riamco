@@ -8,6 +8,7 @@
 
     <xsl:include href="riamco_nav1.xsl" />
     <xsl:include href="riamco_html_title.xsl" />
+    <xsl:include href="riamco_ga.xsl" />
 
     <xsl:template match="/">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -16,7 +17,8 @@
                 <xsl:call-template name="html_title_template" />
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
                 <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
-                <script src="js/jquery.js"></script>
+                <script type="text/javascript" src="js/jquery.js"></script>
+                <xsl:call-template name="google_analytics_script" />
             </head>
             <body>
                 <div id="wrapper">

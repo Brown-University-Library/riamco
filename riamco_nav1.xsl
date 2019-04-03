@@ -82,7 +82,7 @@
 </div>
 
 <script type="text/javascript">
-    window.onload = function() {
+    $(function() {
         if (window.location.toString().indexOf("render_pending") == -1) {
             // nothing to do
             return;
@@ -95,7 +95,7 @@
         for(i = 0; i <xsl:text disable-output-escaping="yes">&lt;</xsl:text> links.length; i++) {
             links[i].href = links[i].href.replace("render.php?","render_pending.php?")
         }
-    };
+    });
 </script>
 
 </xsl:template>

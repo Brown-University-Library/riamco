@@ -15,6 +15,7 @@
                 <xsl:call-template name="html_title_template" />
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
                 <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+                <script src="js/jquery.js"></script>
 
 <script type="text/javascript">
 

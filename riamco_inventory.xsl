@@ -16,6 +16,7 @@
                 <xsl:call-template name="html_title_template" />
                 <link href="css/riamco.css" rel="stylesheet" type="text/css"/>
                 <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+                <script src="js/jquery.js"></script>
             </head>
             <body>
                 <div id="wrapper">
@@ -65,7 +66,7 @@
 
 
                 <script type="text/javascript">
-                    window.onload = function() {
+                    $(function() {
                         // If we get an inventory ID in the "fragment identifier" of the URL
                         // (the stuff after the # sign)...
                         var id = window.location.toString().split("#")[1];
@@ -80,7 +81,7 @@
                             // light yellow
                             el.style = "background-color: #F3F5B3;"
                         }
-                    };
+                    });
                 </script>
 
             </body>

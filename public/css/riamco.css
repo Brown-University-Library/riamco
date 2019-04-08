@@ -1,3 +1,4 @@
+
 /*
 Sources:
     Two-column layout: https://www.thesitewizard.com/css/design-2-column-layout.shtml
@@ -170,4 +171,17 @@ td {
 #main_text a:hover {
     color : #254085;
     text-decoration : underline;
+}
+
+.table_section_header {
+    font-weight: bold;
+}
+
+.table_inventory {
+    text-align: left;
+    border-collapse: collapse;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;     /* light gray */
 }

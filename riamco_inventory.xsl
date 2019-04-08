@@ -203,13 +203,13 @@
             </xsl:if>
 
             <xsl:if test="child::ead:c[@level='file' or @level='item']">
-                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
+                <table class="table_inventory">
                     <tr class="table_section_header">
-                        <td width="111">Container</td>
-                        <td width="3"/>
+                        <td width="180">Container</td>
+                        <td width="3"></td>
                         <td width="382">Description</td>
                         <td width="3"/>
-                        <td width="114">Date</td>
+                        <td width="150">Date</td>
                     </tr>
                     <xsl:apply-templates select="child::ead:c[@level='file' or @level='item']"/>
                 </table>
@@ -301,18 +301,18 @@
         </p>
 
 
-       <xsl:if test="child::ead:c[@level='subseries']">
-        <xsl:apply-templates select="child::ead:c[@level='subseries']"/>
-            </xsl:if>
+        <xsl:if test="child::ead:c[@level='subseries']">
+            <xsl:apply-templates select="child::ead:c[@level='subseries']"/>
+        </xsl:if>
 
-       <xsl:if test="child::ead:c[@level='file' or @level='item']">
-          <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
-                    <tr class="table_section_header">
-                        <td width="111">Container</td>
-                        <td width="3"/>
-                        <td width="382">Description</td>
-                        <td width="3"/>
-                        <td width="114">Date</td>
+        <xsl:if test="child::ead:c[@level='file' or @level='item']">
+            <table class="table_inventory">
+                <tr class="table_section_header">
+                    <td width="180">Container</td>
+                    <td width="3"></td>
+                    <td width="382">Description</td>
+                    <td width="3"/>
+                    <td width="150">Date</td>
                 </tr>
                 <xsl:apply-templates select="child::ead:c"/>
             </table>
@@ -322,231 +322,210 @@
 
     <xsl:template name="item">
         <xsl:variable name="inventory_id" select="./@id" />
-        <a name="{$inventory_id}" id="{$inventory_id}"></a>
+        <!--
+            The table should be at the (outer) container level,
+            in this case at the Series level, not on each individual item!
+            <table class="table_inventory" id="{$inventory_id}_wrapper">
+            </table>
+        -->
         <xsl:choose>
-        <xsl:when test="ead:c[@id='c1']">
-                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2" id="{$inventory_id}_wrapper">
-                    <tr class="table_section_header">
-                        <td width="111">Container</td>
-                        <td width="3"/>
-                        <td width="382">Description</td>
-                        <td width="3"/>
-                        <td width="114">Date</td>
-                    </tr>
-                    <xsl:apply-templates select="ead:c"/>
-                </table>
-                </xsl:when>
-<xsl:otherwise>
-<table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2" id="{$inventory_id}_wrapper">
-        <tr>
-            <td width="111" valign="top">
-                <xsl:apply-templates select="ead:did/ead:container"/>
-            </td>
-            <td width="3" valign="top"/>
+            <xsl:when test="ead:c[@id='c1']">
+                <tr class="table_section_header" id="{$inventory_id}_wrapper">
+                    <td width="180">Container</td>
+                    <td width="3"><a name="{$inventory_id}" id="{$inventory_id}"></a></td>
+                    <td width="382">Description</td>
+                    <td width="3"/>
+                    <td width="150">Date</td>
+                </tr>
+                <xsl:apply-templates select="ead:c"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <tr id="{$inventory_id}_wrapper">
+                    <td width="180" valign="top">
+                        <xsl:apply-templates select="ead:did/ead:container"/>
+                    </td>
+                    <td width="3" valign="top"><a name="{$inventory_id}" id="{$inventory_id}"></a></td>
+                    <td width="382" valign="top">
 
+                        <!-- Just for Birri Pinturas collection -->
+                        <xsl:if test="ead:odd[@type='Birriproject']">
+                            <b><xsl:text>Birri Project: </xsl:text></b>
+                            <b><xsl:apply-templates select="ead:odd/ead:p"/></b>
+                            <br/>
+                        </xsl:if>
 
-            <td width="382" valign="top">
-
-                <!-- Just for Birri Pinturas collection -->
-                <xsl:if test="ead:odd[@type='Birriproject']">
-                    <b><xsl:text>Birri Project: </xsl:text></b>
-                    <b><xsl:apply-templates select="ead:odd/ead:p"/></b>
-                    <br/>
-                </xsl:if>
-
-                <xsl:choose>
-                    <xsl:when test="ead:dao[@ns2:role='METSID']">
-                        <u>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                    <xsl:text>/</xsl:text>
-                                </xsl:attribute>
-                                <xsl:attribute name="target">_blank</xsl:attribute>
+                        <xsl:choose>
+                            <xsl:when test="ead:dao[@ns2:role='METSID']">
+                                <u>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
+                                            <xsl:text>/</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                    </a>
+                                </u>
+                                <br/>
+                            </xsl:when>
+                            <xsl:when test="ead:dao[@ns2:role='BDR_PID']">
+                                <u>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
+                                            <xsl:text>/</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                    </a>
+                                </u>
+                                <br/>
+                            </xsl:when>
+                            <xsl:otherwise>
                                 <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                            </a>
-                        </u>
-                        <br/>
-                    </xsl:when>
-                    <xsl:when test="ead:dao[@ns2:role='BDR_PID']">
-                        <u>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                    <xsl:text>/</xsl:text>
-                                </xsl:attribute>
-                                <xsl:attribute name="target">_blank</xsl:attribute>
-                                <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                            </a>
-                        </u>
-                        <br/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                        <br/>
-                    </xsl:otherwise>
-                </xsl:choose>
+                                <br/>
+                            </xsl:otherwise>
+                        </xsl:choose>
 
-                <xsl:if test="ead:did/ead:physdesc/ead:extent">
-                    <xsl:apply-templates select="ead:did/ead:physdesc/ead:extent"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:did/ead:physdesc/ead:extent">
+                            <xsl:apply-templates select="ead:did/ead:physdesc/ead:extent"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:scopecontent/ead:p">
-                    <xsl:text>Contents Note: </xsl:text>
-                    <xsl:apply-templates select="ead:scopecontent/ead:p"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:scopecontent/ead:p">
+                            <xsl:text>Contents Note: </xsl:text>
+                            <xsl:apply-templates select="ead:scopecontent/ead:p"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:odd/ead:p">
-                    <xsl:text>General Note: </xsl:text>
-                    <xsl:apply-templates select="ead:odd/ead:p"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:odd/ead:p">
+                            <xsl:text>General Note: </xsl:text>
+                            <xsl:apply-templates select="ead:odd/ead:p"/>
+                            <br/>
+                        </xsl:if>
 
+                        <xsl:if test="ead:scopecontent/ead:p/ead:list">
+                            <xsl:apply-templates select="process"/>
+                        </xsl:if>
 
-                <xsl:if test="ead:scopecontent/ead:p/ead:list">
-                    <xsl:apply-templates select="process"/>
-                </xsl:if>
+                        <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Item']">
+                            <xsl:apply-templates select="ead:acqinfo/ead:p/ead:num"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Item']">
+                        <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Accession']">
+                            <xsl:text>Accession Number: </xsl:text>
+                            <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
+                            <br/>
+                        </xsl:if>
 
-                    <xsl:apply-templates select="ead:acqinfo/ead:p/ead:num"/>
-                    <br/>
-                </xsl:if>
+                        <!-- Just for Birri Pinturas collection -->
+                        <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Birriclassification']">
+                            <xsl:text>Birri Classification Code: </xsl:text>
+                            <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Accession']">
-                    <xsl:text>Accession Number: </xsl:text>
-                    <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
-                    <br/>
-                </xsl:if>
+                        <!-- Just for Hubert Jennings papers -->
+                        <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Jenningsclasscode']">
+                            <xsl:text>Jennings Classification Code: </xsl:text>
+                            <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
+                            <br/>
+                        </xsl:if>
 
-                <!-- Just for Birri Pinturas collection -->
-                <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Birriclassification']">
-                    <xsl:text>Birri Classification Code: </xsl:text>
-                    <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:did/ead:physdesc/ead:genreform">
+                            <xsl:text>Genre: </xsl:text>
+                            <xsl:apply-templates select="ead:did/ead:physdesc/ead:genreform"/>
+                            <br/>
+                        </xsl:if>
 
-                <!-- Just for Hubert Jennings papers -->
-                <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Jenningsclasscode']">
-                    <xsl:text>Jennings Classification Code: </xsl:text>
-                    <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:did/ead:physdesc/ead:dimensions">
+                            <xsl:text>Dimensions: </xsl:text>
+                            <xsl:apply-templates select="ead:did/ead:physdesc/ead:dimensions"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:did/ead:physdesc/ead:genreform">
-                    <xsl:text>Genre: </xsl:text>
-                    <xsl:apply-templates select="ead:did/ead:physdesc/ead:genreform"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:did/ead:materialspec">
+                            <xsl:text>Medium: </xsl:text>
+                            <xsl:apply-templates select="ead:did/ead:materialspec"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:did/ead:physdesc/ead:dimensions">
-                    <xsl:text>Dimensions: </xsl:text>
-                    <xsl:apply-templates select="ead:did/ead:physdesc/ead:dimensions"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:altformavail">
+                            <xsl:text>Location of copies: </xsl:text>
+                            <xsl:apply-templates select="ead:altformavail"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:did/ead:materialspec">
-                    <xsl:text>Medium: </xsl:text>
-                    <xsl:apply-templates select="ead:did/ead:materialspec"/>
-                    <br/>
-                </xsl:if>
+                        <!-- to show just the <physdesc> tag when it has no children -->
+                        <xsl:if test="ead:did/ead:physdesc[not(ead:extent|ead:genreform|ead:dimensions)]">
+                            <xsl:text>Physical Description Note: </xsl:text>
+                            <xsl:apply-templates select="ead:did/ead:physdesc[not(ead:extent|ead:genreform|ead:dimensions)]"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:altformavail">
-                    <xsl:text>Location of copies: </xsl:text>
-                    <xsl:apply-templates select="ead:altformavail"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:did/ead:langmaterial">
+                            <xsl:apply-templates select="ead:did/ead:langmaterial"/>
+                            <br/>
+                        </xsl:if>
 
-                <!-- to show just the <physdesc> tag when it has no children -->
+                        <xsl:if test="ead:arrangement/ead:p">
+                            <xsl:text>Arrangement: </xsl:text>
+                            <xsl:apply-templates select="ead:arrangement/ead:p"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:did/ead:physdesc[not(ead:extent|ead:genreform|ead:dimensions)]">
-                    <xsl:text>Physical Description Note: </xsl:text>
-                    <xsl:apply-templates select="ead:did/ead:physdesc[not(ead:extent|ead:genreform|ead:dimensions)]"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:controlaccess/ead:subject">
+                            <br/>
+                            <text>Subjects: </text>
+                            <br/>
+                            <xsl:apply-templates select="ead:controlaccess/ead:subject"/>
+                        </xsl:if>
 
-                <xsl:if test="ead:did/ead:langmaterial">
-                    <xsl:apply-templates select="ead:did/ead:langmaterial"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:controlaccess/ead:persname">
+                            <br/>
+                            <text>Names: </text>
+                            <br/>
+                            <xsl:apply-templates select="ead:controlaccess/ead:persname"/>
+                            <xsl:apply-templates select="ead:controlaccess/ead:corpname"/>
+                            <br/>
+                        </xsl:if>
 
+                        <xsl:if test="ead:did/ead:origination/ead:persname">
+                            <br/>
+                            <text>Names: </text>
+                            <br/>
+                            <xsl:apply-templates select="ead:did/ead:origination/ead:persname"/>
+                            <xsl:apply-templates select="ead:did/ead:origination/ead:corpname"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:arrangement/ead:p">
-                    <xsl:text>Arrangement: </xsl:text>
-                    <xsl:apply-templates select="ead:arrangement/ead:p"/>
-                    <br/>
-                </xsl:if>
+                        <xsl:if test="ead:bioghist/ead:p">
+                            <xsl:apply-templates select="ead:bioghist/ead:p"/>
+                            <br/>
+                        </xsl:if>
 
-                <xsl:if test="ead:controlaccess/ead:subject">
-                    <br/>
-                    <text>Subjects: </text>
-                    <br/>
-                    <xsl:apply-templates select="ead:controlaccess/ead:subject"/>
+                        <xsl:if test="ead:did/ead:note/ead:p">
+                            <br/>
+                            <xsl:apply-templates select="ead:did/ead:note/ead:p"/>
+                            <br/>
+                        </xsl:if>
+                    </td>
 
-                </xsl:if>
+                    <td width="3" valign="top"/>
 
-                <xsl:if test="ead:controlaccess/ead:persname">
-                    <br/>
-                    <text>Names: </text>
-                    <br/>
-                    <xsl:apply-templates select="ead:controlaccess/ead:persname"/>
-                    <xsl:apply-templates select="ead:controlaccess/ead:corpname"/>
-                    <br/>
-                </xsl:if>
-
-                <xsl:if test="ead:did/ead:origination/ead:persname">
-                    <br/>
-                    <text>Names: </text>
-                    <br/>
-                    <xsl:apply-templates select="ead:did/ead:origination/ead:persname"/>
-                    <xsl:apply-templates select="ead:did/ead:origination/ead:corpname"/>
-                    <br/>
-                </xsl:if>
-
-                <xsl:if test="ead:bioghist/ead:p">
-                    <xsl:apply-templates select="ead:bioghist/ead:p"/>
-                    <br/>
-                </xsl:if>
-
-                <xsl:if test="ead:did/ead:note/ead:p">
-                    <br/>
-                    <xsl:apply-templates select="ead:did/ead:note/ead:p"/>
-                    <br/>
-                </xsl:if>
-
-            </td>
-
-            <td width="3" valign="top"/>
-
-            <td width="114" valign="top">
-                <xsl:apply-templates select="ead:did/ead:unitdate"/>
-            </td>
-        </tr>
-       </table>
-
-     </xsl:otherwise>
+                    <td width="150" valign="top">
+                        <xsl:apply-templates select="ead:did/ead:unitdate"/>
+                    </td>
+                </tr>
+            </xsl:otherwise>
         </xsl:choose>
 
-
         <xsl:if test="child::ead:c[@level='file' or @level='item']">
-
-                <xsl:apply-templates select="child::ead:c[@level='file' or @level='item']"/>
+            <xsl:apply-templates select="child::ead:c[@level='file' or @level='item']"/>
         </xsl:if>
 
-
-    </xsl:template>
-
-
-
-   <!--  <xsl:template match="ead:controlaccess/ead:persname">
-        <xsl:apply-templates/>
-        <xsl:text> (</xsl:text>
-        <xsl:value-of select="./@role"/>
-        <xsl:text>)</xsl:text>
-        <br/>
-        </xsl:template> -->
+    </xsl:template> <!-- item -->
 
     <xsl:template match="ead:did/ead:unitid[@type='subgrp']">
         <xsl:apply-templates/>
@@ -567,7 +546,7 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-<xsl:template match="ead:geogname">
+    <xsl:template match="ead:geogname">
         <br/>
         <xsl:apply-templates/>
     </xsl:template>
@@ -581,28 +560,28 @@
     </xsl:template>
 
     <xsl:template match="ead:scopecontent/ead:p">
-            <xsl:apply-templates/>
-            <br/>
-            <xsl:if test="following-sibling::ead:p">
+        <xsl:apply-templates/>
+        <br/>
+        <xsl:if test="following-sibling::ead:p">
             <br/>
         </xsl:if>
     </xsl:template>
 
     <xsl:template match="p">
-<p><xsl:apply-templates/></p>
-</xsl:template>
+        <p><xsl:apply-templates/></p>
+    </xsl:template>
 
      <xsl:template match="ead:list">
-	<ul>
-	<xsl:apply-templates select="ead:item"/>
-	</ul>
-</xsl:template>
+	    <ul>
+	        <xsl:apply-templates select="ead:item"/>
+	    </ul>
+    </xsl:template>
 
-<xsl:template match="ead:item">
-	<li>
-    <xsl:apply-templates/>
-    </li>
-</xsl:template>
+    <xsl:template match="ead:item">
+	    <li>
+            <xsl:apply-templates/>
+        </li>
+    </xsl:template>
 
     <xsl:template name="process">
         <xsl:element name="table">
@@ -634,7 +613,7 @@
         </xsl:if>
     </xsl:template>
 
-<xsl:template match="ead:arrangement/ead:p">
+    <xsl:template match="ead:arrangement/ead:p">
             <xsl:apply-templates/>
     </xsl:template>
 
@@ -662,25 +641,25 @@
         <br/>
     </xsl:template>
 
-<xsl:template match="ead:extref[@xlink:href]">
+    <xsl:template match="ead:extref[@xlink:href]">
         <a href="{@xlink:href}">
             <xsl:apply-templates/>
         </a>
-</xsl:template>
+    </xsl:template>
 
-<xsl:template match="ead:archref[@xlink:href]">
+    <xsl:template match="ead:archref[@xlink:href]">
         <u>
             <a href="{@xlink:href}">
-            <xsl:apply-templates/>
+                <xsl:apply-templates/>
             </a>
         </u>
-</xsl:template>
+    </xsl:template>
 
-<xsl:template match="ead:dao[@xlink:href]">
+    <xsl:template match="ead:dao[@xlink:href]">
         <a href="http://dl.lib.brown.edu/repository2/repoman.php?verb=render&amp;id={@xlink:href}">
-           <xsl:apply-templates select="ead:unittitle"/>
+        <xsl:apply-templates select="ead:unittitle"/>
         </a>
-</xsl:template>
+    </xsl:template>
 
     <xsl:template match="ead:title">
         <i>

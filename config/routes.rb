@@ -36,7 +36,6 @@ Rails.application.routes.draw do
   get 'finding_aid' => 'home#finding_aid', as: :home_finding_aid
   get 'glossary' => 'home#glossary', as: :home_glossary
   get 'help' => 'home#help', as: :home_help
-  get 'help_advanced_search' => 'home#help_advanced_search', as: :home_help_advanced_search
   get 'join' => 'home#join', as: :home_join
   get 'links' => 'home#links', as: :home_links
   get 'participating' => 'home#participating', as: :home_participating

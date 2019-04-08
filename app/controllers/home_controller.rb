@@ -32,10 +32,6 @@ class HomeController < ApplicationController
     @presenter = HomePresenter.new()
   end
 
-  def help_advanced_search
-    @presenter = HomePresenter.new()
-  end
-
   def participating
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()

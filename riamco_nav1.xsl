@@ -52,14 +52,21 @@
                 <xsl:if test="/ead:ead/ead:archdesc/ead:dsc/ead:c[@level='series']">
                     <ul class="nav_inv_series">
                         <xsl:for-each select="/ead:ead/ead:archdesc/ead:dsc/ead:c[@level='series']">
-                            <xsl:variable name="toc_id" select="./@id" />
-                            <li>
-                                <a class="toc_link" href="render.php?eadid={$eadid}&amp;view=inventory#{$toc_id}">
-                                    <xsl:value-of select="./ead:did/ead:unitid"/>&#160;
-                                    <xsl:value-of select="./ead:did/ead:unittitle"/>&#160;
-                                    <xsl:value-of select="./ead:did/ead:unitdate"/>
-                                </a>
-                            </li>
+                            <xsl:choose>
+                                <xsl:when test="./ead:did/ead:unitid[@type='Archivists Toolkit Database::RESOURCE_COMPONENT']">
+                                    <li style="display:none">_</li>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:variable name="toc_id" select="./@id" />
+                                    <li>
+                                        <a class="toc_link" href="render.php?eadid={$eadid}&amp;view=inventory#{$toc_id}">
+                                            <xsl:value-of select="./ead:did/ead:unitid"/>&#160;
+                                            <xsl:value-of select="./ead:did/ead:unittitle"/>&#160;
+                                            <xsl:value-of select="./ead:did/ead:unitdate"/>
+                                        </a>
+                                    </li>
+                                </xsl:otherwise>
+                            </xsl:choose>
                         </xsl:for-each>
                     </ul>
                 </xsl:if>
@@ -90,6 +97,11 @@
 
         // Make sure the Table of Contents links point to "render_pending"
         // rather than "render"
+        //
+        // Notice that we need to disable escaping to insert the "less than"
+        // operator in the for loop expression because we are inside an XML/
+        // XSTL document.
+        //
         var links = document.getElementsByClassName("toc_link");
         var i;
         for(i = 0; i <xsl:text disable-output-escaping="yes">&lt;</xsl:text> links.length; i++) {

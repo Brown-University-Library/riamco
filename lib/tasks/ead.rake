@@ -1,6 +1,11 @@
 require "./app/models/ead_import.rb"
 
 namespace :riamco do
+  desc "Reloads the finding aids cache"
+  task :reload_cache => :environment do |cmd, args|
+    FindingAids.reload_cache()
+  end
+
   desc "Imports to Solr all EAD files in the path given"
   task :import_eads, [:files_path] => :environment do |cmd, args|
     files_path = args[:files_path]

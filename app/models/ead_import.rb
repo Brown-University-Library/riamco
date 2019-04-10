@@ -20,8 +20,8 @@ class EadImport
                 import_one_file(file_name)
                 log_elapsed(start_file, "  File: #{File.basename(file_name)} [#{ix+1}/#{count}]")
             rescue => ex
-                log_elapsed(start_file, "  Error on file: #{File.basename(file_name)}")
-                errors << "File: #{file_name}: #{ex}, #{ex.backtrace}"
+                log_elapsed(start_file, "  Error on file: #{File.basename(file_name)}. #{ex}")
+                errors << "File: #{file_name}. #{ex}, #{ex.backtrace}"
             end
         end
         log_elapsed(start_all, "Import ended")
@@ -95,7 +95,11 @@ class EadImport
             solr_docs = ead.to_solr(true)
             json_docs = solr_docs.map { |solr_doc| solr_doc.to_json }
             json = "[" + json_docs.join(", ") + "]"
-            @solr.update(json)
+            response = @solr.update(json)
+            if !response.ok?
+                raise response.error_msg
+            end
+            nil
         end
 
         def elapsed_ms(start)

@@ -10,6 +10,7 @@
     <xsl:include href="riamco_nav1.xsl"/>
     <xsl:include href="riamco_html_title.xsl" />
     <xsl:include href="riamco_ga.xsl" />
+    <xsl:include href="riamco_top_banner.xsl" />
 
     <xsl:template match="/">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -36,42 +37,32 @@
                     </div>
                     <div id="content">
                         <div id="main_text">
-
-
-<xsl:call-template name="nav_template" />
-
-
-			<div class="right_two_thirds">
-                                <h1>
-                                    <a href="render.php?eadid={$eadid}&amp;view=title">
-                                        <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
-</a>
-                                </h1>
-                                <h2><xsl:value-of select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/></h2>
+                            <xsl:call-template name="nav_template" />
+                			<div class="right_two_thirds">
+                                <xsl:call-template name="top_banner" />
                                 <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:bioghist"/>
-
-<xsl:choose>
-<xsl:when test="ead:chronlist/ead:chronitem">
-<table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_1">
-                    <tr class="table_section_header">
-                        <td width="114">Date</td>
-                        <td width="385">Event</td>
-                </tr>
-                 <tr>
-                        <td width="114"><xsl:apply-templates select="ead:date"/></td>
-                        <td width="385"><xsl:apply-templates select="ead:event"/></td>
-                </tr>
-            </table>
-            </xsl:when>
-            <xsl:otherwise>
-            <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_1">
-            <tr>
-                        <td width="114"><xsl:apply-templates select="ead:date"/></td>
-                        <td width="385"><xsl:apply-templates select="ead:event"/></td>
-                </tr>
-            </table>
-            </xsl:otherwise>
-</xsl:choose>
+                                <xsl:choose>
+                                <xsl:when test="ead:chronlist/ead:chronitem">
+                                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_1">
+                                                    <tr class="table_section_header">
+                                                        <td width="114">Date</td>
+                                                        <td width="385">Event</td>
+                                                </tr>
+                                                <tr>
+                                                        <td width="114"><xsl:apply-templates select="ead:date"/></td>
+                                                        <td width="385"><xsl:apply-templates select="ead:event"/></td>
+                                                </tr>
+                                            </table>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                            <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_1">
+                                            <tr>
+                                                        <td width="114"><xsl:apply-templates select="ead:date"/></td>
+                                                        <td width="385"><xsl:apply-templates select="ead:event"/></td>
+                                                </tr>
+                                            </table>
+                                            </xsl:otherwise>
+                                </xsl:choose>
 
 			    <xsl:if test="ead:ead/ead:eadheader/ead:eadid[@mainagencycode='US-RBrRW']">
 			        <img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='a']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='b']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='c']/@xlink:href}"/>

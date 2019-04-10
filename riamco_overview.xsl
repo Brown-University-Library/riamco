@@ -7,6 +7,7 @@
 <xsl:include href="riamco_nav1.xsl" />
 <xsl:include href="riamco_html_title.xsl" />
 <xsl:include href="riamco_ga.xsl" />
+<xsl:include href="riamco_top_banner.xsl" />
 
     <xsl:template match="/">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,21 +34,9 @@
                     </div>
                     <div id="content">
                         <div id="main_text">
-
-
-
-
-<xsl:call-template name="nav_template" />
-
-
-
-
+                            <xsl:call-template name="nav_template" />
                             <div class="right_two_thirds">
-                                <h1>
-                                    <a href="render.php?eadid={$eadid}&amp;view=title">
-                                        <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/></a>
-                                </h1>
-                                <h2><xsl:value-of select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/></h2>
+                                <xsl:call-template name="top_banner" />
                                 <h3>Collection Overview</h3>
                                 <table width="695" border="0" cellpadding="0" cellspacing="0">
                                     <tr>

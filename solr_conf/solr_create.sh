@@ -6,8 +6,16 @@ export SOLR_CORE=riamco2
 # solr delete -c $SOLR_CORE
 # solr create -c $SOLR_CORE
 
-
-# TODO: add definition for _txts_en
+#
+# This is needed for field creators_txts_en
+#
+curl -X POST -H 'Content-type:application/json' --data-binary '{
+  "add-dynamic-field":{
+    "name":"*_txts_en",
+    "type":"text_en",
+    "multiValued":true
+  }
+}' $SOLR_URL/$SOLR_CORE/schema
 
 # Reload Solr core (needed after updating solrconfig.xml)
 #

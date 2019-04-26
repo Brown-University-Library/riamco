@@ -20,16 +20,8 @@
             </head>
             <body>
                 <div id="wrapper">
-                <div class="top_menu">
-                    <ul class="nav navbar-nav">
-                        <li><a href="index.html" alt="RIAMCO">RIAMCO</a></li>
-                        <li><a href="index.html" alt="Home">Home</a></li>
-                        <li><a href="browse.html" alt="Browse">Browse</a></li>
-                        <li><a href="advanced_search.html" alt="Advanced Search">Advanced Search</a></li>
-                        <li><a href="about.html" alt="About">About</a></li>
-                        <li><a href="help.html" alt="Help">Help</a></li>
-                        <li><a href="contact.html" alt="Contact">Contact</a></li>
-                    </ul>
+                <div class="topbar">
+                    <p><a href="index.html">RIAMCO</a></p>
                 </div>
                 <div id="content">
                     <div id="main_text">

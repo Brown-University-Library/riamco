@@ -11,8 +11,30 @@ body {
     margin-right: 0px;
 }
 
+.topbar {
+	color: white;
+	background-color: #1e5a95;
+	height: 30px;
+	font-size: 20px;
+    padding-left: 10px;
+
+    width: 100%;
+    margin-left: 290px;
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+
+.topbar a {
+    color: white;
+    text-decoration: none;
+
+}
+
+.topbar a:hover {
+    text-decoration: underline;
+}
+
 .top_menu {
-    /* display: none; */
     width: 100%;
     height: 52px;
     margin-left: 270px;

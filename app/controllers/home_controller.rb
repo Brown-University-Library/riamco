@@ -66,6 +66,11 @@ class HomeController < ApplicationController
     @presenter = HomePresenter.new()
   end
 
+  def resources_other
+    @nav_active = "nav_about"
+    @presenter = HomePresenter.new()
+  end
+
   def status
     solr_url = ENV["SOLR_URL"]
     searcher = Search.new(solr_url)

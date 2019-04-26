@@ -1,137 +1,20 @@
 <%= render "facets_javascript" %>
-<div class="container">
-  <div class="row">
-    <%= render "search_box" %>
-  </div>
+
+<div class="col-sm-3 hidden-print content-margin-top">
+  <%= render "results_facets" %>
 </div>
 
-<div class="container results-page">
-  <div class="row results-page-wrapper">
-    <div class="results-wrapper col-lg-9 col-lg-push-3 col-md-9 col-md-push-3 col-sm-8 col-sm-push-4">
-      <div class="result-nums-breadcrumbs-wrapper">
-        <%= render "results_pagination_top" %>
-        <%= render "results_search_terms" %>
-      </div> <!-- result-nums-breadcrumbs-wrapper -->
-
-      <h2 class="visible-print">Results</h2>
-
-      <!-- search results -->
-      <div class="row col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <% @presenter.results.each do |item| %>
-
-          <div class="result-row">
-            <div class="result-title">
-                <% if item.title == "" %>
-                  <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>">(untitled)</a>
-                <% else %>
-                  <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_hl.html_safe %></a>
-                <% end %>
-            </div>
-
-            <dl>
-              <% if @presenter.debug %>
-                <dt class="result-debug">Format:</dt> <dd class="result-debug"><%= item.inv_level %></dd>
-                <dt class="result-debug">Timestamp:</dt> <dd class="result-debug"><%= item.timestamp %></dd>
-                <dt class="result-debug">Start Year:</dt> <dd class="result-debug"><%= item.start_year %></dd>
-                <dt class="result-debug">End Year:</dt> <dd class="result-debug"><%= item.end_year %></dd>
-                <dt class="result-debug"></dt> <dd><a target="_blank", href="<%= ead_download_path() %>?eadid=<%=item.ead_id %>">Download XML</a></dd>
-                <% if @presenter.empty_search? %>
-                  <dt class="result-debug"></dt> <dd><%= item.match_count %> archival items</dd>
-                <% end %>
-              <% end %>
-
-              <% if item.extent %>
-                <dt>Extent:</dt> <dd><%= item.extent %></dd>
-              <% end %>
-
-              <% if item.abstract %>
-                <dt>Abstract:</dt> <dd><%= item.abstract_hl.html_safe %></dd>
-              <% end %>
-
-              <% if item.scope_content_hl? %>
-                <dt>Scope and Content:</dt> <dd><%= item.scope_content_hl.html_safe %></dd>
-              <% end %>
-
-              <% if item.biog_hist_hl? %>
-                <dt>Biog./Historical note:</dt> <dd><%= item.biog_hist_hl.html_safe %></dd>
-              <% end %>
-
-              <% if item.subjects_hl? %>
-                <dt>Subjects:</dt> <dd><%= item.subjects_hl.html_safe %></dd>
-              <% end %>
-
-              <% if item.repository %>
-                <dt>Repository:</dt> <dd><%= item.repository %></dd>
-              <% end %>
-
-              <% if item.call_no %>
-                <dt>Collection call no:</dt> <dd><%= item.call_no %></dd>
-              <% end %>
-
-              <% if item.inv_container %>
-                <dt>Container:</dt> <dd><%= item.inv_container %></dd>
-              <% end %>
-
-              <% if item.inv_label %>
-                <dt>Label:</dt> <dd><%= item.inv_label_hl.html_safe %></dd>
-              <% end %>
-
-              <% if item.inv_date %>
-                <dt>Date:</dt> <dd><%= item.inv_date %></dd>
-              <% end %>
-
-              <% if !@presenter.empty_search? && item.children.count > 0 %>
-                <dt>Inventory:</dt><dd></dd>
-              <% end %>
-            </dl>
-
-            <% if !@presenter.empty_search? && item.children.count > 0 %>
-              <table class="inventory-table">
-                <% item.children_sorted.each do |inv_item| %>
-                  <tr>
-                    <td class="inv-level"><%= inv_item.inv_level %></td>
-                    <td class="inv-container">
-                      <% if inv_item.inv_id == nil %>
-                        <%= inv_item.inv_container %>
-                      <% else %>
-                        <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_container %></a>
-                      <% end %>
-                    </td>
-                    <td class="inv-scope">
-                      <%= inv_item.inv_label_hl.html_safe %><br/>
-                      <%= inv_item.inv_scope_content_hl.html_safe %>
-                    </td>
-                    <td class="inv-date"><%= inv_item.inv_date %></td>
-                  </tr>
-                <% end %>
-              </table>
-              <div class="inventory-bottom">
-                <% if item.match_count > 4 %>
-                  ...and <%= item.match_count-4 %> other <%= @presenter.inventory_more_link(item, 4).html_safe %>
-                <% else %>
-                  &nbsp;
-                <% end %>
-              </div>
-            <% end %>
-
-            <div class="separator"></div>
-          </div> <!-- result-row -->
-
-        <% end %> <!-- @presenter.results.each -->
-      </div> <!-- row col-lg-12 col-md-12 col-sm-12 col-xs-12 -->
-
-      <%=render "results_pagination_bottom" %>
-
-    </div> <!-- results-wrapper col-lg-9 col-lg-push-3 ... -->
-
-    <% if @presenter.num_found > 0 %>
-      <div class="col-lg-3 col-lg-pull-9 col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 hidden-print" id="search-facets">
-        <%= render "results_facets" %>
-      </div>
+<div class="results-wrapper col-sm-7 content-margin-top">
+    <% if @presenter.home_page? %>
+      <%= render "results_home_page" %>
+    <% else %>
+      <%= render "results_rows" %>
     <% end %>
+</div> <!-- results-wrapper -->
 
-  </div> <!-- row results-page-wrapper -->
-</div> <!-- container results-page -->
+<div class="col-sm-2 hidden-print content-margin-top">
+    <%= render "results_options" %>
+</div>
 
 <script>
   $(function() {

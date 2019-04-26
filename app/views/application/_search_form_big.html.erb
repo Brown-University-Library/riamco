@@ -1,25 +1,29 @@
-<div class="container" role="main">
-  <div class="row hero">
-    <div class="theme-showcase">
-      <div class="col-md-12">
-        <div class="jumbotron">
-          <img src="<%= image_url('RIAMCO_header_graphic.gif') %>" alt="RIAMCO" />
-        </div>
-
-        <form id="search-homepage" action="<%= search_path() %>" name="search-home" role="search" method="GET">
-        <div class="input-group input-group-lg">
-          <input class="form-control" id="q" name="q" placeholder="Names, places, subjects, material types..." title="Enter text to search for" type="text">
-          <div class="input-group-btn">
-            <button type="submit" class="btn btn-primary btn-lg sympl-search">
-              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              <span aria-only="true">Search</span>
-            </button>
-          </div>
-        </div>
-        </form>
-
+<div class="search-form">
+  <form id="search-homepage" action="<%= search_path() %>" name="search-home" role="search" method="GET">
+    <div class="input-group input-group-lg">
+      <input class="form-control" id="q" name="q"
+        value="<%= @presenter.query %>"
+        placeholder="Names, places, subjects, material types..."
+        title="Enter text to search for"
+        type="text">
+      <div class="input-group-btn">
+        <button type="submit" class="btn btn-primary btn-lg sympl-search">
+          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+          <span aria-only="true">Search</span>
+        </button>
+      </div>
+    </div>
+    <div class="input-group input-group-lg">
+        <div class="input-group">
+          <a href="<%= advanced_search_url() %>">Advanced Search</a>
         </div>
     </div>
-  </div>
+
+    <% (@presenter.form_values || []).each do |form_value| %>
+      <input name="<%= form_value[:name] %>" id="<%= form_value[:name] %>"
+        value="<%= form_value[:value] %>"
+        type="text" class="hidden">
+    <% end %>
+  </form>
 </div>
 

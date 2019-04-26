@@ -14,13 +14,35 @@
  *= require_self
  */
 
+ /* Used to force the content columns to have an extra margin */
+ .content-margin-top {
+	margin-top:10px;
+}
 
-/*
- * RIAMCO blue: #254085
- * Other blue: #1e5a95  (Gives better contrast for text)
- */
 .navbar-default {
     margin-bottom: 15px;
+}
+
+.topbar {
+	color: white;
+	background-color: #1e5a95;
+	height: 30px;
+	font-size: 20px;
+	padding-left: 20px;
+}
+
+/* https://css-tricks.com/child-and-sibling-selectors/ */
+.topbar a {
+	color: white;
+}
+
+.search-form {
+	/* gray */
+	/* background-color:  #e8e8e8; */
+	/* gray-blueish */
+	background-color: #eaeded;
+	margin-top: 20px;
+	padding: 20px 10px 10px 10px;
 }
 
 .jumbotron {
@@ -82,9 +104,19 @@ em {
   background-color: #e8fae8; /* light green */
 }
 
-#search-facets {
+.options {
+	margin-top: 20px;
+}
+
+.facet {
+	margin-left: 5px;
+}
+
+.facet_top_msg {
+	opacity: 0.6;
+	/* color: #e8e8e8; */
+	margin-bottom: 0px;
 	padding-left: 0px;
-	padding-right: 0px;
 }
 
 .facetLabel {
@@ -110,12 +142,13 @@ em {
 /* results */
 .results-wrapper {
 	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-	padding-right: 0;
+	padding-right: 0px;
+	padding-left: 0px;
 }
 
 .result-row {
 	padding-bottom:10px;
-	padding-left: 15px;
+	/* padding-left: 15px; */
 }
 
 .result-row > dl > dt {
@@ -173,91 +206,15 @@ em {
   padding-right: 15px;
 }
 
-#search-result-count {
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
-	cursor: default;
-	margin: 0 1.5rem 1.8rem 1.5rem;
-	padding: 1rem 0;
+.results-stats {
+	padding-top: 10px;
 }
-#search-result-count .search-result-previous {
-	position: relative;
-	padding: 1rem;
-}
-#search-result-count .search-result-previous:after {
-	content: "";
-	position: absolute;
-	top: 5%;
-	right: 0;
-	width: 1px;
-	height: 90%;
-	background: #000;
-}
-#search-result-count .search-result-previous.is-active:hover {
-	background-color: #337ab7;
-	transition-property: background-color;
-	transition-delay: 0s;
-	transition-duration: .3s;
-	transition-timing-function: ease;
-	cursor: pointer;
-}
-#search-result-count .search-result-previous.is-active:hover a {
-	color: #fff;
-	transition-property: color;
-	transition-delay: 0s;
-	transition-duration: .3s;
-	transition-timing-function: ease;
-}
-#search-result-count .search-result-previous.is-active:hover .glyphicon {
-	color: #fff;
-	transition-property: color;
-	transition-delay: 0s;
-	transition-duration: .3s;
-	transition-timing-function: ease;
-}
-#search-result-count .search-result-next {
-	position: relative;
-	padding: 1rem;
-}
-#search-result-count .search-result-next:before {
-	content: "";
-	position: absolute;
-	top: 5%;
-	left: 0;
-	width: 1px;
-	height: 90%;
-	background: #000;
-}
-#search-result-count .search-result-next.is-active:hover {
-	background-color: #337ab7;
-	transition-property: background-color;
-	transition-delay: 0s;
-	transition-duration: .3s;
-	transition-timing-function: ease;
-	cursor: pointer;
-}
-#search-result-count .search-result-next.is-active:hover a {
-	color: #fff;
-	transition-property: color;
-	transition-delay: 0s;
-	transition-duration: .3s;
-	transition-timing-function: ease;
-}
-#search-result-count .search-result-next.is-active:hover .glyphicon {
-	color: #fff;
-	transition-property: color;
-	transition-delay: 0s;
-	transition-duration: .3s;
-	transition-timing-function: ease;
-}
-#search-result-count .search-result-numbers {
-	position: relative;
-	padding: 1rem;
-}
+
 .facet-breadcrumbs {
-  padding-left: 1.5rem;
-  margin-bottom: 7px;
+  padding: 10px;
+	background-color:#eaeded;
 }
+
 .facet-breadcrumbs .search-result-facets a {
 	border: 1px solid gray;
 	border-radius: 5px;
@@ -265,37 +222,19 @@ em {
 	margin: 0 0 .5rem 0; /* negative margin to remove white space between inline-block span elements */
 	padding: .5rem .8rem;
 }
-#search-result-count .glyphicon {
-	color: #333;
-	font-weight: 100;
-	transform: scale(1.5);
-}
-#search-result-count .glyphicon-chevron-left {
-	margin-right: .5rem;
-}
-#search-result-count .glyphicon-chevron-right {
-	margin-left: .5rem;
-}
-#search-result-count .is-inactive {
-	color: #aaa;
-}
-#search-result-count a, .text-muted {
-	color: #333;
-}
-#search-result-count a {
-	font-weight: 600;
-}
-/*
-.facet-breadcrumbs a {
- 	color: #333;
-}
-.facet-breadcrumbs a:hover {
-	color: #594036;
-}
-*/
+
 .categoryCount {
   color: #594036;
   margin: 0 -2px;
+}
+
+.pagination-top {
+	margin-top: 15px;
+}
+
+.pagination-top hr {
+	margin-top: 5px;
+	margin-bottom: 10px;
 }
 
 .panel-group {

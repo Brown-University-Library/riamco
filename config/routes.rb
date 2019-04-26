@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   get 'join' => 'home#join', as: :home_join
   get 'links' => 'home#links', as: :home_links
   get 'participating' => 'home#participating', as: :home_participating
+  get 'resources_other' => 'home#resources_other', as: :home_resources_other
   get 'resources' => 'home#resources', as: :home_resources
   get 'visit' => 'home#visit', as: :home_visit
   get 'status' => 'home#status', as: :home_status
@@ -64,7 +65,7 @@ Rails.application.routes.draw do
   # get 'ead/:id' => 'ead#show', as: :ead_show, constraints: { id: /[a-zA-Z0-9\.\-]+/ }
 
   # Home page
-  root 'home#index'
+  root 'search#index'
 
   # For everything else, there's Master 404 Card.
   get '*path' => 'home#page_not_found'

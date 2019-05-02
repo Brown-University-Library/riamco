@@ -193,11 +193,11 @@
             <xsl:if test="child::ead:c[@level='file' or @level='item']">
                 <table class="table_inventory">
                     <tr class="table_section_header">
-                        <td width="180">Container</td>
-                        <td width="3"></td>
-                        <td width="382">Description</td>
-                        <td width="3"/>
-                        <td width="150">Date</td>
+                        <td class="col_container">Container</td>
+                        <td class="col_dummy"></td>
+                        <td class="col_description">Description</td>
+                        <td class="col_dummy"></td>
+                        <td class="col_date">Date</td>
                     </tr>
                     <xsl:apply-templates select="child::ead:c[@level='file' or @level='item']"/>
                 </table>
@@ -296,11 +296,11 @@
         <xsl:if test="child::ead:c[@level='file' or @level='item']">
             <table class="table_inventory">
                 <tr class="table_section_header">
-                    <td width="180">Container</td>
-                    <td width="3"></td>
-                    <td width="382">Description</td>
-                    <td width="3"/>
-                    <td width="150">Date</td>
+                    <td class="col_container">Container</td>
+                    <td class="col_dummy"></td>
+                    <td class="col_description">Description</td>
+                    <td class="col_dummy"/>
+                    <td class="col_date">Date</td>
                 </tr>
                 <xsl:apply-templates select="child::ead:c"/>
             </table>
@@ -319,21 +319,21 @@
         <xsl:choose>
             <xsl:when test="ead:c[@id='c1']">
                 <tr class="table_section_header" id="{$inventory_id}_wrapper">
-                    <td width="180">Container</td>
-                    <td width="3"><a name="{$inventory_id}" id="{$inventory_id}"></a></td>
-                    <td width="382">Description</td>
-                    <td width="3"/>
-                    <td width="150">Date</td>
+                    <td class="col_container">Container</td>
+                    <td class="col_dummy"><a name="{$inventory_id}" id="{$inventory_id}"></a></td>
+                    <td class="col_description">Description</td>
+                    <td class="col_dummy"/>
+                    <td class="col_date">Date</td>
                 </tr>
                 <xsl:apply-templates select="ead:c"/>
             </xsl:when>
             <xsl:otherwise>
                 <tr id="{$inventory_id}_wrapper">
-                    <td width="180" valign="top">
+                    <td class="col_container" valign="top">
                         <xsl:apply-templates select="ead:did/ead:container"/>
                     </td>
-                    <td width="3" valign="top"><a name="{$inventory_id}" id="{$inventory_id}"></a></td>
-                    <td width="382" valign="top">
+                    <td class="col_dummy" valign="top"><a name="{$inventory_id}" id="{$inventory_id}"></a></td>
+                    <td class="col_description" valign="top">
 
                         <!-- Just for Birri Pinturas collection -->
                         <xsl:if test="ead:odd[@type='Birriproject']">
@@ -500,9 +500,9 @@
                         </xsl:if>
                     </td>
 
-                    <td width="3" valign="top"/>
+                    <td class="col_dummy" valign="top"/>
 
-                    <td width="150" valign="top">
+                    <td class="col_date" valign="top">
                         <xsl:apply-templates select="ead:did/ead:unitdate"/>
                     </td>
                 </tr>

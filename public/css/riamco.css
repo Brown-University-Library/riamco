@@ -1,8 +1,10 @@
-
 /*
-Sources:
-    Two-column layout: https://www.thesitewizard.com/css/design-2-column-layout.shtml
-    Horizontal menu: http://css-snippets.com/simple-horizontal-navigation/
+    These styles are ONLY used when rendering the individual finding aids by
+    transforming the XML files (via XSLT) into HTML files.
+
+    Sources:
+        Two-column layout: https://www.thesitewizard.com/css/design-2-column-layout.shtml
+        Horizontal menu: http://css-snippets.com/simple-horizontal-navigation/
 */
 
 body {
@@ -203,8 +205,25 @@ td {
 .table_inventory {
     text-align: left;
     border-collapse: collapse;
+    width: 95%;
 }
 
 .table_inventory > tbody > tr:nth-child(even) {
     background-color: #eee;     /* light gray */
+}
+
+.col_container {
+    width: 20%
+}
+
+.col_dummy {
+    width: 1%
+}
+
+.col_description {
+    width: 60%
+}
+
+.col_date {
+    width: 18%
 }

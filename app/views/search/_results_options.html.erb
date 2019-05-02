@@ -17,13 +17,13 @@
                 <ul class="list-unstyled">
                     <% if @presenter.popup %>
                         <li><a href="" data-toggle="modal" data-target="#modal_search_tips">Search Tips</a>
-                        <li><a href="" data-toggle="modal" data-target="#modal_faq">FAQ</a>
-                        <li><a href="<%= home_contact_url() %>">Contact an Institution</a>
+                        <li><a href="" data-toggle="modal" data-target="#modal_faq" title="Frequently Asked Questions about this site">FAQ</a>
+                        <li><a href="<%= home_contact_url() %>" title="Information on how to contact a member institution">Contact an Institution</a>
                         <li><a href="" data-toggle="modal" data-target="#modal_resources_other">Other Resources</a>
                     <% else %>
                         <li><a href="" data-toggle="modal" data-target="#modal_search_tips">Search Tips</a>
-                        <li><a href="<%= home_faq_url() %>">FAQ</a>
-                        <li><a href="<%= home_contact_url() %>">Contact an Institution</a>
+                        <li><a href="<%= home_faq_url() %>" title="Frequently Asked Questions about this site">FAQ</a>
+                        <li><a href="<%= home_contact_url() %>" title="Information on how to contact a member institution">Contact an Institution</a>
                         <li><a href="<%= home_resources_other_url() %>">Other Resources</a>
                     <% end %>
                 </ul>
@@ -40,8 +40,8 @@
             </div>
             <div id="op_participating" class="panel-body panel-collapse collapse in">
                 <ul class="list-unstyled">
-                    <li><a href="<%= home_join_url() %>">Become a Participating Institution</a>
-                    <li><a href="https://library.brown.edu/riamco_admin/login/?next=/riamco_admin/">Log-in</a>
+                    <li><a href="<%= home_join_url() %>" title="Become a Participating Institution">Join RIAMCO</a>
+                    <li><a href="https://library.brown.edu/riamco_admin/login/?next=/riamco_admin/" title="Login to deposit new finding aids">Log-in</a>
                     <li><a href="<%= home_resources_url() %>"">Resources</a>
                 </ul>
             </div> <!-- panel body -->

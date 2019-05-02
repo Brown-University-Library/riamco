@@ -1,10 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink">
-
     <xsl:param name="eadid">
         <xsl:value-of select="/ead:ead/ead:eadheader/ead:eadid"/>
     </xsl:param>
 
+    <!-- access points -->
+    <xsl:param name="ap_person">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:persname">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_corporation">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:corpname">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_subject">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:subject">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_genre">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:genreform">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_occupation">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:occupation">yes</xsl:if>
+    </xsl:param>
 <xsl:template name="nav_template" >
 
 <div class="nav_column">
@@ -19,6 +38,11 @@
         <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:scopecontent">
             <li>
                 <a class="toc_link" href="render.php?eadid={$eadid}&amp;view=scope">Scope &amp; content</a>
+            </li>
+        </xsl:if>
+        <xsl:if test="$ap_person = 'yes' or $ap_corporation = 'yes' or $ap_subject = 'yes' or $ap_genre = 'yes' or $ap_occupation = 'yes'">
+            <li>
+                <a class="toc_link" href="render?eadid={$eadid}&amp;view=access_points">Access Points</a>
             </li>
         </xsl:if>
         <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:arrangement">

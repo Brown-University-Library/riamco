@@ -2,7 +2,11 @@
 
 <div class="results-stats">
     <%= render "results_search_terms" %>
-    <%= render "results_pagination_top" %>
+    <% if @presenter.num_found > 0 %>
+      <%= render "results_pagination_top" %>
+    <% else %>
+      <%= render "results_not_found" %>
+    <% end %>
 </div>
 
 <h2 class="visible-print">Results</h2>

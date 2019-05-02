@@ -1,5 +1,7 @@
   <div id="facets" class="facet">
-    <p class="facet_top_msg">Limit My Results</p>
+    <% if @presenter.num_found > 0 %>
+      <p class="facet_top_msg">Limit My Results</p>
+    <% end %>
 
     <% @presenter.facets.each do |facet| %>
       <% next if facet.values.count == 0 %>

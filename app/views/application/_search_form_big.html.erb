@@ -2,7 +2,7 @@
   <form id="search-homepage" action="<%= search_path() %>" name="search-home" role="search" method="GET">
     <div class="input-group input-group-lg">
       <input class="form-control" id="q" name="q"
-        value="<%= @presenter.query %>"
+        value="<%= @presenter != nil ? @presenter.query : '' %>"
         placeholder="Names, places, subjects, material types..."
         title="Enter text to search for"
         type="text">
@@ -19,10 +19,12 @@
         </div>
     </div>
 
-    <% (@presenter.form_values || []).each do |form_value| %>
-      <input name="<%= form_value[:name] %>" id="<%= form_value[:name] %>"
-        value="<%= form_value[:value] %>"
-        type="text" class="hidden">
+    <% if @presenter != nil %>
+      <% (@presenter.form_values || []).each do |form_value| %>
+        <input name="<%= form_value[:name] %>" id="<%= form_value[:name] %>"
+          value="<%= form_value[:value] %>"
+          type="text" class="hidden">
+      <% end %>
     <% end %>
   </form>
 </div>

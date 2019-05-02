@@ -37,6 +37,10 @@
             <dt>Extent:</dt> <dd><%= item.extent %></dd>
           <% end %>
 
+          <% if item.date_display %>
+            <dt>Date range:</dt> <dd><%= item.date_display %></dd>
+          <% end %>
+
           <% if item.abstract %>
             <dt>Abstract:</dt> <dd><%= item.abstract_hl.html_safe %></dd>
           <% end %>

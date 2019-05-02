@@ -4,7 +4,7 @@ require "./app/models/institutions.rb"
 
 class Ead
     attr_reader :abstract, :biog_hist, :bulk, :call_no,
-        :creators, :date, :end_year, :extent, :filing_title,
+        :creators, :date, :date_display, :end_year, :extent, :filing_title,
         :filing_title_sort, :formats, :id, :institution, :institution_id,
         :keywords, :languages, :repository_name, :scope_content,
         :start_year, :subjects, :title, :title_sort, :title_sort_alpha,
@@ -22,6 +22,8 @@ class Ead
         years = get_doc_years(@date)
         @end_year = years[1]
         @start_year = years[0]
+
+        @date_display = get_doc_date_display()
 
         @extent = get_doc_extent()
         @filing_title = get_doc_filing_title()
@@ -55,6 +57,7 @@ class Ead
             creators_txts_en: self.creators,
             date_s: self.date,
             date_range_s: date_facet(self.start_year),
+            date_display_s: self.date_display,
             end_year_i: self.end_year,
             extent_s: self.extent,
             filing_title_s: self.filing_title,
@@ -247,6 +250,22 @@ class Ead
             date_str = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unitdate[@type='inclusive']/@normal")
             return date_range_from_string(date_str)
         end
+
+        def get_doc_date_display()
+            inclusive = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unitdate[@type='inclusive']/text()")
+            bulk = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unitdate[@type='bulk']/text()")
+            case
+                when inclusive == nil && bulk == nil
+                    return nil
+                when inclusive != nil && bulk == nil
+                    return inclusive
+                when inclusive == nil && bulk != nil
+                    return bulk
+                else
+                    return inclusive + " " + bulk
+            end
+        end
+
 
         def get_doc_biog_hist()
             get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:bioghist/xmlns:p")

@@ -1,5 +1,5 @@
 class SearchItem
-  attr_accessor :id, :ead_id, :title, :abstract, :call_no,
+  attr_accessor :id, :ead_id, :date_display, :title, :abstract, :call_no,
     :scope_content, :extent, :repository,
     :institution_name, :institution_id,
     :start_year, :end_year,
@@ -37,6 +37,7 @@ class SearchItem
     @children = []
     @childre_sorted = nil
     @match_count = 0
+    @date_display = nil
   end
 
   def title_hl
@@ -92,7 +93,7 @@ class SearchItem
   end
 
   def self.from_hash(h, highlights)
-    SearchItem.new(h["id"], h["ead_id_s"], h["title_s"],
+    item = SearchItem.new(h["id"], h["ead_id_s"], h["title_s"],
       h["abstract_txt_en"], h["call_no_s"], h["scope_content_txts_en"],
       h["extent_s"], h["repository_name_s"],
       h["institution_s"], h["institution_id_s"],
@@ -100,6 +101,9 @@ class SearchItem
       h["inventory_id_s"], h["inventory_level_s"], h["inventory_scope_content_txt_en"],
       h["inventory_label_txt_en"], h["inventory_date_s"], h["inventory_container_txt_en"],
       h["timestamp_s"], highlights)
+
+    item.date_display = h["date_display_s"]
+    item
   end
 
   def add_child(h, highlights)

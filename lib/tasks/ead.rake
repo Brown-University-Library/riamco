@@ -55,7 +55,7 @@ namespace :riamco do
 
 
   desc "Parses EAD files and outputs to the console the generated JSON that would be used in Solr (but does not import it)"
-  task :parse_eads, [:files_path, :import] => :environment do |cmd, args|
+  task :parse_eads, [:files_path] => :environment do |cmd, args|
     files_path = args[:files_path]
     if files_path == nil
       abort "Must provide file path to import (e.g. /some/path/*.xml)"

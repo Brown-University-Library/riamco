@@ -50,67 +50,47 @@
         <xsl:if test="./ead:persname">
             <b>Subject Names</b>
             <ul>
-                <xsl:apply-templates/>
+                <xsl:for-each select="./ead:persname">
+                    <li><xsl:value-of select="text()"/></li>
+                </xsl:for-each>
             </ul>
         </xsl:if>
 
         <xsl:if test="./ead:corpname">
             <b>Subject Organizations</b>
             <ul>
-                <xsl:apply-templates/>
+                <xsl:for-each select="./ead:corpname">
+                    <li><xsl:value-of select="text()"/></li>
+                </xsl:for-each>
             </ul>
         </xsl:if>
 
         <xsl:if test="./ead:subject">
             <b>Subject Topics</b>
             <ul>
-                <xsl:apply-templates/>
+                <xsl:for-each select="./ead:subject">
+                    <li><xsl:value-of select="text()"/></li>
+                </xsl:for-each>
             </ul>
         </xsl:if>
 
         <xsl:if test="./ead:genreform">
             <b>Document Types</b>
             <ul>
-                <xsl:apply-templates/>
+                <xsl:for-each select="./ead:genreform">
+                    <li><xsl:value-of select="text()"/></li>
+                </xsl:for-each>
             </ul>
         </xsl:if>
 
         <xsl:if test="./ead:occupation">
             <b>Occupations</b>
             <ul>
-                <xsl:apply-templates/>
+                <xsl:for-each select="./ead:occupation">
+                    <li><xsl:value-of select="text()"/></li>
+                </xsl:for-each>
             </ul>
         </xsl:if>
 
-    </xsl:template>
-
-    <xsl:template match="ead:persname">
-        <li>
-            <xsl:apply-templates/>
-        </li>
-    </xsl:template>
-
-    <xsl:template match="ead:corpname">
-        <li>
-            <xsl:apply-templates/>
-        </li>
-    </xsl:template>
-
-    <xsl:template match="ead:subject">
-        <li>
-            <xsl:apply-templates/>
-        </li>
-    </xsl:template>
-
-    <xsl:template match="ead:genreform">
-        <li>
-            <xsl:apply-templates/>
-        </li>
-    </xsl:template>
-
-    <xsl:template match="ead:occupation">
-        <li>
-            <xsl:apply-templates/>
-        </li>
     </xsl:template>
 </xsl:stylesheet>

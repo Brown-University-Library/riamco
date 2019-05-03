@@ -606,9 +606,19 @@
     </xsl:template>
 
     <xsl:template match="ead:container">
-        <xsl:value-of select="@label"/>
-        <xsl:text> </xsl:text>
-        <xsl:apply-templates/>
+        <xsl:choose>
+            <xsl:when test="contains(@label, '[')">
+                <!-- do not display the barcode -->
+                <xsl:value-of select="substring-before(@label, ' [')"/>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="@label"/>
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
         <xsl:if test="following-sibling::ead:container">
             <xsl:text>, </xsl:text>
         </xsl:if>

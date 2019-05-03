@@ -26,9 +26,20 @@
 .topbar {
 	color: white;
 	background-color: #1e5a95;
-	height: 30px;
+	height: 60px;
 	font-size: 20px;
 	padding-left: 20px;
+}
+
+.topbar-heading {
+	margin-bottom: 0px;
+	padding-top: 3px;
+}
+
+.topbar-subheading {
+	font-size: smaller;
+	margin-bottom: 0px;
+	margin-top: -2px;
 }
 
 /* https://css-tricks.com/child-and-sibling-selectors/ */

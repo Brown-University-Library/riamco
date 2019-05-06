@@ -23,18 +23,15 @@
                 <xsl:call-template name="google_analytics_script" />
             </head>
             <body>
+                <div class="topbar">
+                    <a href="index.html" title="Go back to the RIAMCO home page">
+                        <div>
+                                <p class="topbar-heading">RIAMCO</p>
+                                <p class="topbar-subheading">Rhode Island Archival and Manuscript Collections Online</p>
+                        </div>
+                    </a>
+                </div>
                 <div id="wrapper">
-                    <div class="top_menu">
-                        <ul class="nav navbar-nav">
-                            <li><a href="index.html" alt="RIAMCO">RIAMCO</a></li>
-                            <li><a href="index.html" alt="Home">Home</a></li>
-                            <li><a href="browse.html" alt="Browse">Browse</a></li>
-                            <li><a href="advanced_search.html" alt="Advanced Search">Advanced Search</a></li>
-                            <li><a href="about.html" alt="About">About</a></li>
-                            <li><a href="help.html" alt="Help">Help</a></li>
-                            <li><a href="contact.html" alt="Contact">Contact</a></li>
-                        </ul>
-                    </div>
                     <div id="content">
                         <div id="main_text">
                             <xsl:call-template name="nav_template" />

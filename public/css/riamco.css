@@ -229,3 +229,47 @@ td {
 .col_date {
     width: 18%
 }
+
+/* Top right menu options */
+.top_banner > hr {
+    width: 75%;
+    float: left;
+}
+
+.top_banner_right {
+    float: right;
+    width: 173px;
+    margin-right: 10px;
+}
+
+.panel {
+    margin-top: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+.panel-heading {
+    background-color: #1e5a95;
+}
+
+.panel-heading > h3 {
+    margin-top: 0px;
+    text-transform: none;
+    color:white;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.list-unstyled > li {
+    padding-bottom: 5px;
+    margin-left: 10px;
+}

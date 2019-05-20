@@ -180,7 +180,6 @@ class SearchResultsPresenter
       facet.add_value("IYRS School of Technology & Trades Maritime Library", -1)
       facet.add_value("Jamestown Historical Society", -1)
       facet.add_value("Johnson & Wales University", -1)
-      facet.add_value("Jamestown Historical Society", -1)
       facet.add_value("Newport Art Museum", -1)
       facet.add_value("Providence City Archives", -1)
       facet.add_value("Roger Williams University School of Law", -1)

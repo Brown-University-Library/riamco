@@ -28,29 +28,52 @@
                     </a>
                 </div>
                 <div id="wrapper">
-                <div id="content">
-                    <div id="main_text">
-
-<xsl:call-template name="nav_template" />
-
-
-
-
+                    <div id="content">
+                        <div id="main_text">
+                            <xsl:call-template name="nav_template" />
                             <div class="right_two_thirds">
-                            <center>
-                                <h1>
-                                   <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper"/>
-                                   <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@inclusive"/>
-                                  <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@bulk"/>
-                                </h1>
-                                </center>
-                                <center>
+
+                                <!-- this is duplicated in riamco_top_banner.xsl -->
+                                <div class="top_banner_right">
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <h3>Need Help?</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="list-unstyled">
+                                                <li><a href="https://apps.library.brown.edu/riamco/search">Search</a></li>
+                                                <li><a href="https://apps.library.brown.edu/riamco/faq" title="Frequently Asked Questions about this site">FAQ</a></li>
+                                                <li><a href="https://apps.library.brown.edu/riamco/contact" title="Information on how to contact a member institution">Contact an Institution</a></li>
+                                                <li><a href="https://apps.library.brown.edu/riamco/resources_other">Other Resources</a></li>
+                                            </ul>
+                                        </div> <!-- panel body -->
+                                    </div> <!-- panel -->
+                                    <div class="panel">
+                                        <div class="panel-heading">
+                                            <h3>For Participating Institutions</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <ul class="list-unstyled">
+                                                <li><a href="https://apps.library.brown.edu/riamco/join" title="Become a Participating Institution">Join RIAMCO</a></li>
+                                                <li><a href="https://library.brown.edu/riamco_admin/login/?next=/riamco_admin/" title="Login to deposit new finding aids">Log-in</a></li>
+                                                <li><a href="https://apps.library.brown.edu/riamco/resources">Resources</a></li>
+                                            </ul>
+                                        </div> <!-- panel body -->
+                                    </div> <!-- panel -->
+                                </div> <!-- top_banner_right -->
+
+                                <div>
+                                    <h1>
+                                    <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper"/>
+                                    <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@inclusive"/>
+                                    <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper/ead:date/@bulk"/>
+                                    </h1>
+                                </div>
+                                <div>
                                     <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/>
-
                                     <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:repository"/>
-
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>
-                                </center>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -60,7 +83,6 @@
                             </a>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<a href="http://www.wethepeople.gov/">
                                 <img src="img/wtp_logo.gif" alt="We the People"/>
                             </a></p>
-
                     </div>
                 </div>
             </body>

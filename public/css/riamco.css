@@ -243,18 +243,18 @@ td {
     margin-right: 10px;
 }
 
-.panel {
+.top_banner_right > .panel {
     margin-top: 10px;
     border-style: solid;
     border-width: 1px;
     border-radius: 4px;
 }
 
-.panel-heading {
+.top_banner_right > .panel > .panel-heading {
     background-color: #1e5a95;
 }
 
-.panel-heading > h3 {
+.top_banner_right > .panel > .panel-heading > h3 {
     margin-top: 0px;
     text-transform: none;
     color:white;

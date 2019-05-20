@@ -13,11 +13,9 @@ class SearchResultsPresenter
     :explainer, :explain_format,
     :debug, :show_facet_counts, :facet_count_url_toggle,
     :fq_date_range,
-    :fq_start_year, :start_year_from, :start_year_to,
-    :popup
+    :fq_start_year, :start_year_from, :start_year_to
 
   def initialize(results, params, base_url, base_facet_search_url, explain_format)
-    @popup = false
     @debug = false
     @base_url = base_url
     @facetSearchBaseUrl = base_facet_search_url

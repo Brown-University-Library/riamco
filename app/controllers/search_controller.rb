@@ -125,7 +125,6 @@ class SearchController < ApplicationController
       searcher = Search.new(solr_url)
       search_results = searcher.search(params, debug, flat_display)
       presenter = SearchResultsPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
-      presenter.popup = request.params["popup"] == "yes"
       presenter
     end
 

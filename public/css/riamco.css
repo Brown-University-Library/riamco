@@ -234,6 +234,7 @@ td {
 .top_banner > hr {
     width: 75%;
     float: left;
+    max-width:700px;
 }
 
 .top_banner_right {

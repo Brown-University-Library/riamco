@@ -52,7 +52,9 @@
     </xsl:template>
 
     <xsl:template match="ead:scopecontent">
-        <xsl:apply-templates/>
+        <div style="max-width:700px;">
+            <xsl:apply-templates/>
+        </div>
     </xsl:template>
 
     <xsl:template match="ead:p">

@@ -17,10 +17,11 @@ class Institutions
                 link: "http://www.bhpsri.org/",
                 active: "Y", email: "info@bhps.necoxmail.com"}
 
-            brown = {code: "US-RPB", name: "Brown University Library", active: "Y", email: nil, contacts: []}
-            brown[:contacts] << {text: "Brown University Special Collections", link: "http://library.brown.edu/about/hay/index.php", email: "hay@brown.edu"}
-            brown[:contacts] << {text: "Brown University Archives", link: "http://library.brown.edu/collections/archives/", email: "archives@brown.edu"}
-            orgs << brown
+            brown_sc = {code: "US-RPB", name: "Brown University Special Collections", active: "Y", link: "http://library.brown.edu/about/hay/index.php", email: "hay@brown.edu"}
+            orgs << brown_sc
+
+            brown_ar = {code: "US-RPB", name: "Brown University Archives", active: "Y", link: "http://library.brown.edu/collections/archives/", email: "archives@brown.edu"}
+            orgs << brown_ar
 
             orgs << {code: "US-RiBrHMA",
                 name: "Haffenreffer Museum of Anthropology", active: "Y",
@@ -32,98 +33,97 @@ class Institutions
                 link: "http://www.historicnewengland.org/",
                 active: "Y", email: "archives@historicnewengland.org"}
 
-            orgs << {code: "US-RiJaHS", 
-                name: "Jamestown Historical Society", 
+            iyrs = {code: "", name: "IYRS School of Technology & Trades Maritime Library", active: "Y", link: "https://iyrs.edu/student-services/iyrs-library/", email: "abenson@iyrs.edu"}
+            orgs << iyrs
+
+            orgs << {code: "US-RiJaHS",
+                name: "Jamestown Historical Society",
                 link: "http://www.jamestownhistoricalsociety.org/",
                 active: "Y", email: "collections@jamestownhistoricalsociety.org"}
 
-            orgs << {code: "US-RPJCB", 
-                name: "John Carter Brown Library", 
+            orgs << {code: "US-RPJCB",
+                name: "John Carter Brown Library",
                 link: "http://www.brown.edu/Facilities/John_Carter_Brown_Library/",
                 active: "Y", email: "JCBL_Archives@Brown.edu"}
 
-            # orgs << {code: "US-RPJW", name: "Johnson & Wales University", active: "N"}
-            orgs << {code: "US-RNN", 
-                name: "Naval War College", 
-                link: "http://www.usnwc.edu/Departments---Colleges/Library/RightsideLinks/Naval-Historical-Collection.aspx/", 
+            jwu = {code: "US-RPJW", name: "Johnson & Wales University", active: "Y", link: "http://pvd.library.jwu.edu/archives", email: "providencecampuslibrary@jwu.edu"}
+            orgs << jwu
+
+            orgs << {code: "US-RNN",
+                name: "Naval War College",
+                link: "https://usnwc.libguides.com/nhc",
                 active: "Y", email: "nhc@usnwc.edu"}
 
             orgs << {
-                code: "XX", 
-                name: "Newport Art Museum", 
+                code: "",
+                name: "Newport Art Museum",
                 link: "http://www.newportartmuseum.org/",
                 active: "N"}
 
-            orgs << {code: "US-RNHi", 
-                name: "Newport Historical Society", 
+            orgs << {code: "US-RNHi",
+                name: "Newport Historical Society",
                 link: "http://www.newporthistorical.org/",
                 active: "Y", email: "research@newporthistory.org"}
 
-            orgs << {code: "US-RNk", 
-                name: "North Kingstown Free Library", 
+            orgs << {code: "US-RNk",
+                name: "North Kingstown Free Library",
                 link: "http://www.nklibrary.org/",
                 active: "Y", email: "nkiref@nklibrary.org"}
 
-            orgs << {code: "US-RiNpPs", 
-                name: "Preservation Society of Newport County", 
+            orgs << {code: "US-RiNpPs",
+                name: "Preservation Society of Newport County",
                 link: "http://www.newportmansions.org/",
                 active: "Y", email: "info@newportmansions.org"}
 
-            orgs << {code: "US-PUM", 
-                name: "Providence Athenaeum", 
+            orgs << {code: "US-PUM",
+                name: "Providence Athenaeum",
                 link: "https://providenceathenaeum.org/",
                 active: "N", email: "info@providenceathenaeum.org"}
 
             orgs << {code: "US-RiPrCA", name: "Providence City Archives", link: "https://www.providenceri.com/archives", active: "N"}
 
-            pc = {code: "US-RPPC", name: "Providence College", active: "Y", email: "", contacts: []}
-            pc[:contacts] << {text: "Providence College Special and Archival Collections", link: "http://www.providence.edu/library/spcol/", email: "pml.specoll@providence.edu"}
+            pc = {code: "US-RPPC", name: "Providence College Special and Archival Collections", active: "Y", link: "http://www.providence.edu/library/spcol/", email: "pml.specoll@providence.edu"}
             orgs << pc
 
-            orgs << {code: "US-RP", 
-                name: "Providence Public Library", 
+            orgs << {code: "US-RP",
+                name: "Providence Public Library",
                 link: "http://www.provlib.org/special-collections",
                 active: "Y", email: "jgoffin@provlib.org"}
 
-            orgs << {code: "US-RNR", 
-                name: "Redwood Library and Athenaeum", 
+            orgs << {code: "US-RNR",
+                name: "Redwood Library and Athenaeum",
                 link: "http://www.redwoodlibrary.org/",
                 active: "Y", email: "redwood@redwoodlibrary.org"}
 
-            ric = {code: "US-RPRC", name: "Rhode Island College", active: "Y", contacts: []}
-            ric[:contacts] << {text: "Rhode Island College Special Collections", link: "http://library.ric.edu/", email: "digitalcommons@ric.edu"}
+            ric = {code: "US-RPRC", name: "Rhode Island College Special Collections", active: "Y", link: "http://library.ric.edu/", email: "digitalcommons@ric.edu"}
             orgs << ric
 
-            orgs << {code: "US-RHi", 
-                name: "Rhode Island Historical Society", 
-                link: "http://www.rihs.org/libraryhome.htm",
-                active: "Y", email: "reference@rihs.org"}
+            rhi = {code: "US-RHi", name: "Rhode Island Historical Society", link: "http://www.rihs.org/libraryhome.htm", active: "Y", email: "reference@rihs.org"}
+            orgs << rhi
 
-            risd = {code: "US-RPD", name: "Rhode Island School of Design", active: "Y", contacts: []}
-            risd[:contacts] << {text: "Rhode Island School of Design Archives", link: "http://www.risd.edu/archives.cfm", email: "risdarchives@risd.edu"}
+            risd = {code: "US-RPD", name: "Rhode Island School of Design Archives", active: "Y", link: "http://www.risd.edu/archives.cfm", email: "risdarchives@risd.edu"}
             orgs << risd
 
             orgs << {code: "US-R-Ar", name: "Rhode Island State Archives", link: "http://sos.ri.gov/archives/", active: "Y", email: "statearchives@sos.ri.gov"}
 
-            rwu = {code: "US-RBrRW", name: "Roger Williams University", active: "Y", contacts: []}
-            rwu[:contacts] << {text: "Roger Williams University Archives", link: "http://library.rwu.edu/about/archives.php", email: "archives@rwu.edu"}
+            rwu = {code: "US-RBrRW", name: "Roger Williams University Archives", active: "Y", link: "http://library.rwu.edu/about/archives.php", email: "archives@rwu.edu"}
             orgs << rwu
 
-            # orgs << {code: "US-RBrRW-L", name: "Roger Williams University School of Law", active: "N"}
+            rwusl = {code: "US-RBrRW-L", name: "Roger Williams University School of Law", active: "Y", link: "https://law.rwu.edu/library", email: "lawlibraryhelp@rwu.edu"}
+            orgs << rwusl
 
-            salve = {code: "US-RNSRU", name: "Salve Regina University", active: "Y", contacts: []}
-            salve[:contacts] << {text: "Salve Regina University Archives", link: "http://library.salve.edu/archives/", email: "archives@salve.edu"}
-            salve[:contacts] << {text: "Salve Regina University Special Collections", link: "http://library.salve.edu/spec-col/"}
-            orgs << salve
+            salve_ar = {code: "US-RNSRU", name: "Salve Regina University Archives", active: "Y", link: "http://library.salve.edu/archives/", email: "archives@salve.edu"}
+            orgs << salve_ar
+
+            salve_sc = {code: "US-RNSRU", name: "Salve Regina University Special Collections", active: "Y", link: "http://library.salve.edu/spec-col/", email: nil}
+            orgs << salve_sc
 
             orgs << {code: "US-RiExTM", name: "Tomaquag Museum", link: "https://www.tomaquagmuseum.org/", active: "N", email: "slarose@tomaquagmuseum.org"}
 
-            uri = {code: "US-RUn", name: "University of Rhode Island", active: "Y", contacts: []}
-            uri[:contacts] << {text: "University of Rhode Island Special Collections and University Archives", link: "http://www.uri.edu/library/special_collections/", email: "archives@etal.uri.edu"}
+            uri = {code: "US-RUn", name: "University of Rhode Island Special Collections and University Archives", active: "Y", link: "http://www.uri.edu/library/special_collections/", email: "archives@etal.uri.edu"}
             orgs << uri
 
-            westerly = {code: "US-RWe", name: "Westerly Public Library", active: "Y", contacts: []}
-            westerly[:contacts] << {text: "Westerly Public Library Special Collections", link: "http://www.westerlylibrary.org/contentmgr/showdetails.php/id/18", email: "reference@westerlylibrary.org"}
+            westerly = {code: "US-RWe", name: "Westerly Public Library Special Collections", active: "Y", link: "http://www.westerlylibrary.org/contentmgr/showdetails.php/id/18", email: "reference@westerlylibrary.org"}
             orgs << westerly
 
             orgs

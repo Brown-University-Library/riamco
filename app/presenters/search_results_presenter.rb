@@ -53,6 +53,9 @@ class SearchResultsPresenter
     # from results
     @facets = results.facets
 
+    # if empty_search?()
+    #   force_show_all_institutions()
+    # end
     @facets.each do |facet|
       case
       when facet.name == "date_range_s"
@@ -169,6 +172,28 @@ class SearchResultsPresenter
   end
 
   private
+
+    # Make sure all the institutions are represented in the `institution_s`
+    # facet, even those that have no data.
+    #
+    # This is problematic because the list of "institutions" in the Insitutions
+    # list includes more than one record per institutions, for example Brown is
+    # represented as "Brown Special Collections" and "Brown Archives" and in this
+    # case we don't want two separate records.
+    #
+    # TODO: Figure out a way to implement this.
+    def force_show_all_institutions()
+      facet = @facets.find {|facet| facet.name == "institution_s" }
+      return if facet == nil
+      Institutions.all().each do |inst|
+        found = facet.values.find {|v| v.text == inst[:name] } != nil
+        if !found
+          Rails.logger.info("Added #{inst[:name]}")
+          facet.add_value(inst[:name], 0)
+        end
+      end
+    end
+
     def set_urls_in_facets()
       # this loops through _all_ the facet/values
       @facets.each do |f|

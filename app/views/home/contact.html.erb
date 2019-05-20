@@ -1,5 +1,4 @@
-<div class="container">
-  <div class="row">
+<div class="main-text col-sm-10 content-margin-top">
     <h1>Contact</h1>
     <ul>
         <% @presenter.institutions.each do |inst| %>
@@ -48,5 +47,8 @@
         Telephone: (401) 863-5309
         </p>
     </div>
-  </div>
+</div>
+
+<div class="col-sm-2 hidden-print content-margin-top">
+    <%= render "right_menu" %>
 </div>

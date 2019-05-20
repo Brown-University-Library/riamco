@@ -51,9 +51,9 @@ class SearchResultsPresenter
     # from results
     @facets = results.facets
 
-    # if empty_search?()
-    #   force_show_all_institutions()
-    # end
+    if home_page?()
+      force_show_all_institutions()
+    end
     @facets.each do |facet|
       case
       when facet.name == "date_range_s"
@@ -172,24 +172,19 @@ class SearchResultsPresenter
   private
 
     # Make sure all the institutions are represented in the `institution_s`
-    # facet, even those that have no data.
-    #
-    # This is problematic because the list of "institutions" in the Insitutions
-    # list includes more than one record per institutions, for example Brown is
-    # represented as "Brown Special Collections" and "Brown Archives" and in this
-    # case we don't want two separate records.
-    #
-    # TODO: Figure out a way to implement this.
+    # facet, even those that have no data. This list is hard-coded until
+    # we figure out a good structure for the Institution model to support this.
     def force_show_all_institutions()
       facet = @facets.find {|facet| facet.name == "institution_s" }
       return if facet == nil
-      Institutions.all().each do |inst|
-        found = facet.values.find {|v| v.text == inst[:name] } != nil
-        if !found
-          Rails.logger.info("Added #{inst[:name]}")
-          facet.add_value(inst[:name], 0)
-        end
-      end
+      facet.add_value("IYRS School of Technology & Trades Maritime Library", -1)
+      facet.add_value("Jamestown Historical Society", -1)
+      facet.add_value("Johnson & Wales University", -1)
+      facet.add_value("Jamestown Historical Society", -1)
+      facet.add_value("Newport Art Museum", -1)
+      facet.add_value("Providence City Archives", -1)
+      facet.add_value("Roger Williams University School of Law", -1)
+      facet.add_value("Tomaquag Museum ", -1)
     end
 
     def set_urls_in_facets()

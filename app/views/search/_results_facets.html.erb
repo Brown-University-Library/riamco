@@ -27,7 +27,9 @@
                   <% if i < (facet.limit || 10) || value.remove_url != nil %>
                     <li>
                       <span>
-                        <% if value.remove_url == nil %>
+                        <% if value.count == -1 %>
+                          <%= value.text %>
+                        <% elsif value.remove_url == nil %>
                           <a href="<%= value.add_url + @presenter.facet_count_url_toggle %>"><%= value.text %></a>
                         <% else %>
                           <%= value.text %>
@@ -37,7 +39,7 @@
                           </a>
                         <% end %>
                       </span>
-                      <% if @presenter.show_facet_counts %>
+                      <% if value.count != -1 && @presenter.show_facet_counts %>
                         <div class="no-orphans">
                           ( <span class="categoryCount"><%= value.count %></span> )
                         </div>

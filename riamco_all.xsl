@@ -16,7 +16,7 @@
                 <div id="wrapper">
                     <div id="content">
                         <div id="main_text">
-                            <div class="right_two_thirds">
+                            <div class="">
                                 <center>
                                 <h1>
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper"/>
@@ -452,9 +452,7 @@
     </xsl:template>
 
     <xsl:template match="ead:addressline[ead:extptr]">
-        <a href="{ead:extptr/@xlink:href}">
             <xsl:apply-templates/>
-        </a>
         <br/>
     </xsl:template>
 
@@ -464,15 +462,11 @@
     </xsl:template>
 
     <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
     </xsl:template>
 
     <xsl:template match="ead:archref[@xlink:href]">
-            <a href="{@xlink:href}">
                 <xsl:apply-templates/>
-            </a>
     </xsl:template>
 
     <xsl:template match="ead:corpname">
@@ -497,15 +491,11 @@
     </xsl:template>
 
     <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
     </xsl:template>
 
     <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
     </xsl:template>
 
     <!-- The following general templates format the display of various RENDER attributes.-->
@@ -632,15 +622,11 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:title">
@@ -674,15 +660,11 @@
     </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
    <xsl:template match="ead:date[@type='inclusive']">
@@ -763,15 +745,11 @@
     </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 
@@ -872,9 +850,7 @@
     </xsl:template>
 
     <xsl:template match="ead:addressline[ead:extptr]">
-        <a href="{ead:extptr/@xlink:href}">
             <xsl:apply-templates/>
-        </a>
         <br/>
     </xsl:template>
 
@@ -912,15 +888,11 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 
@@ -979,15 +951,11 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
     <!-- SECTION: Additional information -->
@@ -1064,15 +1032,11 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
     <xsl:template match="ead:title">
@@ -1103,27 +1067,13 @@
                     <xsl:choose>
                         <xsl:when test="ead:dao[@ns2:role='METSID']">
                             <u>
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                                </a>
                             </u>
 
                         </xsl:when>
                         <xsl:when test="ead:dao[@ns2:role='BDR_PID']">
                             <u>
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                                </a>
                             </u>
 
                         </xsl:when>
@@ -1165,7 +1115,7 @@
                   <xsl:if test="ead:scopecontent/ead:p/ead:list">
                     <xsl:apply-templates select="ead:list"/>
                 </xsl:if>
-                    <xsl:if test="ead:bioghist/ead:p">
+                <xsl:if test="ead:bioghist/ead:p">
                     <xsl:apply-templates select="ead:bioghist/ead:p"/>
                     <br/>
                 </xsl:if>
@@ -1214,27 +1164,13 @@
                     <xsl:choose>
                         <xsl:when test="ead:dao[@ns2:role='METSID']">
                             <u>
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                                </a>
                             </u>
 
                         </xsl:when>
                         <xsl:when test="ead:dao[@ns2:role='BDR_PID']">
                             <u>
-                                <a>
-                                    <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
-                                    </xsl:attribute>
-                                    <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                                </a>
                             </u>
 
                         </xsl:when>
@@ -1343,27 +1279,13 @@
                 <xsl:choose>
                     <xsl:when test="ead:dao[@ns2:role='METSID']">
                         <u>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                    <xsl:text>/</xsl:text>
-                                </xsl:attribute>
-                                <xsl:attribute name="target">_blank</xsl:attribute>
                                 <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                            </a>
                         </u>
                         <br/>
                     </xsl:when>
                     <xsl:when test="ead:dao[@ns2:role='BDR_PID']">
                         <u>
-                            <a>
-                                <xsl:attribute name="href">
-                                    <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                    <xsl:text>/</xsl:text>
-                                </xsl:attribute>
-                                <xsl:attribute name="target">_blank</xsl:attribute>
                                 <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                            </a>
                         </u>
                         <br/>
                     </xsl:when>
@@ -1649,23 +1571,17 @@
     </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
         <u>
-            <a href="{@xlink:href}">
             <xsl:apply-templates/>
-            </a>
         </u>
 </xsl:template>
 
 <xsl:template match="ead:dao[@xlink:href]">
-        <a href="http://dl.lib.brown.edu/repository2/repoman.php?verb=render&amp;id={@xlink:href}">
            <xsl:apply-templates select="ead:unittitle"/>
-        </a>
 </xsl:template>
 
     <xsl:template match="ead:title">

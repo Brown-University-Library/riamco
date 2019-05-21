@@ -25,7 +25,7 @@
                                 </h1>
                                 </center>
                                 <center>
-                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/>
+                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/><br/>
                                     <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:repository"/>
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>
                                 </center>

@@ -37,7 +37,28 @@
                             <div class="right_two_thirds">
                                 <xsl:call-template name="top_banner" />
                                 <h3>Inventory</h3>
-                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:dsc"/>
+                                <xsl:choose>
+                                    <!-- If the first child is a file or item then wrap it in
+                                         an HTML table before processing.
+                                         We don't need to do this for series and subseries children
+                                         because those sections wrap their children nodes in an
+                                         HTML table directly. -->
+                                    <xsl:when test="/ead:ead/ead:archdesc/ead:dsc/ead:c[@level='item' or @level='file']">
+                                        <table class="table_inventory">
+                                            <tr class="table_section_header">
+                                                <td class="col_container">Container</td>
+                                                <td class="col_dummy"></td>
+                                                <td class="col_description">Description</td>
+                                                <td class="col_dummy"/>
+                                                <td class="col_date">Date</td>
+                                            </tr>
+                                            <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:dsc"/>
+                                        </table>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:dsc"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </div>
                         </div>
                     </div>

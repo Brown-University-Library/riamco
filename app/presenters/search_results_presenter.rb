@@ -39,7 +39,7 @@ class SearchResultsPresenter
     end
 
     # from results
-    @num_eads = results.groups_found
+    @num_eads = results.groups_found || 0
     @facets = results.facets
 
     if home_page?()

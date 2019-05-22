@@ -38,17 +38,8 @@ class SearchResultsPresenter
       @suggest_url = @remove_q_url + "&q=#{CGI.escape(suggest_q)}"
     end
 
-    @num_eads = 0
-    if @params.fq.count == 0 && @params.q == "*"
-      @num_eads = FindingAids.count
-    else
-      eads = results.facets.find {|f| f.name=="title_s" }
-      if eads != nil
-        @num_eads = eads.values.count
-      end
-    end
-
     # from results
+    @num_eads = results.groups_found
     @facets = results.facets
 
     if home_page?()

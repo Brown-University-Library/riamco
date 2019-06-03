@@ -419,7 +419,7 @@
                             <br/>
                         </xsl:if>
 
-                        <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Accession']">
+                        <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Accession' or @type='accession']">
                             <xsl:text>Accession Number: </xsl:text>
                             <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
                             <br/>

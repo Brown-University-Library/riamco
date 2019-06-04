@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'render_pending.php' => 'legacy#render_pending'
   get 'render.php' => 'legacy#render'
   get 'riamco/render.php' => 'legacy#render'
+  get 'riamco/mkpdf.php' => 'legacy#render'
   get 'resources.html' => 'legacy#resources'
   get 'search.php' => 'legacy#search'
   get 'visit.html' => 'legacy#visit'

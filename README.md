@@ -1,7 +1,5 @@
 # RIAMCO v2
-This is a proof of concept for the redesign of the RIAMCO.org web site.
-
-You can see a preview at [https://apps.library.brown.edu/riamco/](https://apps.library.brown.edu/riamco/)
+Source code for the [Rhode Island Archival and Manuscript Collections Online](http://riamco.org) (RIAMCO) website.
 
 
 # Pre-requisites

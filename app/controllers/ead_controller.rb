@@ -4,7 +4,11 @@ class EadController < ApplicationController
     view = params["view"] || "title"
     if valid_id?(id) && valid_view?(view)
       html = load_ead_html(id, view)
-      render text: html
+      if html == nil
+        render "not_found", status: 404
+      else
+        render text: html
+      end
     else
       Rails.logger.error("Invalid id (#{id}) or view (#{view}) in ead#show")
       render "not_found", status: 404
@@ -80,20 +84,27 @@ class EadController < ApplicationController
     end
 
     def load_ead_html(id, view)
-      html = ""
+      html = nil
       html_path = ENV["EAD_HTML_FILES_PATH"]
       html_file = html_path + "/#{id}_riamco_#{view}.html"
       if File.exist?(html_file)
         Rails.logger.info("Reading HTML file for #{id}, #{view}")
         html = File.read(html_file)
       else
-        Rails.logger.info("Creating HTML file for #{id}, #{view}")
         xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
         xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
-        document = Nokogiri::XML(File.read(xml_file))
-        template = Nokogiri::XSLT(File.read(xsl_file))
-        html = template.transform(document)
-        # File.write(html_file, html)
+        if !File.exist?(xml_file)
+          Rails.logger.info("XML file not found: #{xml_file}")
+        elsif !File.exist?(xsl_file)
+          Rails.logger.info("XSLT file not found: #{xsl_file}")
+        else
+          Rails.logger.info("Creating HTML file for #{id}, #{view}")
+          document = Nokogiri::XML(File.read(xml_file))
+          template = Nokogiri::XSLT(File.read(xsl_file))
+          html = template.transform(document)
+          # TODO: cache file, maybe?
+          # File.write(html_file, html)
+        end
       end
       html
     end

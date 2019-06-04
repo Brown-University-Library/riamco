@@ -97,9 +97,6 @@
             <a href="download?eadid={$eadid}" target="_blank" title="Download the XML for this finding aid">Download XML</a>
         </li>
         <li>
-            <a href="http://riamco.org/render.php?eadid={$eadid}&amp;view=title" target="_blank" title="View this finding aid in the original RIAMCO site">View in RIAMCO.org</a>
-        </li>
-        <li>
             <a href="render.php?eadid={$eadid}&amp;view=all" target="_blank" title="View all the information for this finding aid in a single page">View All (printer friendly)</a>
         </li>
     </ul>

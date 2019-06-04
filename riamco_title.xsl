@@ -41,10 +41,10 @@
                                         </div>
                                         <div class="panel-body">
                                             <ul class="list-unstyled">
-                                                <li><a href="https://apps.library.brown.edu/riamco/search">Search</a></li>
-                                                <li><a href="https://apps.library.brown.edu/riamco/faq" title="Frequently Asked Questions about this site">FAQ</a></li>
-                                                <li><a href="https://apps.library.brown.edu/riamco/contact" title="Information on how to contact a member institution">Contact an Institution</a></li>
-                                                <li><a href="https://apps.library.brown.edu/riamco/resources_other">Other Resources</a></li>
+                                                <li><a href="//riamco.org/search">Search</a></li>
+                                                <li><a href="//riamco.org/faq" title="Frequently Asked Questions about this site">FAQ</a></li>
+                                                <li><a href="//riamco.org/contact" title="Information on how to contact a member institution">Contact an Institution</a></li>
+                                                <li><a href="//riamco.org/resources_other">Other Resources</a></li>
                                             </ul>
                                         </div> <!-- panel body -->
                                     </div> <!-- panel -->
@@ -54,9 +54,9 @@
                                         </div>
                                         <div class="panel-body">
                                             <ul class="list-unstyled">
-                                                <li><a href="https://apps.library.brown.edu/riamco/join" title="Become a Participating Institution">Join RIAMCO</a></li>
+                                                <li><a href="//riamco.org/join" title="Become a Participating Institution">Join RIAMCO</a></li>
                                                 <li><a href="https://library.brown.edu/riamco_admin/login/?next=/riamco_admin/" title="Login to deposit new finding aids">Log-in</a></li>
-                                                <li><a href="https://apps.library.brown.edu/riamco/resources">Resources</a></li>
+                                                <li><a href="//riamco.org/resources">Resources</a></li>
                                             </ul>
                                         </div> <!-- panel body -->
                                     </div> <!-- panel -->

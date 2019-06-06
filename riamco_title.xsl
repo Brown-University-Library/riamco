@@ -62,6 +62,7 @@
                                     </div> <!-- panel -->
                                 </div> <!-- top_banner_right -->
 
+                                <div id="pending_info" />
                                 <div>
                                     <h1>
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:titlestmt/ead:titleproper"/>

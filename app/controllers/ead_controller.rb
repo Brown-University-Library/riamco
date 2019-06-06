@@ -116,5 +116,14 @@ class EadController < ApplicationController
       document = Nokogiri::XML(File.read(xml_file))
       template = Nokogiri::XSLT(File.read(xsl_file))
       html = template.transform(document)
+
+      # Since the admin tool still is posting files to the old location and we are
+      # rsync'ing the files to the new location there is a delay between the user
+      # uploading a file and the file showing in the new site. For now we
+      # display a banner at the top letting the user know the timestamp of the
+      # finding aid that they are viewing.
+      mtime = File.mtime(xml_file)
+      pending_info = '<div id="pending_info" style="background-color:#00ffd2;">Pending finding aid as of: ' + mtime.to_s[0..18] + '</div>'
+      html.to_s.gsub('<div id="pending_info"/>', pending_info)
     end
 end

@@ -119,7 +119,8 @@
         var links = document.getElementsByClassName("toc_link");
         var i;
         for(i = 0; i <xsl:text disable-output-escaping="yes">&lt;</xsl:text> links.length; i++) {
-            links[i].href = links[i].href.replace("render.php?","render_pending.php?")
+            links[i].href = links[i].href.replace("render.php?","render_pending?");
+            links[i].href = links[i].href.replace("render?","render_pending?")
         }
     });
 </script>

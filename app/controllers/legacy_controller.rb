@@ -1,3 +1,5 @@
+require "uri"
+
 class LegacyController < ApplicationController
     def about
         redirect_to home_about_path()
@@ -45,6 +47,14 @@ class LegacyController < ApplicationController
 
     def links
         redirect_to home_links_path()
+    end
+
+    def pdf_files
+        new_url = "http://riamco.org"
+        if params["filename"] && params["format"]
+            new_url += "/pdf_files/" + params["filename"] + "." + params["format"]
+        end
+        redirect_to URI::encode(new_url)
     end
 
     def render

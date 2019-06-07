@@ -1,17 +1,48 @@
-<h1>Finding Aids Uploader</h1>
+<style>
+    .filelist {
+        margin-top: 10px;
+    }
 
-<p>
-    <a href="<%= upload_form_url() %>">Upload new finding aid</a>
-</p>
+    .filelist > tbody > tr {
+        height: 22px;
+    }
 
-<table>
-<% @presenter.files.each do |file| %>
-    <tr>
-        <td><%= file %></td>
-        <td><a href="<%= ead_show_pending_url(eadid: file) %>">Preview</a></td>
-        <td><a href="<%= upload_publish_url(eadid: file) %>">Publish</a></td>
-        <td><a href="...">Delete</a></td>
-    </tr>
-    <p></p>
-<% end %>
-</table>
+    .filename_col {
+        width: 300px;
+    }
+
+    .option_col {
+        width: 80px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <h1>Staging Area</h1>
+        <% if @presenter.files.count == 0 %>
+            <div>
+                <a class="btn btn-primary"href="<%= upload_form_url() %>" title="Upload a new finding aid to the staging area">Upload</a>
+            </div>
+        <% else %>
+            <div>
+                <a class="btn btn-primary"href="<%= upload_form_url() %>" title="Upload a new finding aid to the staging area">Upload</a>
+            </div>
+            <table class="filelist">
+                <tr>
+                    <th>Finding aids</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+                <% @presenter.files.each do |file| %>
+                    <tr>
+                        <td class="filename_col"><%= file %></td>
+                        <td class="option_col"><a href="<%= ead_show_pending_url(eadid: file) %>" title="Preview the version in staging of this finding aid">Preview</a></td>
+                        <td class="option_col"><a href="<%= upload_publish_url(eadid: file) %>" title="Publish the version of this finding aid to the public">Publish</a></td>
+                        <td class="option_col">Delete</td>
+                    </tr>
+                <% end %>
+            </table>
+        <% end %>
+    </div>
+</div>

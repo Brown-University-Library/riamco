@@ -53,6 +53,12 @@ Rails.application.routes.draw do
   get 'search_facets' => 'search#facets'
   get 'search' => 'search#index', as: :search
 
+  # File upload
+  get 'upload' => 'upload#list', as: :upload_list
+  get 'upload/form' => 'upload#form', as: :upload_form
+  post 'upload/file' => 'upload#file', as: :upload_file
+  get 'upload/publish' => 'upload#publish', as: :upload_publish
+
   # POSSIBLE FUTURE ENHANCEMENT:
   #
   # In the future we could consider using a cleaner URL for the display of

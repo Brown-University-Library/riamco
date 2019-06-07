@@ -1,0 +1,17 @@
+<h1>Finding Aids Uploader</h1>
+
+<p>
+    <a href="<%= upload_form_url() %>">Upload new finding aid</a>
+</p>
+
+<table>
+<% @presenter.files.each do |file| %>
+    <tr>
+        <td><%= file %></td>
+        <td><a href="<%= ead_show_pending_url(eadid: file) %>">Preview</a></td>
+        <td><a href="<%= upload_publish_url(eadid: file) %>">Publish</a></td>
+        <td><a href="...">Delete</a></td>
+    </tr>
+    <p></p>
+<% end %>
+</table>

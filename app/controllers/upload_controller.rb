@@ -2,10 +2,17 @@ require 'fileutils'
 class UploadController < ApplicationController
     before_action :require_login
 
+    #TODO: Move the bulk of this code to a new ead_pending model class
+    # to keep the controller skinny.
+
     # Shows list of pending finding aids for this user
     def list
-        # TODO: Filter the list of files for the user.
-        pending_path = ENV["EAD_XML_PENDING_FILES_PATH"] + "/*.xml"
+        files_mask = "*.xml"
+        if current_user.role != "admin"
+            files_mask = "#{current_user.fileprefix}-*.xml"
+        end
+        pending_path = ENV["EAD_XML_PENDING_FILES_PATH"] + "/#{files_mask}"
+        Rails.logger.info("Loading pending files at #{pending_path}")
 
         file_list = []
         Dir[pending_path].each do |file|

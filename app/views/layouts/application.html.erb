@@ -17,6 +17,10 @@
 
 <body class="no-logo fae">
 	<div class="topbar">
+		<% if @presenter != nil && @presenter.user != nil %>
+			<span class="glyphicon glyphicon-user login-icon"
+				title="<%= @presenter.user.username %>, <%= @presenter.user.description %>"></span>
+		<% end %>
 		<a href="<%= root_url %>" title="Go back to the RIAMCO home page">
 			<div>
 					<p class="topbar-heading">RIAMCO</p>

@@ -15,6 +15,9 @@ class SearchResultsPresenter
     :fq_date_range,
     :fq_start_year, :start_year_from, :start_year_to
 
+  # TODO: make this presenter inherit from DefaultPresenter to ensure this value exists
+  attr_accessor :user
+
   def initialize(results, params, base_url, base_facet_search_url, explain_format)
     @debug = false
     @base_url = base_url

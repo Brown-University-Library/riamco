@@ -60,6 +60,11 @@ Rails.application.routes.draw do
   post 'upload/publish' => 'upload#publish', as: :upload_publish
   post 'upload/delete' => 'upload#delete', as: :upload_delete
 
+  # Authentication
+  get 'login' => 'login#form', as: :login_form
+  post 'login' => 'login#authenticate', as: :login_authenticate
+  get 'logout' => 'login#logout', as: :login_logout
+
   # POSSIBLE FUTURE ENHANCEMENT:
   #
   # In the future we could consider using a cleaner URL for the display of

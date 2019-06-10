@@ -1,8 +1,6 @@
 require 'fileutils'
 class UploadController < ApplicationController
-    # TODO: handle authentication
-    # TODO: Validate finding aid parameter to make sure it does not have special chars
-    skip_before_filter :verify_authenticity_token
+    before_action :require_login
 
     # Shows list of pending finding aids for this user
     def list
@@ -21,7 +19,7 @@ class UploadController < ApplicationController
         file_list.sort_by! {|x| x[:timestamp]}.reverse!
 
         @presenter = UploadPresenter.new()
-        @presenter.configure(pending_path, file_list)
+        @presenter.configure(pending_path, file_list, current_user)
         render
     end
 
@@ -32,6 +30,7 @@ class UploadController < ApplicationController
 
     # Uploads a file to the "pending" area.
     def file
+        # TODO: Validate finding aid parameter to make sure it does not have special chars
         xml_path = ENV["EAD_XML_PENDING_FILES_PATH"]
         file = params["file"]
         overwrite = (params["overwrite"] == "on")
@@ -136,4 +135,12 @@ class UploadController < ApplicationController
 
         redirect_to upload_list_url()
     end
+
+    private
+        def require_login
+            if current_user == nil
+                flash[:alert] = "You must login first."
+                redirect_to login_form_url()
+            end
+        end
 end

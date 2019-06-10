@@ -1,0 +1,29 @@
+<div class="container">
+    <div class="row">
+        <h1>Login</h1>
+        <p>Login to RIAMCO to manage your finding aids.</p>
+
+        <form class="form-horizontal" method="POST" action="<%= login_authenticate_url() %>">
+            <div class="form-group">
+                <label id="file_lbl" class="control-label col-sm-1">Username</label>
+                <div class="col-sm-4">
+                    <input id="username" name="username" placeholder="Your username"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="file_lbl" class="control-label col-sm-1">Password</label>
+                <div class="col-sm-4">
+                    <input id="password" name="password" type="password" />
+                </div>
+            <div class="form-group">
+                <label class="control-label col-sm-1">&nbsp;</label>
+                <div class="col-sm-4">
+                    <input type="submit" id="submit" name="submit"
+                        class="btn btn-primary"
+                        value="Login" title="Login to RIAMCO">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

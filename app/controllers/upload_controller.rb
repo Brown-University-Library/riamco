@@ -1,17 +1,31 @@
 require 'fileutils'
 class UploadController < ApplicationController
     # TODO: handle authentication
+    # TODO: Validate finding aid parameter to make sure it does not have special chars
     skip_before_filter :verify_authenticity_token
 
+    # Shows list of pending finding aids for this user
     def list
         # TODO: Filter the list of files for the user.
-        # TODO: Sort files by date uploaded.
         pending_path = ENV["EAD_XML_PENDING_FILES_PATH"] + "/*.xml"
+
+        file_list = []
+        Dir[pending_path].each do |file|
+            file_info = {
+                name: File.basename(file, ".xml"),
+                timestamp: File.mtime(file),
+                display_date: File.mtime(file).strftime("%Y-%m-%d %I:%M %p")
+            }
+            file_list << file_info
+        end
+        file_list.sort_by! {|x| x[:timestamp]}.reverse!
+
         @presenter = UploadPresenter.new()
-        @presenter.configure(pending_path, Dir[pending_path])
+        @presenter.configure(pending_path, file_list)
         render
     end
 
+    # Shows upload form to the user
     def form
         render
     end
@@ -54,7 +68,7 @@ class UploadController < ApplicationController
         end
         Rails.logger.info("Finding aid uploaded: #{file.original_filename}")
         eadid = File.basename(filename, ".*")   # drop the extension
-        redirect_to ead_show_pending_url(eadid: eadid)
+        redirect_to upload_list_url()
     end
 
     # Moves a file from "pending" to "published"
@@ -89,5 +103,37 @@ class UploadController < ApplicationController
 
         Rails.logger.info("Published EAD #{eadid}")
         redirect_to ead_show_url(eadid: eadid)
+    end
+
+    # Deletes a pending finding aid from disk
+    def delete
+        eadid = (params["eadid"] || "").strip
+        if eadid == ""
+            Rails.logger.error("Cannot delete EAD. No ID was provided.")
+            flash[:alert] = "No EAD ID was provided."
+            redirect_to upload_list_url()
+            return
+        end
+
+        filename = ENV["EAD_XML_PENDING_FILES_PATH"] + "/" + eadid + ".xml"
+        if !File.exist?(filename)
+            Rails.logger.error("Cannot delete EAD. File was not found: #{filename}")
+            flash[:alert] = "Source file not found for finding aid: #{eadid}."
+            redirect_to upload_list_url()
+            return
+        end
+
+        File.delete(filename)
+        if File.exist?(filename)
+            Rails.logger.error("Cannot delete EAD. File delete failed: #{filename}")
+            flash[:alert] = "Could not delete finding aid #{eadid}."
+            redirect_to upload_list_url()
+            return
+        end
+
+        Rails.logger.info("Findind aid #{eadid} has been deleted")
+        flash[:notice] = "Findind aid #{eadid} has been deleted"
+
+        redirect_to upload_list_url()
     end
 end

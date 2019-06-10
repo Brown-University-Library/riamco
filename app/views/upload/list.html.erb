@@ -1,48 +1,70 @@
 <style>
-    .filelist {
-        margin-top: 10px;
-    }
-
-    .filelist > tbody > tr {
-        height: 22px;
-    }
-
-    .filename_col {
-        width: 300px;
-    }
-
-    .option_col {
-        width: 80px;
+    .timestamp_col {
+        width: 200px;
     }
 </style>
 
 <div class="container">
     <div class="row">
         <h1>Staging Area</h1>
-        <% if @presenter.files.count == 0 %>
-            <div>
-                <a class="btn btn-primary"href="<%= upload_form_url() %>" title="Upload a new finding aid to the staging area">Upload</a>
-            </div>
-        <% else %>
-            <div>
-                <a class="btn btn-primary"href="<%= upload_form_url() %>" title="Upload a new finding aid to the staging area">Upload</a>
-            </div>
-            <table class="filelist">
-                <tr>
-                    <th>Finding aids</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                </tr>
-                <% @presenter.files.each do |file| %>
+        <div style="margin-bottom: 60px;">
+            <a class="btn btn-primary" style="float: right" href="<%= upload_form_url() %>"
+                title="Upload a new finding aid to the staging area">Upload New File</a>
+        </div>
+        <% if @presenter.file_list.count > 0 %>
+            <div class="panel panel-info">
+                <div class="panel-heading" style="height: 50px">
+                    <h2 style="margin-top: 10px;">Finding Aids</h2>
+                </div>
+                <table class="table">
                     <tr>
-                        <td class="filename_col"><%= file %></td>
-                        <td class="option_col"><a href="<%= ead_show_pending_url(eadid: file) %>" title="Preview the version in staging of this finding aid">Preview</a></td>
-                        <td class="option_col"><a href="<%= upload_publish_url(eadid: file) %>" title="Publish the version of this finding aid to the public">Publish</a></td>
-                        <td class="option_col">Delete</td>
+                        <th>Date Uploaded</th>
+                        <th>Filename</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
                     </tr>
-                <% end %>
-            </table>
+                    <% @presenter.file_list.each do |file| %>
+                        <tr>
+                            <td class="timestamp_col">
+                                <%= file[:display_date] %>
+                            </td>
+                            <td>
+                                <a href="<%= ead_show_pending_url(eadid: file[:name]) %>"
+                                    target="_blank"
+                                    title="Preview this version of the finding aid in staging"><%= file[:name] %></a>
+                            </td>
+                            <td>
+                                <form method="POST" action="<%= upload_publish_url(eadid: file[:name]) %>">
+                                    <button type="submit" id="publish_ead" name="publish_ead"
+                                        class="btn btn-info btn-xs"
+                                        value="publish_ead"
+                                        title="Publish this version of the finding aid">Publish</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="<%= upload_delete_url(eadid: file[:name]) %>">
+                                    <button type="submit" id="delete_ead" name="delete_ead"
+                                        class="btn btn-danger btn-xs"
+                                        value="delete_ead"
+                                        title="Delete this finding aid (<%= file[:name] %>)">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            </div> <!-- panel panel-default -->
         <% end %>
-    </div>
-</div>
+    </div> <!-- row -->
+</div> <!-- container -->
+
+<script>
+    $("#delete_ead").on("click", function(e) {
+        r = confirm("Are you sure you want to delete this finding aid?");
+        if (r === true) {
+            // let the click go through which submits the form
+        } else {
+            // stop the process
+            e.preventDefault();
+        }
+    });
+</script>

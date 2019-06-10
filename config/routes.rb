@@ -57,7 +57,8 @@ Rails.application.routes.draw do
   get 'upload' => 'upload#list', as: :upload_list
   get 'upload/form' => 'upload#form', as: :upload_form
   post 'upload/file' => 'upload#file', as: :upload_file
-  get 'upload/publish' => 'upload#publish', as: :upload_publish
+  post 'upload/publish' => 'upload#publish', as: :upload_publish
+  post 'upload/delete' => 'upload#delete', as: :upload_delete
 
   # POSSIBLE FUTURE ENHANCEMENT:
   #

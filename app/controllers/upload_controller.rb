@@ -63,7 +63,7 @@ class UploadController < ApplicationController
     def publish
         eadid = (params["eadid"] || "").strip
         if eadid == ""
-            Rails.logger.error("Cannot publish EAD. No ID was provided.")
+            log_error("Cannot publish EAD. No ID was provided.")
             flash[:alert] = "No EAD ID was provided."
             redirect_to upload_list_url()
             return
@@ -72,7 +72,7 @@ class UploadController < ApplicationController
         source = ENV["EAD_XML_PENDING_FILES_PATH"] + "/" + eadid + ".xml"
         target = ENV["EAD_XML_FILES_PATH"] + "/" + eadid + ".xml"
         if !File.exist?(source)
-            Rails.logger.error("Cannot publish EAD. Source file not found: #{source}")
+            log_error("Cannot publish EAD. Source file not found: #{source}")
             flash[:alert] = "Source file not found for finding aid: #{eadid}."
             redirect_to upload_list_url()
             return
@@ -80,7 +80,7 @@ class UploadController < ApplicationController
 
         FileUtils.mv(source, target)
         if !File.exist?(target)
-            Rails.logger.error("Cannot publish EAD. File move failed: #{source} => #{target}")
+            log_error("Cannot publish EAD. File move failed: #{source} => #{target}")
             flash[:alert] = "Could not publish finding aid #{eadid}."
             redirect_to upload_list_url()
             return
@@ -97,7 +97,7 @@ class UploadController < ApplicationController
     def delete
         eadid = (params["eadid"] || "").strip
         if eadid == ""
-            Rails.logger.error("Cannot delete EAD. No ID was provided.")
+            log_error("Cannot delete EAD. No ID was provided.")
             flash[:alert] = "No EAD ID was provided."
             redirect_to upload_list_url()
             return
@@ -105,7 +105,7 @@ class UploadController < ApplicationController
 
         filename = ENV["EAD_XML_PENDING_FILES_PATH"] + "/" + eadid + ".xml"
         if !File.exist?(filename)
-            Rails.logger.error("Cannot delete EAD. File was not found: #{filename}")
+            log_error("Cannot delete EAD. File was not found: #{filename}")
             flash[:alert] = "Source file not found for finding aid: #{eadid}."
             redirect_to upload_list_url()
             return
@@ -113,7 +113,7 @@ class UploadController < ApplicationController
 
         File.delete(filename)
         if File.exist?(filename)
-            Rails.logger.error("Cannot delete EAD. File delete failed: #{filename}")
+            log_error("Cannot delete EAD. File delete failed: #{filename}")
             flash[:alert] = "Could not delete finding aid #{eadid}."
             redirect_to upload_list_url()
             return
@@ -121,11 +121,28 @@ class UploadController < ApplicationController
 
         Rails.logger.info("Findind aid #{eadid} has been deleted")
         flash[:notice] = "Findind aid #{eadid} has been deleted"
-
         redirect_to upload_list_url()
     end
 
     private
+
+        # Logs the error and username of the current that encountered the error.
+        def log_error(error)
+            error_msg = error
+            if current_user == nil
+                error_msg += " User: nil"
+            else
+                error_msg += " User: #{current_user.username}"
+            end
+            Rails.logger.error(error_msg)
+        end
+
+        def require_login
+            if current_user == nil
+                flash[:alert] = "You must login first."
+                redirect_to login_form_url()
+            end
+        end
 
         def upload_file(file, overwrite)
             if !file.is_a?(ActionDispatch::Http::UploadedFile)
@@ -180,24 +197,6 @@ class UploadController < ApplicationController
             end
 
             return nil
-        end
-
-        # Logs the error and username of the current that encountered the error.
-        def log_error(error)
-            error_msg = error
-            if current_user == nil
-                error_msg += " User: nil"
-            else
-                error_msg += " User: #{current_user.username}"
-            end
-            Rails.logger.error(error_msg)
-        end
-
-        def require_login
-            if current_user == nil
-                flash[:alert] = "You must login first."
-                redirect_to login_form_url()
-            end
         end
 
         # A filename is valid if:

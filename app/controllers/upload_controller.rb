@@ -2,8 +2,10 @@ require 'fileutils'
 class UploadController < ApplicationController
     before_action :require_login
 
-    # TODO: Move the bulk of this code to a new ead_pending model class
-    # to keep the controller skinny.
+    MAX_FILE_BYTES = 20_971_520  # 20MB
+
+    # needed for number_with_delimiter
+    include ActionView::Helpers::NumberHelper
 
     # Shows list of pending finding aids for this user
     def list
@@ -39,42 +41,17 @@ class UploadController < ApplicationController
 
     # Uploads a file to the "pending" area.
     def file
-        # TODO: Validate finding aid parameter to make sure it does not have special chars
-        xml_path = ENV["EAD_XML_PENDING_FILES_PATH"]
         file = params["file"]
         overwrite = (params["overwrite"] == "on")
-        if !file.is_a?(ActionDispatch::Http::UploadedFile)
-            Rails.logger.error("No file to upload was provided.")
-            flash[:alert] = "No file to upload was provided."
+
+        error_msg = upload_file(file, overwrite)
+        if error_msg != nil
+            flash[:alert] = error_msg
             redirect_to upload_form_url()
             return
         end
 
-        filename = xml_path + "/" + file.original_filename
-        if File.exist?(filename) && !overwrite
-            Rails.logger.error("File #{file.original_filename} already exists.")
-            flash[:alert] = "File #{file.original_filename} already exists."
-            redirect_to upload_form_url()
-            return
-        end
-
-        if File.extname(filename) != ".xml"
-            Rails.logger.error("File #{file.original_filename} has an invalid extension.")
-            flash[:alert] = "File #{file.original_filename} has an invalid extension. Must be .xml"
-            redirect_to upload_form_url()
-            return
-        end
-
-        # TODO: Implement validations
-        #       a) file size > 0 and <= MAX_FILE_BYTES (20971520)
-        #       b) content is XML (perhaps via Nokogiri)
-        #
-        # See: https://bitbucket.org/bul/riamco/src/956f85073a9c6c5ccff3125c1545ddf7216a2bcf/riamco_admin/views.py#lines-165
-        File.open(filename, "wb")  do |f|
-            f.write(file.read)
-        end
         Rails.logger.info("Finding aid uploaded: #{file.original_filename}")
-        eadid = File.basename(filename, ".*")   # drop the extension
         redirect_to upload_list_url()
     end
 
@@ -108,6 +85,9 @@ class UploadController < ApplicationController
             redirect_to upload_list_url()
             return
         end
+
+        # Touch the file so that it's automatically reindexed into Solr next time the cronjob runs.
+        FileUtils.touch(target)
 
         Rails.logger.info("Published EAD #{eadid}")
         redirect_to ead_show_url(eadid: eadid)
@@ -146,10 +126,93 @@ class UploadController < ApplicationController
     end
 
     private
+
+        def upload_file(file, overwrite)
+            if !file.is_a?(ActionDispatch::Http::UploadedFile)
+                log_error("No file to upload was provided.")
+                return "No file to upload was provided."
+            end
+
+            # Validate filename
+            if !valid_filename(file.original_filename, current_user.fileprefix)
+                log_error("Invalid filename provided: #{file.original_filename} (#{current_user.fileprefix})")
+                return "Invalid filename provided. Filename must start with #{current_user.fileprefix} and end with .xml"
+            end
+
+            # Validate overwrite
+            filename = ENV["EAD_XML_PENDING_FILES_PATH"] + "/" + file.original_filename
+            if File.exist?(filename) && !overwrite
+                log_error("File #{file.original_filename} already exists.")
+                return "File #{file.original_filename} already exists."
+            end
+
+            # Validate filesize
+            size = File.size(file.tempfile)
+            if size == 0
+                log_error("Attempt to upload zero bytes file: #{file.original_filename}")
+                return "File cannot be empty (file size: zero bytes)."
+            elsif size > MAX_FILE_BYTES
+                log_error("Attempt to upload file greater than 20MB: #{file.original_filename}, #{size} bytes.")
+                return "File is too big, file cannot not be greater than #{number_with_delimiter(MAX_FILE_BYTES)} bytes (file size: #{number_with_delimiter(size)} bytes)."
+            end
+
+            # Save the file to the "pending" area
+            File.open(filename, "wb")  do |f|
+                f.write(file.read)
+            end
+
+            # Make sure its a valid XML file
+            xml_doc = nil
+            begin
+                xml_content = File.read(filename)
+                xml_doc = Nokogiri::XML(xml_content)
+                if xml_doc.errors.count > 0
+                   raise "Error in XML content."
+                end
+            rescue => ex
+                error_msg = "File uploaded was not a valid XML: #{filename}. "
+                if xml_doc != nil && xml_doc.errors.count > 0
+                    error_msg += "Errors: #{xml_doc.errors.join('\r\n')}. "
+                end
+                error_msg += "Exception: #{ex}."
+                log_error(error_msg)
+                return "File uploaded is not a valid XML file."
+            end
+
+            return nil
+        end
+
+        # Logs the error and username of the current that encountered the error.
+        def log_error(error)
+            error_msg = error
+            if current_user == nil
+                error_msg += " User: nil"
+            else
+                error_msg += " User: #{current_user.username}"
+            end
+            Rails.logger.error(error_msg)
+        end
+
         def require_login
             if current_user == nil
                 flash[:alert] = "You must login first."
                 redirect_to login_form_url()
             end
+        end
+
+        # A filename is valid if:
+        #   1. includes only alphanumeric characters (plus _ -.)
+        #   2. ends with .xml
+        #   3. starts with the indicated prefix.
+        def valid_filename(filename, prefix)
+            match = filename.match(/[\w.\- ]+\.xml/)
+            if match == nil || match.to_s != filename
+                return false
+            end
+
+            if !filename.start_with?(prefix + "-")
+                return false
+            end
+            true
         end
 end

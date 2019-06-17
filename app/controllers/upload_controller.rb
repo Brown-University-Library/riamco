@@ -2,7 +2,7 @@ require 'fileutils'
 class UploadController < ApplicationController
     before_action :require_login
 
-    #TODO: Move the bulk of this code to a new ead_pending model class
+    # TODO: Move the bulk of this code to a new ead_pending model class
     # to keep the controller skinny.
 
     # Shows list of pending finding aids for this user
@@ -32,6 +32,8 @@ class UploadController < ApplicationController
 
     # Shows upload form to the user
     def form
+        @presenter = DefaultPresenter.new()
+        @presenter.user = current_user
         render
     end
 
@@ -68,7 +70,6 @@ class UploadController < ApplicationController
         #       b) content is XML (perhaps via Nokogiri)
         #
         # See: https://bitbucket.org/bul/riamco/src/956f85073a9c6c5ccff3125c1545ddf7216a2bcf/riamco_admin/views.py#lines-165
-
         File.open(filename, "wb")  do |f|
             f.write(file.read)
         end
@@ -78,6 +79,7 @@ class UploadController < ApplicationController
     end
 
     # Moves a file from "pending" to "published"
+    #
     # The filename to move is selected by the user from a list (not manually entered) so
     # there is very little chance that the filename will be wrong or invalid. Therefore
     # we display pretty short and crude error messages.

@@ -18,8 +18,24 @@
 <body class="no-logo fae">
 	<div class="topbar">
 		<% if @presenter != nil && @presenter.user != nil %>
-			<span class="glyphicon glyphicon-user login-icon"
-				title="<%= @presenter.user.username %>, <%= @presenter.user.description %>"></span>
+			<style>
+				.navbar-right { margin-right: 15px; margin-top: 10px; }
+			</style>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="<%= @presenter.user.description %>">
+						<span class="glyphicon glyphicon-user"></span>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="<%= root_url() %>">Home page</a></li>
+						<li><a href="<%= upload_list_url() %>">Admin Tools</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="<%= login_logout_url() %>">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
 		<% end %>
 		<a href="<%= root_url %>" title="Go back to the RIAMCO home page">
 			<div>

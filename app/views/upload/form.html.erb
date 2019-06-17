@@ -28,6 +28,9 @@
         <p>Upload a finding aid to the staging area. File must be a valid XML file and have extension <code>.xml</code></p>
 
         <form class="form-horizontal" method="POST" action="<%= upload_file_url %>" enctype="multipart/form-data">
+
+            <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
+
             <div class="form-group">
                 <label id="file_lbl" class="control-label col-sm-1">File</label>
                 <div class="col-sm-4">

@@ -93,10 +93,22 @@ class EadImport
             xml = File.read(file_name)
             ead = Ead.new(xml)
             solr_docs = ead.to_solr(true)
+
+            # Delete from Solr all previous information for this finding aid
+            ead_id = solr_docs[0][:id]
+            query = "ead_id_s:#{ead_id}"
+            response = @solr.delete_by_query(query)
+            if !response.ok?
+                Rails.logger.error("Deleting previous data for file: #{file_name}, query: #{query}. Exception: #{response.error_msg}")
+                raise response.error_msg
+            end
+
+            # Import all the Solr documents generated for this finding aid
             json_docs = solr_docs.map { |solr_doc| solr_doc.to_json }
             json = "[" + json_docs.join(", ") + "]"
             response = @solr.update(json)
             if !response.ok?
+                Rails.logger.error("Importing file: #{file_name}. Exception: #{response.error_msg}")
                 raise response.error_msg
             end
             nil

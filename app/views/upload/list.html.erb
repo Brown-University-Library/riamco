@@ -35,6 +35,7 @@
                             </td>
                             <td>
                                 <form method="POST" action="<%= upload_publish_url(eadid: file[:name]) %>">
+                                    <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
                                     <button type="submit" id="publish_ead" name="publish_ead"
                                         class="btn btn-info btn-xs"
                                         value="publish_ead"
@@ -43,6 +44,7 @@
                             </td>
                             <td>
                                 <form method="POST" action="<%= upload_delete_url(eadid: file[:name]) %>">
+                                    <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
                                     <button type="submit" id="delete_ead" name="delete_ead"
                                         class="btn btn-danger btn-xs"
                                         value="delete_ead"

@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   # New URLs (without .php or .html)
   get 'render_pending' => 'ead#show_pending', as: :ead_show_pending
   get 'render' => 'ead#show', as: :ead_show
+  get 'download_pending' => 'ead#download_pending', as: :ead_download_pending
   get 'download' => 'ead#download', as: :ead_download
   get 'about' => 'home#about', as: :home_about
   get 'contact' => 'home#contact', as: :home_contact

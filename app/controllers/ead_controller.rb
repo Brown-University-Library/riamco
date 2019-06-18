@@ -56,6 +56,25 @@ class EadController < ApplicationController
     render "error", status: 500
   end
 
+  def download_pending
+    id = params["eadid"]
+    if valid_id?(id)
+      xml = load_xml(id, true)
+      if xml == nil
+        render text: "Not found", status: 404
+      else
+        render xml: xml
+      end
+    else
+      Rails.logger.error("Invalid id (#{id}) in ead#download_pending")
+      render "not_found", status: 404
+    end
+  rescue => ex
+    backtrace = ex.backtrace.join("\r\n")
+    Rails.logger.error("Could not download pending finding aid #{id}. Exception: #{ex} \r\n #{backtrace}")
+    render "error", status: 500
+  end
+
   private
     # Only accept alphanumeric characters, dashes, underscore or periods.
     def valid_id?(id)
@@ -71,9 +90,10 @@ class EadController < ApplicationController
       valid_id?(view)
     end
 
-    def load_xml(id)
+    def load_xml(id, pending=false)
       xml = nil
-      xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
+      xml_path = pending ? ENV["EAD_XML_PENDING_FILES_PATH"] : ENV["EAD_XML_FILES_PATH"]
+      xml_file = xml_path + "/#{id}.xml"
       if File.exist?(xml_file)
         Rails.logger.info("Reading XML file for #{id}")
         xml = File.read(xml_file)

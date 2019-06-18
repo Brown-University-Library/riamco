@@ -94,10 +94,10 @@
     <h3>View Options</h3>
     <ul class="nav_section">
         <li>
-            <a href="download?eadid={$eadid}" target="_blank" title="Download the XML for this finding aid">Download XML</a>
+            <a class="toc_link" href="download?eadid={$eadid}" target="_blank" title="Download the XML for this finding aid">Download XML</a>
         </li>
         <li>
-            <a href="render.php?eadid={$eadid}&amp;view=all" target="_blank" title="View all the information for this finding aid in a single page">View All (printer friendly)</a>
+            <a class="toc_link" href="render.php?eadid={$eadid}&amp;view=all" target="_blank" title="View all the information for this finding aid in a single page">View All (printer friendly)</a>
         </li>
     </ul>
 </div>
@@ -121,6 +121,7 @@
         for(i = 0; i <xsl:text disable-output-escaping="yes">&lt;</xsl:text> links.length; i++) {
             links[i].href = links[i].href.replace("render.php?","render_pending?");
             links[i].href = links[i].href.replace("render?","render_pending?")
+            links[i].href = links[i].href.replace("download?","download_pending?")
         }
     });
 </script>

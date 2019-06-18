@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   # New URLs (without .php or .html)
   get 'render_pending' => 'ead#show_pending', as: :ead_show_pending
   get 'render' => 'ead#show', as: :ead_show
+  get 'download_pending' => 'ead#download_pending', as: :ead_download_pending
   get 'download' => 'ead#download', as: :ead_download
   get 'about' => 'home#about', as: :home_about
   get 'contact' => 'home#contact', as: :home_contact
@@ -53,6 +54,18 @@ Rails.application.routes.draw do
   get 'advanced_search' => 'search#advanced_search', as: :advanced_search
   get 'search_facets' => 'search#facets'
   get 'search' => 'search#index', as: :search
+
+  # File upload
+  get 'upload' => 'upload#list', as: :upload_list
+  get 'upload/form' => 'upload#form', as: :upload_form
+  post 'upload/file' => 'upload#file', as: :upload_file
+  post 'upload/publish' => 'upload#publish', as: :upload_publish
+  post 'upload/delete' => 'upload#delete', as: :upload_delete
+
+  # Authentication
+  get 'login' => 'login#form', as: :login_form
+  post 'login' => 'login#authenticate', as: :login_authenticate
+  get 'logout' => 'login#logout', as: :login_logout
 
   # POSSIBLE FUTURE ENHANCEMENT:
   #

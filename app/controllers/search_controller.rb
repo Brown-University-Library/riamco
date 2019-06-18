@@ -16,6 +16,7 @@ class SearchController < ApplicationController
       return
     end
     @presenter.debug = request.params["debug"] == "true"
+    @presenter.user = current_user
     render "results"
   rescue => ex
     backtrace = ex.backtrace.join("\r\n")
@@ -36,6 +37,7 @@ class SearchController < ApplicationController
     searcher = Search.new(solr_url)
     search_results = searcher.search(params, debug, flat_display)
     @presenter = AdvancedSearchPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
+    @presenter.user = current_user
   end
 
   # Parses the values in the request and returns the Solr query
@@ -99,6 +101,7 @@ class SearchController < ApplicationController
       return
     end
     @presenter = execute_search(-1)
+    # @presenter.user = not needed
     facet_data = @presenter.facets.find {|f| f.name == facet_name }
     render :json => facet_data.values
   rescue => ex

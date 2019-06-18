@@ -1,0 +1,72 @@
+<style>
+    .timestamp_col {
+        width: 200px;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <h1>Staging Area for <%= @presenter.user.description %></h1>
+        <div style="margin-bottom: 60px;">
+            <a class="btn btn-primary" style="float: right" href="<%= upload_form_url() %>"
+                title="Upload a new finding aid to the staging area">Upload New File</a>
+        </div>
+        <% if @presenter.file_list.count > 0 %>
+            <div class="panel panel-info">
+                <div class="panel-heading" style="height: 50px">
+                    <h2 style="margin-top: 10px;">Finding Aids</h2>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Date Uploaded</th>
+                        <th>Filename</th>
+                        <th>&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                    <% @presenter.file_list.each do |file| %>
+                        <tr>
+                            <td class="timestamp_col">
+                                <%= file[:display_date] %>
+                            </td>
+                            <td>
+                                <a href="<%= ead_show_pending_url(eadid: file[:name]) %>"
+                                    target="_blank"
+                                    title="Preview this version of the finding aid in staging"><%= file[:name] %></a>
+                            </td>
+                            <td>
+                                <form method="POST" action="<%= upload_publish_url(eadid: file[:name]) %>">
+                                    <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
+                                    <button type="submit" id="publish_ead" name="publish_ead"
+                                        class="btn btn-info btn-xs"
+                                        value="publish_ead"
+                                        title="Publish this version of the finding aid">Publish</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form method="POST" action="<%= upload_delete_url(eadid: file[:name]) %>">
+                                    <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
+                                    <button type="submit" id="delete_ead" name="delete_ead"
+                                        class="btn btn-danger btn-xs"
+                                        value="delete_ead"
+                                        title="Delete this finding aid (<%= file[:name] %>)">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% end %>
+                </table>
+            </div> <!-- panel panel-default -->
+        <% end %>
+    </div> <!-- row -->
+</div> <!-- container -->
+
+<script>
+    $("#delete_ead").on("click", function(e) {
+        r = confirm("Are you sure you want to delete this finding aid?");
+        if (r === true) {
+            // let the click go through which submits the form
+        } else {
+            // stop the process
+            e.preventDefault();
+        }
+    });
+</script>

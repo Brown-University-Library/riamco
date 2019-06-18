@@ -1,0 +1,72 @@
+<style>
+    /*
+     Styles to customize the "file chooser" in the browser
+     source http://geniuscarrier.com/how-to-style-a-html-file-upload-button-in-pure-css/
+    */
+    .fileUpload {
+        position: relative;
+        overflow: hidden;
+        margin: 10px;
+    }
+
+    .fileUpload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <h1>Upload File</h1>
+        <p>Upload a finding aid to the staging area. File must be a valid XML file and have extension <code>.xml</code></p>
+
+        <form class="form-horizontal" method="POST" action="<%= upload_file_url %>" enctype="multipart/form-data">
+
+            <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
+
+            <div class="form-group">
+                <label id="file_lbl" class="control-label col-sm-1">File</label>
+                <div class="col-sm-4">
+                    <input id="uploadFilename" placeholder="Choose a file to upload" disabled="disabled" />
+                    <div class="fileUpload btn btn-info">
+                        <span>Browse</span>
+                        <input type="file" class="upload" id="file" name="file" title="Click to select a file to upload" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="overwrite_lbl" class="control-label col-sm-1">Overwrite?</label>
+                <div class="col-sm-4">
+                    <input type="checkbox" id="overwrite" name="overwrite"
+                        aria-describedby="overwrite_lbl"
+                        class="checkbox"
+                        title="Check this box if you are trying to overwrite an existing file in the staging area with a new version."></input>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-1">&nbsp;</label>
+                <div class="col-sm-4">
+                    <input type="submit" id="submit" name="submit"
+                        class="btn btn-primary"
+                        value="Upload" title="Upload your file">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Copy the name of the file selected to our custom textbox. Notice that the browser
+    // sticks the C:\fakepath for security reasons. We drop it since we don't need the path.
+    // source http://geniuscarrier.com/how-to-style-a-html-file-upload-button-in-pure-css/
+    document.getElementById("file").onchange = function () {
+        document.getElementById("uploadFilename").value = this.value.replace("C:\\fakepath\\","")
+    };
+</script>

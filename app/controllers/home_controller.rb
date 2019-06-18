@@ -2,53 +2,64 @@ class HomeController < ApplicationController
   def about
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def contact
     @nav_active = "nav_contact"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def copyright
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def faq
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def finding_aid
     @nav_active = "nav_help"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def glossary
     @nav_active = "nav_help"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def help
     @nav_active = "nav_help"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def participating
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def join
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def index
     @nav_active = "nav_home"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def links
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def page_not_found
@@ -64,11 +75,13 @@ class HomeController < ApplicationController
   def resources
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def resources_other
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 
   def status
@@ -94,5 +107,6 @@ class HomeController < ApplicationController
   def visit
     @nav_active = "nav_help"
     @presenter = HomePresenter.new()
+    @presenter.user = current_user
   end
 end

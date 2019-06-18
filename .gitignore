@@ -1,5 +1,8 @@
 # Files to ignore in Git
 
+# Ignore local EAD test files
+/ead_files
+
 # Our locally generated HTML finding aids (from the XML+XSLT)
 /public/html
 

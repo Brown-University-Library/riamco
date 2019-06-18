@@ -10,3 +10,19 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema.define(version: 20190610130100) do
+
+  create_table "users", force: :cascade do |t|
+    t.string   "username",    limit: 20
+    t.string   "password",    limit: 50
+    t.string   "description", limit: 50
+    t.string   "fileprefix",  limit: 20
+    t.string   "role",        limit: 20
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["username"], name: "index_users_on_username"
+
+end

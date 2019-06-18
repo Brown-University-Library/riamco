@@ -86,6 +86,13 @@ from { transform: scale(1) rotate(0deg);}
 to { transform: scale(1) rotate(360deg);}
 }
 
+
+.login-icon {
+	float:right;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
 /*
  * TODO: update to bold text on active, and change background to blue on hover
  */

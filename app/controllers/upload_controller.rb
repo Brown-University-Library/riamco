@@ -111,9 +111,11 @@ class UploadController < ApplicationController
             return
         end
 
-        File.delete(filename)
-        if File.exist?(filename)
-            log_error("Cannot delete EAD. File delete failed: #{filename}")
+        target = ENV["EAD_XML_DELETED_FILES_PATH"] + "/" + eadid + ".xml"
+        FileUtils.mv(filename, target)
+
+        if !File.exist?(target)
+            log_error("File delete failed: #{filename}")
             flash[:alert] = "Could not delete finding aid #{eadid}."
             redirect_to upload_list_url()
             return

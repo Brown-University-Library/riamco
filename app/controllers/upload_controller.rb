@@ -30,6 +30,8 @@ class UploadController < ApplicationController
         @presenter = UploadPresenter.new()
         @presenter.configure(pending_path, file_list, current_user)
         render
+    rescue => ex
+        render_error("list", ex, current_user)
     end
 
     # Shows upload form to the user
@@ -53,6 +55,8 @@ class UploadController < ApplicationController
 
         Rails.logger.info("Finding aid uploaded: #{file.original_filename}")
         redirect_to upload_list_url()
+    rescue => ex
+        render_error("file", ex, current_user)
     end
 
     # Moves a file from "pending" to "published"
@@ -91,6 +95,8 @@ class UploadController < ApplicationController
 
         Rails.logger.info("Published EAD #{eadid}")
         redirect_to ead_show_url(eadid: eadid)
+    rescue => ex
+        render_error("publish", ex, current_user)
     end
 
     # Deletes a pending finding aid from disk
@@ -124,6 +130,8 @@ class UploadController < ApplicationController
         Rails.logger.info("Findind aid #{eadid} has been deleted")
         flash[:notice] = "Findind aid #{eadid} has been deleted"
         redirect_to upload_list_url()
+    rescue => ex
+        render_error("delete", ex, current_user)
     end
 
     private
@@ -137,6 +145,12 @@ class UploadController < ApplicationController
                 error_msg += " User: #{current_user.username}"
             end
             Rails.logger.error(error_msg)
+        end
+
+        def render_error(action, ex, user)
+            backtrace = ex.backtrace.join("\r\n")
+            Rails.logger.error("Error in UploadController. Action: #{action}. User: #{current_user.username}. Exception: #{ex} \r\n #{backtrace}")
+            render "error", status: 500
         end
 
         def require_login

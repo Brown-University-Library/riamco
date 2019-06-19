@@ -11,7 +11,9 @@ class SearchController < ApplicationController
       end
       Rails.logger.warn(msg)
     else
-      Rails.logger.info("Search for #{@presenter.query} returned #{@presenter.num_found} results (#{@presenter.search_qs})")
+      if !@presenter.empty_search?
+        Rails.logger.info("Search for #{@presenter.query} returned #{@presenter.num_found} results (#{@presenter.search_qs})")
+      end
     end
     if params["format"] == "json"
       render :json => @presenter.results.to_json

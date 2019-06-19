@@ -10,6 +10,8 @@ class SearchController < ApplicationController
         msg += "Spellcheck: #{@presenter.suggest_q}"
       end
       Rails.logger.warn(msg)
+    else
+      Rails.logger.info("Search for #{@presenter.query} returned #{@presenter.num_found} results (#{@presenter.search_qs})")
     end
     if params["format"] == "json"
       render :json => @presenter.results.to_json

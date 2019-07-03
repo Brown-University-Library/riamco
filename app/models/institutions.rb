@@ -112,11 +112,8 @@ class Institutions
             rwusl = {code: "US-RBrRW-L", name: "Roger Williams University School of Law", active: "Y", link: "https://law.rwu.edu/library", email: "lawlibraryhelp@rwu.edu"}
             orgs << rwusl
 
-            salve_ar = {code: "US-RNSRU", name: "Salve Regina University Archives", active: "Y", link: "http://library.salve.edu/archives/", email: "archives@salve.edu"}
-            orgs << salve_ar
-
-            salve_sc = {code: "US-RNSRU", name: "Salve Regina University Special Collections", active: "Y", link: "http://library.salve.edu/spec-col/", email: nil}
-            orgs << salve_sc
+            salve = {code: "US-RNSRU", name: "Salve Regina Archives and Special Collections", active: "Y", link: "http://library.salve.edu/archives", email: "archives@salve.edu"}
+            orgs << salve
 
             orgs << {code: "US-RiExTM", name: "Tomaquag Museum", link: "https://www.tomaquagmuseum.org/", active: "N", email: "slarose@tomaquagmuseum.org"}
 

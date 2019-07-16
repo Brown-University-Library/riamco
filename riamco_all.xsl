@@ -1142,13 +1142,13 @@
             </xsl:if>
 
             <xsl:if test="child::ead:c[@level='file' or @level='item']">
-                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
+                <table class="table_inventory">
                     <tr class="table_section_header">
-                        <td width="111">Container</td>
-                        <td width="3"/>
-                        <td width="382">Description</td>
-                        <td width="3"/>
-                        <td width="114">Date</td>
+                        <td class="col_container">Container</td>
+                        <td class="col_dummy"></td>
+                        <td class="col_description">Description</td>
+                        <td class="col_dummy"/>
+                        <td class="col_date">Date</td>
                     </tr>
                     <xsl:apply-templates select="child::ead:c[@level='file' or @level='item']"/>
                 </table>
@@ -1229,13 +1229,13 @@
             </xsl:if>
 
        <xsl:if test="child::ead:c[@level='file' or @level='item']">
-          <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
-                    <tr class="table_section_header">
-                        <td width="111">Container</td>
-                        <td width="3"/>
-                        <td width="382">Description</td>
-                        <td width="3"/>
-                        <td width="114">Date</td>
+            <table class="table_inventory">
+                <tr class="table_section_header">
+                    <td class="col_container">Container</td>
+                    <td class="col_dummy"></td>
+                    <td class="col_description">Description</td>
+                    <td class="col_dummy"/>
+                    <td class="col_date">Date</td>
                 </tr>
                 <xsl:apply-templates select="child::ead:c"/>
             </table>
@@ -1247,20 +1247,20 @@
         <xsl:choose>
         <xsl:when test="ead:c[@id='c1']">
 
-                <table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
+                <table class="table_inventory">
                     <tr class="table_section_header">
-                        <td width="111">Container</td>
-                        <td width="3"/>
-                        <td width="382">Description</td>
-                        <td width="3"/>
-                        <td width="114">Date</td>
+                        <td class="col_container">Container</td>
+                        <td class="col_dummy"></td>
+                        <td class="col_description">Description</td>
+                        <td class="col_dummy"/>
+                        <td class="col_date">Date</td>
                     </tr>
                     <xsl:apply-templates select="ead:c"/>
                 </table>
                 </xsl:when>
 <xsl:otherwise>
-<table width="613" border="0" cellpadding="0" cellspacing="0" class="indent_2">
-        <tr>
+<table class="table_inventory">
+        <tr class="inventory_row_print">
             <td width="111" valign="top">
                 <xsl:apply-templates select="ead:did/ead:container"/>
             </td>

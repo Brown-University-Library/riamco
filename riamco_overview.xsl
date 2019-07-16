@@ -39,7 +39,7 @@
                                     <tr>
                                         <td width="165" class="category_column">Title:</td>
                                         <td width="530" class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
+                                            <i><xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/></i>
                                         </td>
                                     </tr>
                                     <tr>

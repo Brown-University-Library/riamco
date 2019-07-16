@@ -142,9 +142,9 @@ class SearchResultsPresenter
   end
 
   def facet_expanded?(facet)
-    if facet.name == "institution_s"
-      return true
-    end
+    # if facet.name == "institution_s"
+    #   return true
+    # end
 
     if facet.name == "date_range_s" && @fq_start_year != nil
       return true

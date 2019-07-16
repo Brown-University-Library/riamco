@@ -97,5 +97,13 @@
             </ul>
         </xsl:if>
 
+        <xsl:if test="./ead:geogname">
+            <b>Geographical Names</b>
+            <ul>
+                <xsl:for-each select="./ead:geogname">
+                    <li><xsl:value-of select="text()"/></li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
     </xsl:template>
 </xsl:stylesheet>

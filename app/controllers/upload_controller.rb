@@ -34,6 +34,20 @@ class UploadController < ApplicationController
         render_error("list", ex, current_user)
     end
 
+    # Checks if the indicated file exists on the pending area
+    def check_exists
+        filename = params["file"]
+        if !valid_filename(filename, nil)
+            Rails.logger.warn("check_exists: Invalid filename received (#{filename})")
+            render :json => {error: "Invalid filename"}, status: 400
+            return
+        end
+
+        full_filename = ENV["EAD_XML_PENDING_FILES_PATH"] + "/" + filename
+        exist = File.exist?(full_filename)
+        render :json => {exist: exist}
+    end
+
     # Shows upload form to the user
     def form
         @presenter = DefaultPresenter.new()
@@ -44,7 +58,7 @@ class UploadController < ApplicationController
     # Uploads a file to the "pending" area.
     def file
         file = params["file"]
-        overwrite = (params["overwrite"] == "on")
+        overwrite = (params["overwrite"] == "yes")
 
         error_msg = upload_file(file, overwrite)
         if error_msg != nil
@@ -135,7 +149,6 @@ class UploadController < ApplicationController
     end
 
     private
-
         # Logs the error and username of the current that encountered the error.
         def log_error(error)
             error_msg = error
@@ -220,13 +233,17 @@ class UploadController < ApplicationController
         #   2. ends with .xml
         #   3. starts with the indicated prefix.
         def valid_filename(filename, prefix)
+            return false if filename == nil
+
             match = filename.match(/[\w.\- ]+\.xml/)
             if match == nil || match.to_s != filename
                 return false
             end
 
-            if !filename.start_with?(prefix + "-")
-                return false
+            if prefix != nil
+                if !filename.start_with?(prefix + "-")
+                    return false
+                end
             end
             true
         end

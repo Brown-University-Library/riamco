@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   # File upload
   get 'upload' => 'upload#list', as: :upload_list
   get 'upload/form' => 'upload#form', as: :upload_form
+  get 'upload/check_exists' => 'upload#check_exists', as: :upload_check_exists
   post 'upload/file' => 'upload#file', as: :upload_file
   post 'upload/publish' => 'upload#publish', as: :upload_publish
   post 'upload/delete' => 'upload#delete', as: :upload_delete

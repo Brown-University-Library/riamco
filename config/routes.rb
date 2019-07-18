@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'links.html' => 'legacy#links'
   get 'render_pending.php' => 'legacy#render_pending'
   get 'render.php' => 'legacy#render'
+  get 'riamco/xml2pdffiles/:eadid' => 'legacy#render_pdf', constraints: { eadid: /[a-zA-Z0-9\.\-]+/ }
   get 'riamco/render.php' => 'legacy#render'
   get 'riamco/mkpdf.php' => 'legacy#render'
   get 'riamco/pdf_files/:filename' => 'legacy#pdf_files'

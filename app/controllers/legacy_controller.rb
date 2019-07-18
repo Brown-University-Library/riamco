@@ -63,6 +63,14 @@ class LegacyController < ApplicationController
         redirect_to ead_show_path(eadid: eadid, view: view)
     end
 
+    def render_pdf
+        eadid = request.params["eadid"] || ""
+        if eadid.ends_with?("pdf")
+            eadid = File.basename(eadid, File.extname(eadid))
+        end
+        redirect_to ead_show_path(eadid: eadid)
+    end
+
     def render_pending
         eadid = request.params["eadid"]
         view = request.params["view"]

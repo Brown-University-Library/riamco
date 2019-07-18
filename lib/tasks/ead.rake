@@ -6,6 +6,26 @@ namespace :riamco do
     FindingAids.reload_cache()
   end
 
+  desc "Deletes an individual EAD from Solr"
+  task :delete_ead, [:ead_id] => :environment do |cmd, args|
+    ead_id = args[:ead_id]
+    if ead_id == nil
+      abort "Must provide an EAD ID"
+    end
+
+    solr_url = ENV["SOLR_URL"]
+    if solr_url == nil
+        abort "No SOLR_URL defined in the environment"
+    end
+
+    importer = EadImport.new(nil, solr_url)
+    error = importer.delete_finding_aid(ead_id)
+    FindingAids.reload_cache()
+    if error != nil
+      puts error
+    end
+  end
+
   desc "Imports to Solr all EAD files in the path given"
   task :import_eads, [:files_path] => :environment do |cmd, args|
     files_path = args[:files_path]

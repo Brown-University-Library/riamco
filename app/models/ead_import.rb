@@ -7,6 +7,17 @@ class EadImport
         @solr.def_type = "edismax"
     end
 
+    # Deletes all the information for a given EAD ID
+    def delete_finding_aid(ead_id)
+        query = "ead_id_s:#{ead_id}"
+        response = @solr.delete_by_query(query)
+        if response.ok?
+            return nil
+        else
+            return response.error_msg
+        end
+    end
+
     # Imports to Solr the XML files in the path.
     def import_files()
         start_all = Time.now
@@ -96,8 +107,7 @@ class EadImport
 
             # Delete from Solr all previous information for this finding aid
             ead_id = solr_docs[0][:id]
-            query = "ead_id_s:#{ead_id}"
-            response = @solr.delete_by_query(query)
+            response = delete_finding_aid(ead_id)
             if !response.ok?
                 Rails.logger.error("Deleting previous data for file: #{file_name}, query: #{query}. Exception: #{response.error_msg}")
                 raise response.error_msg

@@ -9,13 +9,9 @@ class EadImport
 
     # Deletes all the information for a given EAD ID
     def delete_finding_aid(ead_id)
-        query = "ead_id_s:#{ead_id}"
+        query = 'ead_id_s:\"' + CGI.escape(ead_id) + '\"'
         response = @solr.delete_by_query(query)
-        if response.ok?
-            return nil
-        else
-            return response.error_msg
-        end
+        return response
     end
 
     # Imports to Solr the XML files in the path.
@@ -35,6 +31,23 @@ class EadImport
                 errors << "File: #{file_name}. #{ex}, #{ex.backtrace}"
             end
         end
+
+        if errors.count == 0
+            # Delete any Solr documents that were not touched during the
+            # import process.
+            #
+            # Notice that we use the start time minus 10 seconds just
+            # to be safe. We also convert the value to datetime and
+            # then to string to make sure it's formatted with the exact
+            # format as the timestamp_s value in Solr (including the
+            # T to delimit time).
+            #
+            timestamp = (start_all-10).to_datetime.to_s
+            query = 'timestamp_s:[* TO \"' + timestamp + '\"]'
+            Rails.logger.info("Deleting Solr documents older than #{timestamp}")
+            response = @solr.delete_by_query(query)
+        end
+
         log_elapsed(start_all, "Import ended")
         return errors
     end
@@ -109,7 +122,7 @@ class EadImport
             ead_id = solr_docs[0][:id]
             response = delete_finding_aid(ead_id)
             if !response.ok?
-                Rails.logger.error("Deleting previous data for file: #{file_name}, query: #{query}. Exception: #{response.error_msg}")
+                Rails.logger.error("Deleting previous data for file: #{file_name}, query: #{ead_id}. \r\nException: #{response.error_msg}")
                 raise response.error_msg
             end
 

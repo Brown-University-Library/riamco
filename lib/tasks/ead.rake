@@ -19,10 +19,11 @@ namespace :riamco do
     end
 
     importer = EadImport.new(nil, solr_url)
-    error = importer.delete_finding_aid(ead_id)
+    response = importer.delete_finding_aid(ead_id)
     FindingAids.reload_cache()
-    if error != nil
-      puts error
+
+    if !response.ok?
+      puts response.error_msg
     end
   end
 

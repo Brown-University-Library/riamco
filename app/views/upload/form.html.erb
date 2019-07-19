@@ -93,7 +93,7 @@
             $("#flash-alert").addClass("hidden");
 
             $.ajax({
-                url: "http://localhost:3000/upload/check_exists?file=" + filename,
+                url: "<%= upload_check_exists_url %>?file=" + filename,
                 success: function(data,status) {
                     if (data.exist) {
                         // Force the user to select overwrite

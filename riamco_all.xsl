@@ -32,10 +32,10 @@
 
                                 <!-- SECTION: collection overview -->
                                 <h3>Collection Overview</h3>
-                                <table width="695" border="0" cellpadding="0" cellspacing="0">
+                                <table width="90%" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td width="165" class="category_column">Title:</td>
-                                        <td width="530" class="info_column">
+                                        <td class="info_column">
                                             <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
                                         </td>
                                     </tr>
@@ -169,10 +169,10 @@
                                 <!-- SECTION: access and use -->
                                 <h3>Access &amp; Use</h3>
 
-                                <table width="695" border="0" cellpadding="0" cellspacing="0">
+                                <table width="90%" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
                                         <td width="165" class="category_column">Access to the collection:</td>
-                                        <td width="530" class="info_column">
+                                        <td class="info_column">
                                             <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:accessrestrict"/>
                                         </td>
 

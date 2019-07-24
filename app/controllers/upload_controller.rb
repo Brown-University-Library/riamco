@@ -209,12 +209,21 @@ class UploadController < ApplicationController
 
             # Make sure its a valid XML file
             xml_doc = nil
+            error_detail = nil
             begin
                 xml_content = File.read(filename)
                 xml_doc = Nokogiri::XML(xml_content)
                 if xml_doc.errors.count > 0
                    raise "Error in XML content."
                 end
+
+                ead_id = xml_doc.xpath("xmlns:ead/xmlns:eadheader/xmlns:eadid[1]/text()").text
+                base_filename = File.basename(filename,".xml")
+                if ead_id != base_filename
+                    error_detail = "The filename (#{base_filename}) does not match the metadata in the <eadid> tag (#{ead_id})."
+                    raise "Error in XML content."
+                end
+
             rescue => ex
                 error_msg = "File uploaded was not a valid XML: #{filename}. "
                 if xml_doc != nil && xml_doc.errors.count > 0
@@ -222,7 +231,10 @@ class UploadController < ApplicationController
                 end
                 error_msg += "Exception: #{ex}."
                 log_error(error_msg)
-                return "File uploaded is not a valid XML file."
+
+                FileUtils.rm([filename], force: true)
+
+                return "File uploaded is not a valid XML file. #{error_detail}"
             end
 
             return nil

@@ -152,16 +152,10 @@ class SearchController < ApplicationController
     def base_facet_search_url()
       # Base this value of the original search URL so that we preserve all
       # the search parameters.
-      url = request.original_url
-      if url.include?("/search")
-        url = url.sub("/search", "/search_facets")
-      elsif url.include?("/advanced_search")
-        url = url.sub("/advanced_search", "/search_facets")
-      end
-        if !url.include?("?")
-        # This is to make sure we can safely add a query string parameter
-        # (in the JavaScript used in the view) by just appending "&a=b".
-        url += "?"
+      url = search_facets_url() + "?"
+      qs = URI(request.original_url).query
+      if qs != nil
+        url += qs
       end
       url
     end

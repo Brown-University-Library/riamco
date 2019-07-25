@@ -23,7 +23,7 @@ class Search
     qf += "subjects_txts_en formats_txts_en keywords_t"
 
     params.hl = true
-    params.hl_fl = "title_txt_en abstract_txt_en scope_content_txts_en subjects_txts_en formats_txts_en biog_hist_txt_en "
+    params.hl_fl = "filing_title_s title_txt_en abstract_txt_en scope_content_txts_en subjects_txts_en formats_txts_en biog_hist_txt_en "
     params.hl_fl += "inventory_label_txt_en inventory_scope_content_txt_en"
     params.hl_snippets = 30
 

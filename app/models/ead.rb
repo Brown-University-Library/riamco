@@ -4,11 +4,12 @@ require "./app/models/institutions.rb"
 
 class Ead
     attr_reader :abstract, :biog_hist, :bulk, :call_no,
-        :creators, :date, :date_display, :end_year, :extent, :filing_title,
-        :filing_title_sort, :formats, :id, :institution, :institution_id,
+        :creators, :date, :date_display, :end_year, :extent,
+        :formats, :id, :institution, :institution_id,
         :keywords, :languages, :repository_name, :scope_content,
-        :start_year, :subjects, :title, :title_sort, :title_sort_alpha,
-        :title_proper, :title_proper_sort, :unit_id
+        :start_year, :subjects,
+        :title, :title_sort, :title_filing, :title_proper,
+        :unit_id
 
     def initialize(xml)
         @xml_doc = Nokogiri::XML(xml)
@@ -26,7 +27,7 @@ class Ead
         @date_display = get_doc_date_display()
 
         @extent = get_doc_extent()
-        @filing_title = get_doc_filing_title()
+        @title_filing = get_doc_title_filing()
         @formats = get_doc_formats()
         @id = get_doc_id()
         @institution_id = get_doc_main_agency_code()
@@ -37,7 +38,7 @@ class Ead
         @scope_content = get_doc_scope_content()
         @subjects = get_doc_subjects()
         @title = get_doc_title()
-        @title_sort = get_doc_title_sort(@title)
+        @title_sort = get_doc_title_sort(@title_filing || @title)
         @title_proper = get_doc_title_proper()
         @unit_id = get_doc_unit_id()
         @inventory = get_doc_inventory()
@@ -60,7 +61,7 @@ class Ead
             date_display_s: self.date_display,
             end_year_i: self.end_year,
             extent_s: self.extent,
-            filing_title_s: self.filing_title,
+            filing_title_s: self.title_filing,
             formats_ss: self.formats,
             formats_txts_en: self.formats,
             id: self.id,
@@ -196,7 +197,8 @@ class Ead
         end
 
         def get_doc_title()
-            get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='primary']/text()")
+            t = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='primary']/text()")
+            strip_safe(t)
         end
 
         def get_doc_call_no()
@@ -208,8 +210,9 @@ class Ead
             title.upcase
         end
 
-        def get_doc_filing_title()
-            get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='filing']/text()")
+        def get_doc_title_filing()
+            t = get_xpath_value("xmlns:ead/xmlns:archdesc/xmlns:did/xmlns:unittitle[@type='filing']/text()")
+            strip_safe(t)
         end
 
         def get_doc_formats()
@@ -226,7 +229,7 @@ class Ead
                 texts = texts.map {|text| text == "\n" ? nil : text}.compact
                 title_proper = trim_text(texts.join(" "))
             end
-            title_proper
+            strip_safe(title_proper)
         end
 
         def get_doc_languages()
@@ -433,6 +436,11 @@ class Ead
                 end
             end
             values.uniq
+        end
+
+        def strip_safe(text)
+            return nil if text == nil
+            text.strip
         end
 
         def trim_text(text)

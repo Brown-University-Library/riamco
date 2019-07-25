@@ -13,7 +13,8 @@ class SearchResultsPresenter
     :explainer, :explain_format,
     :debug, :show_facet_counts, :facet_count_url_toggle,
     :fq_date_range,
-    :fq_start_year, :start_year_from, :start_year_to
+    :fq_start_year, :start_year_from, :start_year_to,
+    :sort, :sort_title_url, :sort_relevance_url
 
   # TODO: make this presenter inherit from DefaultPresenter to ensure this value exists
   attr_accessor :user
@@ -40,6 +41,13 @@ class SearchResultsPresenter
     if results.spellcheck.top_collation_query != nil
       @suggest_url = @remove_q_url + "&q=#{CGI.escape(suggest_q)}"
     end
+
+    @sort = "relevance"
+    if (params.sort || "").include?("title_sort_s")
+      @sort = "title"
+    end
+    @sort_title_url = "#{@base_url}?#{params.to_user_query_string()}&sort=title"
+    @sort_relevance_url = "#{@base_url}?#{params.to_user_query_string()}&sort=rel"
 
     # from results
     @num_eads = results.groups_found || 0

@@ -124,8 +124,14 @@ class SearchController < ApplicationController
       params = SolrLite::SearchParams.from_query_string(request.query_string, facets_fields())
       params.q = "*" if params.q == ""
       params.page_size = 10 # don't allow the client to control this
-      if params.q == "*"
-        params.sort = "timestamp_s desc"
+      if request.params["sort"] == nil
+        if params.q == "*"
+          params.sort = "title_sort_s asc"
+        end
+      else
+        if request.params["sort"] == "title"
+          params.sort = "title_sort_s asc"
+        end
       end
       params.facet_limit = facet_limit if facet_limit != nil
 

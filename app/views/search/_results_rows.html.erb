@@ -14,15 +14,16 @@
     <% @presenter.results.each do |item| %>
       <div class="result-row">
         <div class="result-title">
-            <% if item.title == "" %>
+            <% if item.title_filing == "" %>
               <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>">(untitled)</a>
             <% else %>
-              <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_hl.html_safe %></a>
+              <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>"><%= item.title_filing %></a>
             <% end %>
         </div>
 
         <dl>
           <% if @presenter.debug %>
+            <dt class="result-debug">Title Sort:</dt> <dd class="result-debug"><%= item.title_sort || 'N/A' %></dd>
             <dt class="result-debug">Format:</dt> <dd class="result-debug"><%= item.inv_level %></dd>
             <dt class="result-debug">Timestamp:</dt> <dd class="result-debug"><%= item.timestamp %></dd>
             <dt class="result-debug">Start Year:</dt> <dd class="result-debug"><%= item.start_year %></dd>
@@ -31,6 +32,10 @@
             <% if @presenter.empty_search? %>
               <dt class="result-debug"></dt> <dd><%= item.match_count %> archival items</dd>
             <% end %>
+          <% end %>
+
+          <% if item.title %>
+            <dt>Formal title: </dt> <dd><%= item.title_hl.html_safe %></dd>
           <% end %>
 
           <% if item.extent %>

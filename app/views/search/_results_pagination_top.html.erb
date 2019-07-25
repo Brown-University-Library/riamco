@@ -1,11 +1,12 @@
-<!-- top bar: 1/N results found -->
 <div class="pagination-top">
+  <!-- previous pge -->
   <% if @presenter.page == 1 %>
     <span class="chevron-nav-title text-muted">« Previous</span>
   <% else %>
     <a href="<%= @presenter.previous_url %>" ><span class="chevron-nav-title">« Previous</span></a>
   <% end %>
 
+  <!-- 1 - N of X collections -->
   <span class="search-result-numbers">
     | <span id="search-page-start"><b><%= @presenter.start + 1 %></b></span>
     -
@@ -15,6 +16,7 @@
     collections |
   </span>
 
+  <!-- next page -->
   <% if @presenter.page >= (@presenter.num_pages) %>
     <span class="chevron-nav-title text-muted">Next »</span>
   <% else %>
@@ -22,5 +24,18 @@
       <span class="chevron-nav-title">Next »</span>
     </a>
   <% end %>
-  <hr/>
+
+  <!-- sorting -->
+  <span class="dropdown" style="float: right; margin-top: -5px;">
+      <button class="btn btn-default dropdown-toggle" style="padding-top: 3px; padding-bottom: 0px;" type="button" id="sortMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Sort by <%= @presenter.sort %>
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="sortMenu">
+        <li><a href="<%= @presenter.sort_relevance_url %>">relevance</a></li>
+        <li><a href="<%= @presenter.sort_title_url %>">title</a></li>
+      </ul>
+  </span>
 </div>
+
+<hr/>

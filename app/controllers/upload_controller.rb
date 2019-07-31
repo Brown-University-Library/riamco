@@ -108,7 +108,8 @@ class UploadController < ApplicationController
         FileUtils.touch(target)
 
         Rails.logger.info("Published EAD #{eadid}")
-        redirect_to ead_show_url(eadid: eadid)
+        flash[:notice] = "Finding aid #{eadid} has been published."
+        redirect_to upload_list_url()
     rescue => ex
         render_error("publish", ex, current_user)
     end

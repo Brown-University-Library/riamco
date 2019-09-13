@@ -23,7 +23,7 @@
                 <div class="panel-body">
                     <ul class="list-unstyled">
                         <li><a href="//riamco.org/join" title="Become a Participating Institution">Join RIAMCO</a></li>
-                        <li><a href="https://library.brown.edu/riamco_admin/login/?next=/riamco_admin/" title="Login to deposit new finding aids">Log-in</a></li>
+                        <li><a href="https://www.riamco.org/upload" title="Login to deposit new finding aids">Log-in</a></li>
                         <li><a href="//riamco.org/resources">Resources</a></li>
                     </ul>
                 </div> <!-- panel body -->

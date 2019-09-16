@@ -118,12 +118,24 @@ class UploadController < ApplicationController
             return
         end
 
-        # Touch the file so that it's automatically reindexed into Solr next time the cronjob runs.
+        Rails.logger.info("Published EAD #{eadid}")
+
+        # Touch the file so our reindexed notices that the file has been updated
         FileUtils.touch(target)
 
-        Rails.logger.info("Published EAD #{eadid}")
-        flash[:notice] = "Finding aid #{eadid} has been published."
-        redirect_to upload_list_url()
+        one_MB = 1014 * 1014
+        if File.size(target) > one_MB
+            flash[:notice] = "Finding aid #{eadid} has been published and will be reindexed in the next half an hour."
+            redirect_to upload_list_url()
+        else
+            solr_url = ENV["SOLR_URL"]
+            importer = EadImport.new(target, solr_url)
+            importer.import_updated()
+
+            flash[:notice] = "Finding aid #{eadid} has been published and reindexed."
+            redirect_to upload_list_url()
+        end
+
     rescue => ex
         render_error("publish", ex, current_user)
     end

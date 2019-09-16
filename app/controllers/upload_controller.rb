@@ -48,6 +48,20 @@ class UploadController < ApplicationController
         render :json => {exist: exist}
     end
 
+    # Checks if the indicated file exists on the published area
+    def check_exists_published
+        filename = params["file"] + ".xml"
+        if !valid_filename(filename, nil)
+            Rails.logger.warn("check_exists_published: Invalid filename received (#{filename})")
+            render :json => {error: "Invalid filename"}, status: 400
+            return
+        end
+
+        full_filename = ENV["EAD_XML_FILES_PATH"] + "/" + filename
+        exist = File.exist?(full_filename)
+        render :json => {exist: exist}
+    end
+
     # Shows upload form to the user
     def form
         @presenter = DefaultPresenter.new()

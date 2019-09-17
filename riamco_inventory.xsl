@@ -12,7 +12,7 @@
     <xsl:include href="riamco_top_banner.xsl" />
 
     <xsl:template match="/">
-        <html xmlns="http://www.w3.org/1999/xhtml">
+        <html>
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <xsl:call-template name="html_title_template" />

@@ -121,9 +121,8 @@ class EadController < ApplicationController
           Rails.logger.info("Creating HTML file for #{id}, #{view}")
           document = Nokogiri::XML(File.read(xml_file))
           template = Nokogiri::XSLT(File.read(xsl_file))
-          html = template.transform(document)
-          # TODO: cache file, maybe?
-          # File.write(html_file, html)
+          transformed_doc = template.transform(document)
+          html = "<!DOCTYPE html>\r\n" + transformed_doc.to_s
         end
       end
       html

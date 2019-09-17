@@ -5,7 +5,7 @@
     </xsl:param>
 
     <xsl:template match="/">
-        <html xmlns="http://www.w3.org/1999/xhtml">
+        <html>
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>

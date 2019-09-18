@@ -56,7 +56,14 @@
             <b>Subject Names</b>
             <ul>
                 <xsl:for-each select="./ead:persname">
-                    <li><xsl:value-of select="text()"/></li>
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
         </xsl:if>
@@ -65,7 +72,14 @@
             <b>Subject Organizations</b>
             <ul>
                 <xsl:for-each select="./ead:corpname">
-                    <li><xsl:value-of select="text()"/></li>
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
         </xsl:if>
@@ -74,7 +88,14 @@
             <b>Subject Topics</b>
             <ul>
                 <xsl:for-each select="./ead:subject">
-                    <li><xsl:value-of select="text()"/></li>
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
         </xsl:if>
@@ -83,7 +104,14 @@
             <b>Document Types</b>
             <ul>
                 <xsl:for-each select="./ead:genreform">
-                    <li><xsl:value-of select="text()"/></li>
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
         </xsl:if>
@@ -92,7 +120,14 @@
             <b>Occupations</b>
             <ul>
                 <xsl:for-each select="./ead:occupation">
-                    <li><xsl:value-of select="text()"/></li>
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
         </xsl:if>
@@ -101,7 +136,14 @@
             <b>Geographical Names</b>
             <ul>
                 <xsl:for-each select="./ead:geogname">
-                    <li><xsl:value-of select="text()"/></li>
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
         </xsl:if>

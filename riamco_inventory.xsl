@@ -142,7 +142,17 @@
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
                                 </a>
                             </u>
-
+                        </xsl:when>
+                        <xsl:when test="ead:eadid[@mainagencycode='US-RPRC']">
+                            <u>
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:text>https://digitalcommons.ric.edu/</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="target">_blank</xsl:attribute>
+                                    <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                </a>
+                            </u>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -255,7 +265,17 @@
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
                                 </a>
                             </u>
-
+                        </xsl:when>
+                        <xsl:when test="ead:eadid[@mainagencycode='US-RPRC']">
+                            <u>
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:text>https://digitalcommons.ric.edu/</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
+                                    </xsl:attribute>
+                                    <xsl:attribute name="target">_blank</xsl:attribute>
+                                    <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                </a>
+                            </u>
                         </xsl:when>
                         <xsl:otherwise>
                             <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -380,6 +400,18 @@
                                         <xsl:attribute name="href">
                                             <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
                                             <xsl:text>/</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                    </a>
+                                </u>
+                                <br/>
+                            </xsl:when>
+                            <xsl:when test="ead:eadid[@mainagencycode='US-RPRC']">
+                                <u>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>https://digitalcommons.ric.edu/</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
                                         </xsl:attribute>
                                         <xsl:attribute name="target">_blank</xsl:attribute>
                                         <xsl:apply-templates select="ead:did/ead:unittitle"/>

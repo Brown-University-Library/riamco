@@ -35,10 +35,10 @@
                             <div class="right_two_thirds">
                                 <xsl:call-template name="top_banner" />
                                 <h3>Collection Overview</h3>
-                                <table width="695" border="0" cellpadding="0" cellspacing="0">
+                                <table width="700" border="0" cellpadding="0" cellspacing="0">
                                     <tr>
-                                        <td width="165" class="category_column">Title:</td>
-                                        <td width="530" class="info_column">
+                                        <td width="200" class="category_column">Title:</td>
+                                        <td width="500" class="info_column">
                                             <i><xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/></i>
                                         </td>
                                     </tr>
@@ -110,7 +110,7 @@
                                         <tr>
                                             <td class="category_column">Language of materials:</td>
                                             <td class="info_column">
-                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:langmaterial/ead:language"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:langmaterial"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -255,5 +255,15 @@
         </font>
     </xsl:template>
 
-
+    <xsl:template match="ead:ead/ead:archdesc/ead:did/ead:langmaterial">
+        <xsl:choose>
+            <xsl:when test="./ead:language">
+                <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:langmaterial/ead:language"/>
+                <xsl:text>. </xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="./text()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 </xsl:stylesheet>

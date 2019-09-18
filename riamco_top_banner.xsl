@@ -36,6 +36,9 @@
             </div>
             <h1>
                 <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>
+                <xsl:text> (</xsl:text>
+                <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unitid/text()"/>
+                <xsl:text>)</xsl:text>
             </h1>
             <h2>
                 <xsl:value-of select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>

@@ -122,8 +122,8 @@
                             <u>
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
+                                        <xsl:text>data/</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
+
                                     </xsl:attribute>
                                     <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -135,8 +135,8 @@
                             <u>
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
+                                        <xsl:text>data/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
+
                                     </xsl:attribute>
                                     <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -235,8 +235,8 @@
                             <u>
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
+                                        <xsl:text>data/</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
+
                                     </xsl:attribute>
                                     <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -248,8 +248,8 @@
                             <u>
                                 <a>
                                     <xsl:attribute name="href">
-                                        <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                        <xsl:text>/</xsl:text>
+                                        <xsl:text>data/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
+
                                     </xsl:attribute>
                                     <xsl:attribute name="target">_blank</xsl:attribute>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -365,8 +365,8 @@
                                 <u>
                                     <a>
                                         <xsl:attribute name="href">
-                                            <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
-                                            <xsl:text>/</xsl:text>
+                                            <xsl:text>data/</xsl:text><xsl:value-of select="ead:dao/@ns2:href"/>
+
                                         </xsl:attribute>
                                         <xsl:attribute name="target">_blank</xsl:attribute>
                                         <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -378,13 +378,25 @@
                                 <u>
                                     <a>
                                         <xsl:attribute name="href">
-                                            <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
-                                            <xsl:text>/</xsl:text>
+                                            <xsl:text>data/</xsl:text><xsl:value-of select="ead:dao[@ns2:role='BDR_PID']/@ns2:href"/>
+
                                         </xsl:attribute>
                                         <xsl:attribute name="target">_blank</xsl:attribute>
                                         <xsl:apply-templates select="ead:did/ead:unittitle"/>
                                     </a>
                                 </u>
+                                <br/>
+                            </xsl:when>
+                            <xsl:when test="ead:dao[@ns2:role='NORMALIZEDFILE_ID']">
+
+
+
+                                    <a href="renderfile?eadid=20ProspectStProvidenceRI02912&#038;view=file&#038;file={$inventory_id}">
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <u><xsl:apply-templates select="ead:did/ead:unittitle"/></u>
+                                        <span>  </span><i class="material-icons md-18">open_in_new</i>
+                                    </a>
+
                                 <br/>
                             </xsl:when>
                             <xsl:otherwise>
@@ -393,14 +405,15 @@
                             </xsl:otherwise>
                         </xsl:choose>
 
+
                         <xsl:if test="ead:did/ead:physdesc/ead:extent">
                             <xsl:apply-templates select="ead:did/ead:physdesc/ead:extent"/>
                             <br/>
                         </xsl:if>
 
                         <xsl:if test="ead:scopecontent/ead:p">
-                            <xsl:text>Contents Note: </xsl:text>
-                            <xsl:apply-templates select="ead:scopecontent/ead:p"/>
+
+                            <xsl:copy-of select="ead:scopecontent"/>
                             <br/>
                         </xsl:if>
 
@@ -770,4 +783,3 @@
 
 
 </xsl:stylesheet>
-

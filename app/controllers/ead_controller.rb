@@ -107,9 +107,34 @@ class EadController < ApplicationController
       html = nil
       html_path = ENV["EAD_HTML_FILES_PATH"]
       html_file = html_path + "/#{id}_riamco_#{view}.html"
+      xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
+      xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
       if File.exist?(html_file)
         Rails.logger.info("Reading HTML file for #{id}, #{view}")
         html = File.read(html_file)
+      elsif !File.exist?(xsl_file)
+        Rails.logger.info("XSLT file not found: #{xsl_file}")
+      elsif view == "inventory"
+        #Inventory-specific process for processing linking for files.
+        if !File.exist?(xml_file)
+          Rails.logger.info("XML file not found: #{xml_file}")
+        elsif !File.exist?(xsl_file)
+          Rails.logger.info("XSLT file not found: #{xsl_file}")
+        else
+          Rails.logger.info("Creating HTML file for #{id}, #{view}")
+          document = Nokogiri::XML(File.read(xml_file))
+          template = Nokogiri::XSLT(File.read(xsl_file))
+          Rails.logger.info(template)
+
+          #Find and replace a specific string in the XSLT to generate file links with the correct eadid
+          templatetext =  Nokogiri::XSLT(File.read(xsl_file).gsub!('20ProspectStProvidenceRI02912',id))
+
+          Rails.logger.info(templatetext)
+
+          html = templatetext.transform(document)
+          # TODO: cache file, maybe?
+          # File.write(html_file, html)
+        end
       else
         xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
         xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"

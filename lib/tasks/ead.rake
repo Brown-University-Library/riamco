@@ -40,6 +40,7 @@ namespace :riamco do
     end
 
     importer = EadImport.new(files_path, solr_url)
+    puts files_path
     errors = importer.import_files()
     FindingAids.reload_cache()
 

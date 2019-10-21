@@ -21,10 +21,11 @@ group :development, :test do
   gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
 end
 
-gem "sqlite3"
+gem 'sqlite3', git: "https://github.com/larskanis/sqlite3-ruby", branch: "add-gemspec"
 
 # Needed on RedHat
 gem 'therubyracer', platforms: :ruby
+gem "tzinfo-data"
 
 # Needed for rails console in RedHat
 gem "rb-readline"
@@ -34,4 +35,4 @@ gem "rb-readline"
 gem 'dotenv-rails'
 
 gem "solr_lite", '0.0.14'
-# gem "solr_lite", path: '/Users/hectorcorrea/dev/solr_lite'
+# gem "solr_lite", path: 'C:\Users\cross9\Downloads\solr_lite-master'

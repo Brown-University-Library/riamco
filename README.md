@@ -14,6 +14,8 @@ chruby 2.3.5
 gem install bundle
 ```
 
+See `./solr_conf/solr_create.sh` for instructions on how to create the Solr core required by this project.
+
 
 # To get started
 ```
@@ -31,10 +33,10 @@ your environment.
 
 # Indexing our EAD files
 ```
-bundle exec rake riamco:ead_to_solr[/path/to/xml/published/*.xml,true]
+bundle exec rake riamco:import_eads[/path/to/xml/published/*.xml]
 ```
 
-You can pass `false` as the second argument to skip the pushing of the data to Solr and instead get the JSON output on the console.
+You can use rake task `parse_eads` if you just want to parse to an EAD and see the result in your Terminal.
 
 
 # General Architecture

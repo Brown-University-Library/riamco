@@ -7,6 +7,23 @@ class EadImport
         @solr.def_type = "edismax"
     end
 
+    def add_file(ead_id, filename, text)
+        # TODO: revisit this
+        # See https://www.rubyguides.com/2019/05/ruby-ascii-unicode/
+        text_utf8 = text.encode("UTF-8", "ASCII", invalid: :replace, undef: :replace, replace: "")
+        doc = {
+            ead_id_s: ead_id,
+            filename_s: filename,
+            text_txt_en: text_utf8
+        }
+        json = "[" + doc.to_json + "]"
+        response = @solr.update(json)
+        if !response.ok?
+            Rails.logger.error("Adding text to ead_id #{ead_id}: #{file_name}. Exception: #{response.error_msg}")
+            raise response.error_msg
+        end
+    end
+
     # Deletes all the information for a given EAD ID
     def delete_finding_aid(ead_id)
         query = 'ead_id_s:\"' + CGI.escape(ead_id) + '\"'

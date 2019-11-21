@@ -14,17 +14,28 @@ namespace :riamco do
   end
 
   desc "Extracts text from a file associated with an EAD ID and indexes into Solr"
-  task :ft_index, [:ead_id, :filename] => :environment do |cmd, args|
+  task :ft_index, [:ead_id, :file_mask] => :environment do |cmd, args|
     ead_id = args[:ead_id]
-    filename = args[:filename]
-    extractor = TextExtractor.new(ENV["TIKA_URL"])
-    ok, text = extractor.process_file(filename)
-    if ok
-      import = EadImport.new(nil, ENV["SOLR_TEXT_URL"])
-      import.add_file(ead_id, File.basename(filename), text)
-      puts "Text of file #{filename} added to EAD #{ead_id}"
-    else
-      puts "ERROR: #{text}"
+    file_mask = args[:file_mask]
+    Dir.glob(file_mask).each do |filename|
+      puts "Processing #{filename}"
+      extractor = TextExtractor.new(ENV["TIKA_URL"])
+      ok, text = extractor.process_file(filename)
+      if ok
+        import = EadImport.new(nil, ENV["SOLR_TEXT_URL"])
+        import.add_file(ead_id, File.basename(filename), text)
+        puts "Text of file #{filename} added to EAD #{ead_id}"
+      else
+        puts "ERROR: #{text}"
+      end
+
     end
+  end
+
+  desc "Deletes all documents from the full text index"
+  task :ft_clean_index do |cmd, args|
+    solr_url = ENV["SOLR_TEXT_URL"]
+    solr = SolrLite::Solr.new(solr_url)
+    solr.delete_all!
   end
 end

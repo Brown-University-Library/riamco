@@ -117,7 +117,8 @@ class Ead
                 subjects_ss: inv[:subjects],                    # for faceting
                 subjects_txts_en: inv[:subjects],               # for searching
                 creators_ss: inv[:creators],
-                creators_txts_en: inv[:creators]
+                creators_txts_en: inv[:creators],
+                is_file_b: inv[:is_file]
             }
             solr_data << solr_doc
             seq += 1
@@ -354,11 +355,34 @@ class Ead
                     label: trim_text(node.xpath("xmlns:did/xmlns:unittitle[1]/text()").text),
                     date: node.xpath("string(xmlns:did/xmlns:unitdate[1])"),
                     subjects: nil,                  # set below
-                    creators: nil                   # set below
+                    creators: nil,                  # set below
+                    is_file: false
                 }
+
+                # Parse the file name for this item in the inventory
+                #
+                # TODO: Figure out if we are going to store this information in individual
+                # properties in the Solr document. For now reuse the container_text.
+                #
+                # We should really store the file name in a separate property so that we
+                # can use a tokenizer that splits on periods, underscores, and dashes and
+                # allow a search for "blue" to match "blue.doc" or "blue_sky.doc"
+                node.xpath("xmlns:dao").each do |dao|
+                    href = dao.attributes["href"]
+                    role = dao.attributes["role"]
+                    if href != nil && role.value == "NORMALIZEDFILE_ID"
+                        data[:container_text] = "File #{href.value}"
+                        data[:is_file] = true
+                        break
+                    end
+                end
 
                 containers = node.xpath("xmlns:did/xmlns:container")
                 if containers.count > 0
+                    if data[:is_file]
+                        # TODO: handle this (see comment above about reusing container_text)
+                        puts "uh-oh...we are losing the file info"
+                    end
                     # collect the containers into a single string (e.g. "box 1 folder 2")
                     data[:container_text] = ""
                     containers.each do |container|
@@ -396,6 +420,7 @@ class Ead
 
                 scope_content = node.xpath("string(xmlns:scopecontent)")
                 if scope_content != ""
+                    # TODO: We should further parse scopecontent when is_file is true
                     data[:scope_content] = trim_text(scope_content)
                 end
 

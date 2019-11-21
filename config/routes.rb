@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   # New URLs (without .php or .html)
   get 'render_pending' => 'ead#show_pending', as: :ead_show_pending
   get 'render' => 'ead#show', as: :ead_show
+  get 'renderfile/:eadid/:filename' => 'ead#view_file', as: :ead_view_file,
+    constraints: { eadid: /[a-zA-Z0-9\.\-]+/, filename: /[a-zA-Z0-9\.\-]+/}
+  get 'rawfile/:eadid/:filename' => 'ead#raw_file', as: :ead_raw_file,
+    constraints: { eadid: /[a-zA-Z0-9\.\-]+/, filename: /[a-zA-Z0-9\.\-]+/}
   get 'download_pending' => 'ead#download_pending', as: :ead_download_pending
   get 'download' => 'ead#download', as: :ead_download
   get 'about' => 'home#about', as: :home_about

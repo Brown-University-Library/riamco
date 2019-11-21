@@ -75,6 +75,41 @@ class EadController < ApplicationController
     render "error", status: 500
   end
 
+  def view_file
+    @ead_id = params["eadid"]
+    @filename = params["filename"]
+    if !valid_filename?(@ead_id, @filename)
+      Rails.logger.error("Invalid id (#{@ead_id}) or file name (#{@filename}) in ead#view_file")
+      render "not_found", status: 404
+      return
+    end
+    render "pdf_view", :layout => false
+  rescue => ex
+    backtrace = ex.backtrace.join("\r\n")
+    Rails.logger.error("Could not render finding aid #{id}, view #{view}. Exception: #{ex} \r\n #{backtrace}")
+    render "error", status: 500
+  end
+
+  def raw_file
+    # Mimic the reading room validation
+    # TODO: implement for real
+    if params["rr"] != "yes"
+      render "error", status: 401
+      return
+    end
+
+    ead_id = params["eadid"]
+    filename = params["filename"]
+    if !valid_filename?(ead_id, filename)
+      Rails.logger.error("Invalid id (#{ead_id}) or file name (#{filename}) in ead#view_file")
+      render "not_found", status: 404
+      return
+    end
+
+    full_filename = full_filename(ead_id, filename)
+    send_file(full_filename, filename: filename, disposition: "inline")
+  end
+
   private
     # Only accept alphanumeric characters, dashes, underscore or periods.
     def valid_id?(id)
@@ -88,6 +123,18 @@ class EadController < ApplicationController
     def valid_view?(view)
       # TODO: restrict to known view names
       valid_id?(view)
+    end
+
+    def valid_filename?(ead_id, filename)
+      if !valid_id?(ead_id) || !valid_id?(filename)
+        return false
+      end
+      fullpath = full_filename(ead_id, filename)
+      File.exists?(fullpath)
+    end
+
+    def full_filename(ead_id, filename)
+      ENV["EAD_DIGITAL_FILES_PATH"] + "/" + ead_id + "/" + filename
     end
 
     def load_xml(id, pending=false)
@@ -104,27 +151,24 @@ class EadController < ApplicationController
     end
 
     def load_ead_html(id, view)
-      html = nil
       html_path = ENV["EAD_HTML_FILES_PATH"]
       html_file = html_path + "/#{id}_riamco_#{view}.html"
-      if File.exist?(html_file)
-        Rails.logger.info("Reading HTML file for #{id}, #{view}")
-        html = File.read(html_file)
-      else
-        xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
-        xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
-        if !File.exist?(xml_file)
-          Rails.logger.info("XML file not found: #{xml_file}")
-        elsif !File.exist?(xsl_file)
-          Rails.logger.info("XSLT file not found: #{xsl_file}")
-        else
-          Rails.logger.info("Creating HTML file for #{id}, #{view}")
-          document = Nokogiri::XML(File.read(xml_file))
-          template = Nokogiri::XSLT(File.read(xsl_file))
-          transformed_doc = template.transform(document)
-          html = "<!DOCTYPE html>\r\n" + transformed_doc.to_s
-        end
+      xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
+      xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
+      if !File.exist?(xml_file)
+        Rails.logger.info("XML file not found: #{xml_file}")
+        return nil
       end
+      if !File.exist?(xsl_file)
+        Rails.logger.info("XSLT file not found: #{xsl_file}")
+        return nil
+      end
+
+      Rails.logger.info("Creating HTML for #{id}, #{view}")
+      document = Nokogiri::XML(File.read(xml_file))
+      template = Nokogiri::XSLT(File.read(xsl_file))
+      transformed_doc = template.transform(document)
+      html = "<!DOCTYPE html>\r\n" + transformed_doc.to_s
       html
     end
 

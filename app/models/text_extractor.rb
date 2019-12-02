@@ -17,6 +17,9 @@ class TextExtractor
         uri = URI("#{@tika_url}/tika")
         response = Net::HTTP.get(uri) || ""
         response.include?("Tika Server")
+    rescue => ex
+        Rails.logger.error("Cannot connect to Tika Server: #{ex}")
+        false
     end
 
     def get_type(content)

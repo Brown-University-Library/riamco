@@ -36,13 +36,15 @@ class FullTextImport
             end
 
             # Extract the text from the file
-            ok, text = @text_extractor.process_file(full_filename)
+            ok, text_ascii = @text_extractor.process_file(full_filename)
             if !ok
                 Rails.logger.info("import_ead_files - error extracting text (#{full_filename})")
                 next
             end
-            # TODO: revisit encoding, see https://www.rubyguides.com/2019/05/ruby-ascii-unicode/
-            text_utf8 = text.encode("UTF-8", "ASCII", invalid: :replace, undef: :replace, replace: "")
+
+            # See https://stackoverflow.com/a/17026362/446681
+            # and https://www.rubyguides.com/2019/05/ruby-ascii-unicode/
+            text_utf8 = text_ascii.force_encoding("utf-8")
 
             # Save the text in the Solr text Solr
             doc_hash = file

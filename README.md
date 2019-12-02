@@ -39,6 +39,29 @@ bundle exec rake riamco:import_eads[/path/to/xml/published/*.xml]
 You can use rake task `parse_eads` if you just want to parse to an EAD and see the result in your Terminal.
 
 
+# Indexing text from PDF files (optional)
+If you are interested in indexing the *content* of the PDF files indicated in an EAD (in addition to the EAD itself) there are a few of extra steps required.
+
+Download the Tika Server from the [Apache Tika website](http://tika.apache.org/download.html) and run it (leave it running)
+
+```
+curl http://apache.mirrors.tds.net/tika/tika-server-1.22.jar > tika-server-1.22.jar
+java -jar tika-server-1.22.jar
+```
+
+Create a separate Solr core to store the contents of the PDF files extracted with Tika:
+
+```
+solr create -c riamco_pdf_text
+```
+
+Run the following Rake task to scan a particular EAD (by EAD ID) and index the PDF files indicated on it.
+
+```
+bundle exec rake riamco:ft_index_ead[US-RPB-ms2018.010]
+```
+
+
 # General Architecture
 
 See [this document](https://docs.google.com/document/d/1zQG6yT5sITz8JeCn4ILDOLy1nT5XAY6MwSRHm36Pwog/).

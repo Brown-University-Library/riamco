@@ -149,7 +149,7 @@ class Search
       end
 
       info = {}
-      if results.solr_docs.count == 1222
+      if results.solr_docs.count == 1
         info = {
           id: results.solr_docs[0]["id"],
           inv_id: results.solr_docs[0]["inventory_id_s"],

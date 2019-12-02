@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+    def to_s
+        self.username
+    end
+
     def is_reading_room?
         self.role == "reading_room"
     end

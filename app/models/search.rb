@@ -7,7 +7,7 @@ class Search
     @solr.def_type = "edismax"
   end
 
-  def search(params, debug = false)
+  def search(params, user, debug)
     extra_fqs = []
     params.fl = nil
     mm = nil
@@ -29,24 +29,37 @@ class Search
     params.hl_snippets = 30
 
     params.spellcheck = true
-    results = search_grouped(params, extra_fqs, qf, mm, debug)
 
+    # TODO: Remove hardcoded logic
+    rr = (user != nil) && user.is_reading_room?
     is_bornstein = params.fq.count == 1 && params.fq[0].field == "title_s" && params.fq[0].value == "Kate Bornstein papers"
-    include_files = is_bornstein && ENV["SOLR_TEXT_URL"]
+    include_files = rr && is_bornstein && ENV["SOLR_TEXT_URL"]
+    limit_to = include_files ? 20 : 4
+
+    # Search within the finding aids indexed in Solr
+    results = search_grouped(params, extra_fqs, qf, mm, debug, limit_to)
+
     if include_files
-      if results.items.count == 0
-        solr_id = "US-RPB-ms2018.010" # Kate Bornstein papers
-        finging_aid_doc = FindingAids.by_id(solr_id)
+      # Repeat the search but now within the PDF files indexed for the finding aid
+      # TODO: Remove hardcoded logic
+      ead_id = "US-RPB-ms2018.010"
+      file_items = search_files(ead_id, params.q)
+
+      # If we didn't pick up the finding aid info in the finding aids search
+      # and we got results in the files search, load the finding aid info
+      if results.items.count == 0 && file_items.count > 0
+        finging_aid_doc = FindingAids.by_id(ead_id)
         if finging_aid_doc == nil
           raise("Error getting finding aid with id: #{group_id}")
         end
         results.items << SearchItem.from_hash(finging_aid_doc, {})
       end
 
-      # TODO: Merge the results from the files on the proper finding aid
-      # TODO: Pass the ead_id as an qf filter to this search
-      res_files = search_files(params.q)
-      results.items[0].children += res_files.items
+      if results.items.count > 0
+        # Add the items found in the PDF files as children of the finding aid
+        # (notice that we assume a single finding aid is on the list)
+        results.items[0].children += file_items
+      end
     end
 
     results
@@ -54,13 +67,15 @@ class Search
 
   private
     # Runs a search on the text of the files (which is a separate Solr core)
-    def search_files(q)
+    # Notice that the results of this search are flat, not grouped.
+    def search_files(ead_id, q)
       logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
       solr_url = ENV["SOLR_TEXT_URL"]
       solr = SolrLite::Solr.new(solr_url, logger)
       solr.def_type = "edismax"
 
       extra_fqs = []
+      extra_fqs << SolrLite::FilterQuery.new("ead_id_s", [ead_id])
       params = SolrLite::SearchParams.new()
       params.fq = []
       params.fl = nil
@@ -77,30 +92,41 @@ class Search
         raise("Solr reported: #{results.error_msg}")
       end
 
+      # Map the result that we got to SearchItems so that we can
+      # blend them with the rest of the results.
+      items = []
       results.solr_docs.each do |doc|
         id = doc["id"]
         filename = doc["filename_s"]
 
-        # Map the result that we got from SOLR_TEXT_URL to look as if
-        # we got it from SOLR_TEXT so that we can blend it with the rest
-        # of the results.
+        # TODO: Instead of using the inventory_id_s from SOLR_TEXT_URL
+        # we should find the item in SOLR_URL (by filename) and use
+        # that inventory_id_s. This will prevent misalignment if the
+        # inventory changes in the EAD.
+        #
+        # This would also allow us to display the original name of the
+        # file (my_bio.pages) rather than the normalized name of
+        # the PDF (78981.pdf)
         doc2 = {
           "id" => id,
-          "inventory_scope_content_txt_en" => doc["text_txt_en"],
-          "inventory_container_txt_en" => filename ||  ""
+          "inventory_id_s" => doc["inventory_id_s"],
+          "ead_id_s" => doc["ead_id_s"],
+          "inventory_container_txt_en" => doc["inventory_filename_s"],
+          "inventory_level_s" => "Digital"
         }
 
         highlights = results.highlights.for(id) || []
-        highlights2 = {"inventory_scope_content_txt_en" => highlights["text_txt_en"]}
+        highlights2 = {"text_txt_en" => highlights["text_txt_en"]}
 
         item = SearchItem.from_hash(doc2, highlights2)
-        results.items << item
+        item.file_text = doc["text_txt_en"]
+        items << item
       end
-      results
+      items
     end
 
-    def search_grouped(params, extra_fqs, qf, mm, debug)
-      results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", 4)
+    def search_grouped(params, extra_fqs, qf, mm, debug, limit_to = 4)
+      results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", limit_to)
       if !results.ok?
         raise("Solr reported: #{results.error_msg}")
       end

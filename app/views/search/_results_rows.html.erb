@@ -76,10 +76,20 @@
                   <% end %>
                 </td>
                 <td class="inv-scope">
-                  <%= inv_item.inv_label_hl.html_safe %><br/>
-                  <%= inv_item.inv_scope_content_hl.html_safe %>
+                  <% if inv_item.is_file? %>
+                    <%= inv_item.file_text_hl.html_safe %>
+                  <% else %>
+                    <%= inv_item.inv_label_hl.html_safe %><br/>
+                    <%= inv_item.inv_scope_content_hl.html_safe %>
+                  <% end %>
                 </td>
-                <td class="inv-date"><%= inv_item.inv_date %></td>
+                <td class="inv-date">
+                <% if inv_item.is_file? %>
+                    <a target="_blank" href="<%= ead_view_file_path(eadid: item.ead_id, filename: inv_item.inv_container) %>">View File</a>
+                <% else %>
+                  <%= inv_item.inv_date %>
+                <% end %>
+                </td>
               </tr>
             <% end %>
           </table>

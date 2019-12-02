@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+    def is_reading_room?
+        self.role == "reading_room"
+    end
+
     def self.new_admin(username, password, prefix, description)
         info = {
             username: username,
@@ -18,6 +22,18 @@ class User < ActiveRecord::Base
             description: description,
             fileprefix: prefix,
             role: "user"
+        }
+        user = User.new(info)
+        user.save!
+    end
+
+    def self.new_reading_room_user(username, password)
+        info = {
+            username: username,
+            password: hash_password(password),
+            description: "Reading Room",
+            fileprefix: "US-RPB",
+            role: "reading_room"
         }
         user = User.new(info)
         user.save!

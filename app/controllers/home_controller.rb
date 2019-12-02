@@ -89,7 +89,7 @@ class HomeController < ApplicationController
     searcher = Search.new(solr_url)
     params = SolrLite::SearchParams.new()
     params.q = "*"
-    search_results = searcher.search(params)
+    search_results = searcher.search(params, nil, nil)
     if search_results.num_found > 0
       render :json => {status: "OK", message: "#{search_results.num_found} records found."}
     else

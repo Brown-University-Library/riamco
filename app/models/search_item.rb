@@ -5,7 +5,8 @@ class SearchItem
     :institution_name, :institution_id,
     :start_year, :end_year,
     :inv_id, :inv_level, :inv_scope_content, :inv_label, :inv_date, :inv_container,
-    :timestamp, :highlights, :children, :match_count
+    :timestamp, :highlights, :children, :match_count,
+    :file_text
 
   def initialize(id, ead_id, title, title_filing, title_sort,
     abstract, call_no, scope_content,
@@ -42,6 +43,7 @@ class SearchItem
     @childre_sorted = nil
     @match_count = 0
     @date_display = nil
+    @file_text = nil
   end
 
   def title_hl
@@ -94,6 +96,18 @@ class SearchItem
 
   def inv_scope_content_hl
     hl_value("inventory_scope_content_txt_en", @inv_scope_content) || ""
+  end
+
+  def file_text_hl?
+    @highlights["text_txt_en"] != nil
+  end
+
+  def file_text_hl
+    @highlights["text_txt_en"].join("...<br/>")
+  end
+
+  def is_file?
+    @file_text != nil
   end
 
   def self.from_hash(h, highlights)

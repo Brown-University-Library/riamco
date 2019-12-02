@@ -31,4 +31,44 @@ namespace :riamco do
       end
     end
   end
+
+  desc "Creates a new admin user"
+  task :user_new_admin, [:user, :pass] => :environment do |cmd, args|
+    username = args[:user]
+    password = args[:pass]
+    if username == nil || password == nil
+      abort "No username or password was provided"
+    end
+
+    if ENV["PASSWORD_SALT"] == nil
+      puts "PASSWORD_SALT is NOT defined"
+    end
+
+    if User.find_by_username(username) != nil
+      abort "User #{username} already exists"
+    end
+
+    User.new_admin(username, password, "US-RPB", "Admin user #{username}")
+    puts "Created admin user: #{username}"
+  end
+
+  desc "Creates a new reading room user"
+  task :user_new_rr, [:user, :pass] => :environment do |cmd, args|
+    username = args[:user]
+    password = args[:pass]
+    if username == nil || password == nil
+      abort "No username or password was provided"
+    end
+
+    if ENV["PASSWORD_SALT"] == nil
+      puts "PASSWORD_SALT is NOT defined"
+    end
+
+    if User.find_by_username(username) != nil
+      abort "User #{username} already exists"
+    end
+
+    User.new_reading_room_user(username, password)
+    puts "Created reading room user: #{username}"
+  end
 end

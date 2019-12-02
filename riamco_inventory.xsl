@@ -407,6 +407,14 @@
                                 </u>
                                 <br/>
                             </xsl:when>
+                            <!-- For Digital Files in Kate Borstein collection -->
+                            <xsl:when test="ead:dao[@ns2:role='NORMALIZEDFILE_ID']">
+                                <xsl:variable name="filename_id" select="ead:dao[@ns2:role='NORMALIZEDFILE_ID']/@ns2:href" />
+                                <p><a href="renderfile/{$eadid}/{$filename_id}">
+                                    <xsl:attribute name="target">_blank</xsl:attribute>
+                                    <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                </a></p>
+                            </xsl:when>
                             <xsl:when test="ead:eadid[@mainagencycode='US-RPRC']">
                                 <u>
                                     <a>
@@ -432,7 +440,7 @@
 
                         <xsl:if test="ead:scopecontent/ead:p">
                             <xsl:text>Contents Note: </xsl:text>
-                            <xsl:apply-templates select="ead:scopecontent/ead:p"/>
+                            <xsl:copy-of select="ead:scopecontent"/>
                             <br/>
                         </xsl:if>
 

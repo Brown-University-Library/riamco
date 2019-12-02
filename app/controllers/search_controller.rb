@@ -30,7 +30,6 @@ class SearchController < ApplicationController
 
   def advanced_search
     solr_url = ENV["SOLR_URL"]
-    flat_display = request.params["flat"] == "true"
     explain_query = nil
     debug = false
 
@@ -39,7 +38,7 @@ class SearchController < ApplicationController
     params.page_size = 10 # don't allow the client to control this
 
     searcher = Search.new(solr_url)
-    search_results = searcher.search(params, debug, flat_display)
+    search_results = searcher.search(params, current_user, debug)
     @presenter = AdvancedSearchPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
     @presenter.user = current_user
   end
@@ -118,7 +117,7 @@ class SearchController < ApplicationController
     def execute_search(facet_limit = nil)
       solr_url = ENV["SOLR_URL"]
       explain_query = nil
-      debug = explain_query != nil
+      debug = false
 
       params = SolrLite::SearchParams.from_query_string(request.query_string, facets_fields())
       params.q = "*" if params.q == ""
@@ -135,7 +134,7 @@ class SearchController < ApplicationController
       params.facet_limit = facet_limit if facet_limit != nil
 
       searcher = Search.new(solr_url)
-      search_results = searcher.search(params, debug)
+      search_results = searcher.search(params, current_user, debug)
       presenter = SearchResultsPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
       presenter
     end

@@ -25,7 +25,11 @@
 				<li class="dropdown">
 					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" title="<%= @presenter.user.description %>">
-						<span class="glyphicon glyphicon-user"></span>
+						<% if @presenter.user.is_reading_room? %>
+							<span class="glyphicon glyphicon-book"></span>
+						<% else %>
+							<span class="glyphicon glyphicon-user"></span>
+						<% end %>
 						<span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">

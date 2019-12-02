@@ -82,6 +82,14 @@ class SearchResultsPresenter
     @start = results.start
 
     @num_found = results.num_found
+    if results.num_found == 0 && results.items.count > 0
+      # When results are found only in the PDF files we need to
+      # force these values since "results" come empty.
+      # TODO: revisit this logic
+      @num_found = results.items.count
+      @num_eads = 1
+    end
+
     # Calculate the number of pages based on the number of EADs
     # rather than on the number of matches.
     @num_pages = 0

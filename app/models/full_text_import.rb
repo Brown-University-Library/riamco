@@ -13,24 +13,6 @@ class FullTextImport
         @text_extractor = TextExtractor.new(tika_url)
     end
 
-    # # Adds a Solr document with the text for a file
-    # def add_file(doc_hash, text)
-    #     # TODO: revisit this
-    #     # See https://www.rubyguides.com/2019/05/ruby-ascii-unicode/
-    #     text_utf8 = text.encode("UTF-8", "ASCII", invalid: :replace, undef: :replace, replace: "")
-    #     doc_hash = {
-    #         ead_id_s: ead_id,
-    #         filename_s: filename,
-    #         text_txt_en: text_utf8
-    #     }
-    #     json = "[" + doc.to_json + "]"
-    #     response = @solr_text.update(json)
-    #     if !response.ok?
-    #         Rails.logger.error("Adding text to ead_id #{ead_id}: #{filename}. Exception: #{response.error_msg}")
-    #         raise response.error_msg
-    #     end
-    # end
-
     # Deletes all text documents for a given EAD ID
     def delete_finding_aid(ead_id)
         query = 'ead_id_s:\"' + CGI.escape(ead_id) + '\"'

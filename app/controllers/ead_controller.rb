@@ -91,15 +91,15 @@ class EadController < ApplicationController
   end
 
   def raw_file
-    # Mimic the reading room validation
-    # TODO: implement for real
-    if params["rr"] != "yes"
+    ead_id = params["eadid"]
+    filename = params["filename"]
+
+    if current_user == nil || !current_user.is_reading_room?
+      Rails.logger.error("Invalid user #{current_user} attempting to view file #{ead_id} / #{filename}")
       render "error", status: 401
       return
     end
 
-    ead_id = params["eadid"]
-    filename = params["filename"]
     if !valid_filename?(ead_id, filename)
       Rails.logger.error("Invalid id (#{ead_id}) or file name (#{filename}) in ead#view_file")
       render "not_found", status: 404

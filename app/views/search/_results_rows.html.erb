@@ -72,7 +72,11 @@
                   <% if inv_item.inv_id == nil %>
                     <%= inv_item.inv_container %>
                   <% else %>
-                    <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_container %></a>
+                    <% if inv_item.is_file? %>
+                      <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_label %></a>
+                    <% else %>
+                      <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_container %></a>
+                    <% end %>
                   <% end %>
                 </td>
                 <td class="inv-scope">
@@ -85,7 +89,7 @@
                 </td>
                 <td class="inv-date">
                 <% if inv_item.is_file? %>
-                    <a target="_blank" href="<%= ead_view_file_path(eadid: item.ead_id, filename: inv_item.inv_container) %>">View File</a>
+                    <a target="_blank" href="<%= ead_view_file_path(eadid: item.ead_id, filename: inv_item.inv_filename) %>">View File</a>
                 <% else %>
                   <%= inv_item.inv_date %>
                 <% end %>

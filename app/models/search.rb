@@ -43,11 +43,18 @@ class Search
       # Repeat the search but now within the PDF files indexed for the finding aid
       # TODO: Remove hardcoded logic
       ead_id = "US-RPB-ms2018.010"
-      file_items = search_files(ead_id, params.q)
+      file_results = search_files(ead_id, params.q)
+      results = merge_search_results(ead_id, results, file_results)
+    end
 
+    results
+  end
+
+  private
+    def merge_search_results(ead_id, results, file_results)
       # If we didn't pick up the finding aid info in the finding aids search
       # and we got results in the files search, load the finding aid info
-      if results.items.count == 0 && file_items.count > 0
+      if results.items.count == 0 && file_results.count > 0
         finging_aid_doc = FindingAids.by_id(ead_id)
         if finging_aid_doc == nil
           raise("Error getting finding aid with id: #{group_id}")
@@ -58,14 +65,12 @@ class Search
       if results.items.count > 0
         # Add the items found in the PDF files as children of the finding aid
         # (notice that we assume a single finding aid is on the list)
-        results.items[0].children += file_items
+        results.items[0].children += file_results
       end
+
+      results
     end
 
-    results
-  end
-
-  private
     # Runs a search on the text of the files (which is a separate Solr core)
     # Notice that the results of this search are flat, not grouped.
     def search_files(ead_id, q)
@@ -97,21 +102,10 @@ class Search
       items = []
       results.solr_docs.each do |doc|
         id = doc["id"]
-        filename = doc["filename_s"]
-
-        # TODO: Instead of using the inventory_id_s from SOLR_TEXT_URL
-        # we should find the item in SOLR_URL (by filename) and use
-        # that inventory_id_s. This will prevent misalignment if the
-        # inventory changes in the EAD.
-        #
-        # This would also allow us to display the original name of the
-        # file (my_bio.pages) rather than the normalized name of
-        # the PDF (78981.pdf)
+        file_info = get_file_info(doc)
         doc2 = {
           "id" => id,
-          "inventory_id_s" => doc["inventory_id_s"],
           "ead_id_s" => doc["ead_id_s"],
-          "inventory_container_txt_en" => doc["inventory_filename_s"],
           "inventory_level_s" => "Digital"
         }
 
@@ -120,9 +114,61 @@ class Search
 
         item = SearchItem.from_hash(doc2, highlights2)
         item.file_text = doc["text_txt_en"]
+        item.inv_id = file_info[:inv_id]
+        item.inv_filename = file_info[:name]
+        item.inv_label = file_info[:label]
+        item.inv_filedesc = file_info[:description]
         items << item
       end
       items
+    end
+
+    # Finds the file information in SOLR_URL for a given document found in SOLR_TEXT_URL
+    #
+    # This is so that we can return the metadata information (original filename, description)
+    # of the file found in SOLR_TEXT_URL.
+    def get_file_info(doc)
+      logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
+      solr_url = ENV["SOLR_URL"]
+      solr = SolrLite::Solr.new(solr_url, logger)
+      solr.def_type = "edismax"
+
+      ead_id = doc["ead_id_s"]
+      extra_fqs = []
+      extra_fqs << SolrLite::FilterQuery.new("ead_id_s", [ead_id])
+      params = SolrLite::SearchParams.new()
+      params.fq = []
+      params.fl = nil
+      params.q = doc["inventory_filename_s"]
+      qf = "inventory_filename_s"
+      debug = false
+      mm = nil
+      results = solr.search(params, extra_fqs, qf, mm, debug)
+      if !results.ok?
+        raise("Solr reported: #{results.error_msg}")
+      end
+
+      info = {}
+      if results.solr_docs.count == 1222
+        info = {
+          id: results.solr_docs[0]["id"],
+          inv_id: results.solr_docs[0]["inventory_id_s"],
+          name: results.solr_docs[0]["inventory_filename_s"],
+          label: results.solr_docs[0]["inventory_label_txt_en"],
+          description: results.solr_docs[0]["inventory_file_description_txt_en"]
+        }
+      else
+        search_key = "#{ead_id} / #{doc['inventory_filename_s']}"
+        Rails.logger.warn("#{results.solr_docs.count} results found for #{search_key}.")
+        info = {
+          id: doc["id"],
+          inv_id: doc["inventory_id_s"],
+          name: doc["inventory_filename_s"],
+          label: doc["inventory_filename_s"],
+          description: doc["inventory_filename_s"]
+        }
+      end
+      info
     end
 
     def search_grouped(params, extra_fqs, qf, mm, debug, limit_to = 4)

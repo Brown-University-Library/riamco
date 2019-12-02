@@ -6,7 +6,7 @@ class SearchItem
     :start_year, :end_year,
     :inv_id, :inv_level, :inv_scope_content, :inv_label, :inv_date, :inv_container,
     :timestamp, :highlights, :children, :match_count,
-    :file_text
+    :file_text, :inv_filename, :inv_filedesc
 
   def initialize(id, ead_id, title, title_filing, title_sort,
     abstract, call_no, scope_content,
@@ -44,6 +44,8 @@ class SearchItem
     @match_count = 0
     @date_display = nil
     @file_text = nil
+    @inv_filename = nil
+    @inv_filedesc = nil
   end
 
   def title_hl
@@ -107,7 +109,7 @@ class SearchItem
   end
 
   def is_file?
-    @file_text != nil
+    @inv_filename != nil
   end
 
   def self.from_hash(h, highlights)

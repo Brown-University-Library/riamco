@@ -316,3 +316,11 @@ td {
     /* Support for IE. */
     font-feature-settings: 'liga';
   }
+
+.digital-file-link-hidden {
+    display: none;
+}
+
+.digital-file-link-visible {
+    display: inline;
+}

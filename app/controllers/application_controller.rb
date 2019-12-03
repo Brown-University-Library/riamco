@@ -9,4 +9,9 @@ class ApplicationController < ActionController::Base
       User.find_by_id(session[:id])
     end
   end
+
+  def is_reading_room?
+    return false if current_user == nil
+    current_user.is_reading_room?
+  end
 end

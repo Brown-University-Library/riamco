@@ -410,10 +410,13 @@
                             <!-- For Digital Files in Kate Borstein collection -->
                             <xsl:when test="ead:dao[@ns2:role='NORMALIZEDFILE_ID']">
                                 <xsl:variable name="filename_id" select="ead:dao[@ns2:role='NORMALIZEDFILE_ID']/@ns2:href" />
-                                <p><a href="renderfile/{$eadid}/{$filename_id}">
-                                    <xsl:attribute name="target">_blank</xsl:attribute>
-                                    <xsl:apply-templates select="ead:did/ead:unittitle"/>
-                                </a></p>
+                                <p>
+                                    <xsl:apply-templates select="ead:did/ead:unittitle"/>&#160;
+                                    <a href="renderfile/{$eadid}/{$filename_id}"
+                                        target="_blank"
+                                        title="Content available to reading room users"
+                                        class="digital-file-link-hidden">(View File)</a>
+                                </p>
                             </xsl:when>
                             <xsl:when test="ead:eadid[@mainagencycode='US-RPRC']">
                                 <u>

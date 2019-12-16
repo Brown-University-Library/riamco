@@ -1,16 +1,19 @@
 export SOLR_URL=http://localhost:8983/solr
-export SOLR_CORE=riamco2
+export SOLR_CORE=riamco
+export SOLR_CORE_PDF=riamco_pdf_text
 export SOLR_PORT=8983
 
 # Recreate the Solr core
 #
 # solr delete -c $SOLR_CORE
-solr create -c $SOLR_CORE
+solr create -c $SOLR_CORE -p $SOLR_PORT
+solr create -c $SOLR_CORE_PDF -p $SOLR_PORT
 
 
 # Prevent automatic creation of fields
 #
 solr config -c $SOLR_CORE -p $SOLR_PORT -action set-user-property -property update.autoCreateFields -value false
+solr config -c $SOLR_CORE_PDF -p $SOLR_PORT -action set-user-property -property update.autoCreateFields -value false
 
 
 # Create a new dynamic field (to allow for fields file creators_txts_en)

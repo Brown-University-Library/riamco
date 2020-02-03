@@ -1,5 +1,9 @@
 require "./app/models/text_extractor.rb"
 
+# Pre-requisites:
+#   Download the Tika Server from https://www.apache.org/dyn/closer.cgi/tika/tika-server-1.23.jar
+#   Start the server via `java -jar tika-server-1.23.jar`
+#
 namespace :riamco do
   desc "Extracts text from a file via a Tika Server"
   task :ft_extract, [:filename] => :environment do |cmd, args|

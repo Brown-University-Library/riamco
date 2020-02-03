@@ -362,7 +362,7 @@ class Ead
                     file_description: nil           # set below
                 }
 
-                # Get the "digitl files" for this inventory node.
+                # Get the "digital files" for this inventory node.
                 # Note that we get first the NORMALIZEDFILE_ID (e.g. 123.pdf) and then the
                 # ORIGINALFILE_ID (e.g. book_contract.pages)
                 #

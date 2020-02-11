@@ -105,7 +105,22 @@ class SearchItem
   end
 
   def file_text_hl
-    @highlights["text_txt_en"].join("...<br/>")
+    if file_text_hl?
+      @highlights["text_txt_en"].join("...<br/>")
+    else
+      # TODO: what should we display here
+      ""
+    end
+  end
+
+  def html_id
+    # TODO: use a generic regex for this
+    return @id.gsub(".", "_")
+  end
+
+  def html_inv_id
+    # TODO: use a generic regex for this
+    return @inv_id.gsub(".", "_")
   end
 
   def is_file?

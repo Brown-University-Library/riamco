@@ -64,9 +64,9 @@
         </dl>
 
         <% if !@presenter.empty_search? && item.children.count > 0 %>
-          <table class="inventory-table">
+          <table class="inventory-table" id="inv_<%= item.html_id %>">
             <% item.children_sorted.each do |inv_item| %>
-              <tr>
+              <tr id="inv_item_<%= inv_item.html_inv_id %>">
                 <td class="inv-level"><%= inv_item.inv_level %></td>
                 <td class="inv-container">
                   <% if inv_item.inv_id == nil %>
@@ -81,25 +81,43 @@
                 </td>
                 <td class="inv-scope">
                   <% if inv_item.is_file? %>
-                    <%= inv_item.file_text_hl.html_safe %>
+                    <% if @presenter.reading_room? %>
+                      <%= inv_item.file_text_hl.html_safe %>
+                      <p><a target="_blank"
+                        title="Content available to reading room users"
+                        href="<%= ead_view_file_path(eadid: item.ead_id, filename: inv_item.inv_filename) %>">View File</a>
+                      </p>
+                    <% else %>
+                      <p><%= inv_item.file_text_hl.html_safe %></p>
+                    <% end %>
                   <% else %>
                     <%= inv_item.inv_label_hl.html_safe %><br/>
                     <%= inv_item.inv_scope_content_hl.html_safe %>
                   <% end %>
                 </td>
                 <td class="inv-date">
-                <% if inv_item.is_file? %>
-                    <a target="_blank" href="<%= ead_view_file_path(eadid: item.ead_id, filename: inv_item.inv_filename) %>">View File</a>
-                <% else %>
                   <%= inv_item.inv_date %>
-                <% end %>
                 </td>
               </tr>
             <% end %>
           </table>
           <div class="inventory-bottom">
             <% if item.match_count > 4 %>
-              ...and <%= item.match_count-4 %> other <%= @presenter.inventory_more_link(item, 4).html_safe %>
+              <% if item.ead_id == "US-RPB-ms2018.010" %>
+                <!-- TODO: remove hardcoded logic -->
+                <noscript>
+                  ...and <%= item.match_count-4 %> other <%= @presenter.inventory_more_link(item, 4).html_safe %>
+                </noscript>
+                <span class="more_inv hidden">
+                  ...and <%= item.match_count-4 %> other matches,
+                  <a class="load_inv"
+                    data-html_id="<%= item.html_id %>"
+                    data-link="<%= files_search_url(ead_id: item.ead_id, q: @presenter.query) %>"
+                    href="<%= files_search_url(ead_id: item.ead_id, q: @presenter.query) %>">load them.</a>
+                </span>
+              <% else %>
+                ...and <%= item.match_count-4 %> other <%= @presenter.inventory_more_link(item, 4).html_safe %>
+              <% end %>
             <% else %>
               &nbsp;
             <% end %>
@@ -113,3 +131,63 @@
 </div> <!-- search-results -->
 
 <%=render "results_pagination_bottom" %>
+
+<script>
+  $(function() {
+
+    // Make the "load them" link visible (in the Bornstein collection)
+    $(".more_inv").removeClass("hidden");
+
+    // Setup the load inventory logic (in the Bornstein collection)
+    $(".load_inv").on("click", function(el) {
+
+      var ead_show_path = "<%= ead_show_path() %>";
+      var ead_view_file_path = "<%= @presenter.reading_room? ? ead_view_file_path(eadid: 'EADID', filename: 'FILENAME') : '' %>";
+      var htmlId = el.currentTarget.dataset["html_id"];
+      var url = el.currentTarget.dataset["link"];
+
+      var loading_html = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...';
+      $(".more_inv").html(loading_html);
+
+      // Fetch all the files for the current EAD.
+      $.ajax({
+        dataType: "json",
+        url: url,
+        success: function(data,status) {
+          var i, td1, td2, td2_url, td3, td4, tr, tr_id, text_hl;
+          var html = "";
+          for(i = 0; i < data.length; i++) {
+            tr_id = "inv_item_" + data[i].inv_id;
+            if (document.getElementById(tr_id) !== null) {
+              continue;
+            }
+            td1 = "<td>" + data[i].inv_level + "</td>";
+
+            td2_url = ead_show_path + "?eadid=" + data[i].ead_id + "&view=inventory#" + data[i].inv_id;
+            td2 = '<td>' +
+              '<a target="_blank" href="' + td2_url + '">' + data[i].inv_label + '</a>'
+            '</td>';
+
+            text_hl = (data[i].highlights["text_txt_en"] || []).join("...<br/>");
+            if (ead_view_file_path === "") {
+              text_hl += '<p></p>';
+              td3 = "<td>" + text_hl +"</td>";
+            } else {
+              td3_url = ead_view_file_path.replace("EADID", data[i].ead_id);
+              td3_url = td3_url.replace("FILENAME", data[i].inv_filename);
+              text_hl += '<p><a target="_blank" href="' + td3_url + '">View File</a></p>';
+              td3 = "<td>" + text_hl +"</td>";
+            }
+
+            td4 = "<td>" + (data[i].inv_date || "") + "</td>";
+            tr = '<tr id="' + tr_id + '">' + td1 + td2 + td3 + td4 + '</tr>';
+            html += tr;
+          }
+          $("#inv_" + htmlId).first().append(html);
+          $(".more_inv").html("<span>&nbsp;</span>");
+        }
+      });
+      return false;
+    })
+  });
+</script>

@@ -21,6 +21,7 @@ class SearchResultsPresenter
 
   def initialize(results, params, base_url, base_facet_search_url, explain_format)
     @debug = false
+    @reading_room = nil
     @base_url = base_url
     @facetSearchBaseUrl = base_facet_search_url
 
@@ -157,6 +158,11 @@ class SearchResultsPresenter
     "#{@base_url}?#{qs}&page=#{page_number}"
   end
 
+  def inventory_url(ead_id)
+    qs = @search_qs.gsub(/page=[0-9]*/,"").chomp("&")
+    "#{@base_url}.json?#{qs}&inv_only=#{ead_id}"
+  end
+
   def facet_expanded?(facet)
     # if facet.name == "institution_s"
     #   return true
@@ -177,6 +183,10 @@ class SearchResultsPresenter
 
   def search_url()
     @base_url + "?" + @search_qs
+  end
+
+  def reading_room?()
+    @reading_room ||= (@user != nil) && @user.is_reading_room?
   end
 
   private

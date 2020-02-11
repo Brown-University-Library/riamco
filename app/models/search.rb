@@ -11,6 +11,7 @@ class Search
     extra_fqs = []
     params.fl = nil
     mm = nil
+    limit_to = 4
 
     # The current boost values for title (100) and abstract (.1) are to
     # account for the fact that Solr is weighting the title *too low*
@@ -30,99 +31,87 @@ class Search
 
     params.spellcheck = true
 
-    # TODO: Remove hardcoded logic
-    rr = (user != nil) && user.is_reading_room?
-    is_bornstein = params.fq.count == 1 && params.fq[0].field == "title_s" && params.fq[0].value == "Kate Bornstein papers"
-    include_files = rr && is_bornstein && ENV["SOLR_TEXT_URL"]
-    limit_to = include_files ? 20 : 4
-
-    # Search within the finding aids indexed in Solr
     results = search_grouped(params, extra_fqs, qf, mm, debug, limit_to)
 
-    if include_files
-      # Repeat the search but now within the PDF files indexed for the finding aid
+    if search_files_allowed?(params)
+      # Repeat the search but now within the PDF files indexed for the finding aid.
       # TODO: Remove hardcoded logic
       ead_id = "US-RPB-ms2018.010"
-      file_results = search_files(ead_id, params.q)
-      results = merge_search_results(ead_id, results, file_results)
+      file_results, files_count = search_files(ead_id, params.q, limit_to, user)
+      results = merge_search_results(ead_id, results, file_results, files_count)
     end
 
     results
   end
 
+  # Runs a search on the text of the files (which is a separate Solr core)
+  # Notice that the results of this search are flat, not grouped.
+  def search_files(ead_id, q, page_size, user)
+    logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
+    solr_url = ENV["SOLR_TEXT_URL"]
+    solr = SolrLite::Solr.new(solr_url, logger)
+    solr.def_type = "edismax"
+
+    is_reading_room = user != nil && user.is_reading_room?
+
+    extra_fqs = []
+    extra_fqs << SolrLite::FilterQuery.new("ead_id_s", [ead_id])
+    params = SolrLite::SearchParams.new()
+    params.fq = []
+    params.fl = nil
+    params.q = q
+    qf = "text_txt_en"
+    params.hl = true
+    params.hl_fl = "text_txt_en"
+    params.hl_snippets = 4
+    params.spellcheck = true
+    if page_size != nil
+      params.page_size = page_size
+    end
+    debug = false
+    mm = nil
+    results = solr.search(params, extra_fqs, qf, mm, debug)
+    if !results.ok?
+      raise("Solr reported: #{results.error_msg}")
+    end
+
+    # Map the result that we got to SearchItems so that we can
+    # blend them with the rest of the results.
+    items = []
+    results.solr_docs.each do |doc|
+      id = doc["id"]
+      file_info = get_file_info(doc)
+      doc2 = {
+        "id" => id,
+        "ead_id_s" => doc["ead_id_s"],
+        "inventory_level_s" => "Digital"
+      }
+
+      highlights = results.highlights.for(id) || []
+      highlights2 = {"text_txt_en" => highlights["text_txt_en"]}
+      if !is_reading_room
+        # Don't return the highlights
+        highlights2 = {"text_txt_en" => ["Access is restricted to reading room users."]}
+      end
+
+      item = SearchItem.from_hash(doc2, highlights2)
+      # TODO: review if file_text is used at all
+      # if is_reading_room
+      #   item.file_text = doc["text_txt_en"]
+      # else
+      #   # Don't return the text
+      #   item.file_text = "Access is restricted to reading room users."
+      # end
+      item.inv_id = file_info[:inv_id]
+      item.inv_filename = file_info[:name]
+      item.inv_label = file_info[:label]
+      item.inv_filedesc = file_info[:description]
+      items << item
+    end
+    return items, results.num_found
+  end
+
   private
-    def merge_search_results(ead_id, results, file_results)
-      # If we didn't pick up the finding aid info in the finding aids search
-      # and we got results in the files search, load the finding aid info
-      if results.items.count == 0 && file_results.count > 0
-        finging_aid_doc = FindingAids.by_id(ead_id)
-        if finging_aid_doc == nil
-          raise("Error getting finding aid with id: #{group_id}")
-        end
-        results.items << SearchItem.from_hash(finging_aid_doc, {})
-      end
-
-      if results.items.count > 0
-        # Add the items found in the PDF files as children of the finding aid
-        # (notice that we assume a single finding aid is on the list)
-        results.items[0].children += file_results
-      end
-
-      results
-    end
-
-    # Runs a search on the text of the files (which is a separate Solr core)
-    # Notice that the results of this search are flat, not grouped.
-    def search_files(ead_id, q)
-      logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
-      solr_url = ENV["SOLR_TEXT_URL"]
-      solr = SolrLite::Solr.new(solr_url, logger)
-      solr.def_type = "edismax"
-
-      extra_fqs = []
-      extra_fqs << SolrLite::FilterQuery.new("ead_id_s", [ead_id])
-      params = SolrLite::SearchParams.new()
-      params.fq = []
-      params.fl = nil
-      params.q = q
-      qf = "text_txt_en"
-      params.hl = true
-      params.hl_fl = "text_txt_en"
-      params.hl_snippets = 30
-      params.spellcheck = true
-      debug = false
-      mm = nil
-      results = solr.search(params, extra_fqs, qf, mm, debug)
-      if !results.ok?
-        raise("Solr reported: #{results.error_msg}")
-      end
-
-      # Map the result that we got to SearchItems so that we can
-      # blend them with the rest of the results.
-      items = []
-      results.solr_docs.each do |doc|
-        id = doc["id"]
-        file_info = get_file_info(doc)
-        doc2 = {
-          "id" => id,
-          "ead_id_s" => doc["ead_id_s"],
-          "inventory_level_s" => "Digital"
-        }
-
-        highlights = results.highlights.for(id) || []
-        highlights2 = {"text_txt_en" => highlights["text_txt_en"]}
-
-        item = SearchItem.from_hash(doc2, highlights2)
-        item.file_text = doc["text_txt_en"]
-        item.inv_id = file_info[:inv_id]
-        item.inv_filename = file_info[:name]
-        item.inv_label = file_info[:label]
-        item.inv_filedesc = file_info[:description]
-        items << item
-      end
-      items
-    end
-
     # Finds the file information in SOLR_URL for a given document found in SOLR_TEXT_URL
     #
     # This is so that we can return the metadata information (original filename, description)
@@ -171,6 +160,70 @@ class Search
       info
     end
 
+
+    # Merges the `file_results` from SOLR_TEXT_URL with the `results` from SOLR_URL.
+    def merge_search_results(ead_id, results, file_results, files_count)
+      if file_results.count == 0
+        return results
+      end
+
+      # TODO: Remove hardcoded logic
+      ead_bornstein = results.items.find{|item| item.id == "US-RPB-ms2018.010"}
+      if ead_bornstein == nil
+        # If we didn't pick up the finding aid info in the finding aids search
+        # but we got results in the files search, load the finding aid info.
+        finging_aid_doc = FindingAids.by_id("US-RPB-ms2018.010")
+        if finging_aid_doc == nil
+          raise("Error getting finding aid with id: #{group_id}")
+        end
+        ead_bornstein = SearchItem.from_hash(finging_aid_doc, {})
+        results.items << ead_bornstein
+      end
+
+      # Append the file_results to the Borstein EAD in the results.
+      eads_count = results.items.map {|i| i.ead_id}.count
+      if eads_count == 1
+        # We only have one finding aid in the result set, use all the file results
+        ead_bornstein.children += file_results
+      else
+        # We have many finding aids in the result set, use only the
+        # first 4 results from the file search
+        ead_bornstein.children += file_results.first(4)
+      end
+
+      # Append the number of files found to the total match count.
+      ead_bornstein.match_count += files_count
+
+      results
+    end
+
+
+    def search_files_allowed?(params)
+      if ENV["SOLR_TEXT_URL"] == nil
+        return false
+      end
+
+      # User has not filtered by any facet then it's OK to search within files.
+      if params.fq.count == 0
+        return true
+      end
+
+      # TODO: Remove hardcoded logic
+      fq_title = params.fq.find {|fq| fq.field == "title_s"}
+      if fq_title != nil && fq_title.value == "Kate Bornstein papers"
+        # User is explicitly working with the Borstein collection then it's OK
+        # to search within files.
+        return true
+      end
+
+      # Don't search within files since we cannot guarantee that the results
+      # will make sense with any of the other facets that the user might
+      # have selected (e.g. collections from an institution other than Brown)
+      false
+    end
+
+
+    # Issues the search and groups the results.
     def search_grouped(params, extra_fqs, qf, mm, debug, limit_to = 4)
       results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", limit_to)
       if !results.ok?

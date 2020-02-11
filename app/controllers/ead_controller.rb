@@ -120,11 +120,7 @@ class EadController < ApplicationController
   private
     # Only accept alphanumeric characters, dashes, underscore or periods.
     def valid_id?(id)
-      return false if (id || "").length == 0
-      match = /[[:alnum:]\-\_\.]*/.match(id)
-      # If the resulting match is identical to the received id it means
-      # the id includes only valid characters.
-      return match[0] == id
+      return EadUtils.valid_id?(id)
     end
 
     def valid_view?(view)

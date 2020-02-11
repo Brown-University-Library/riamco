@@ -28,6 +28,23 @@ class SearchController < ApplicationController
     render "error", status: 500
   end
 
+  def files
+    facet_limit = -1
+    ead_id = params["ead_id"]
+    q = params["q"]
+    if !EadUtils.valid_id?(ead_id)
+      render :json => {error: "Invalid ID received"}, status: 500
+      Rails.logger.error("Invalid ID received (#{ead_id})")
+      return
+    end
+    file_matches = execute_files_search(ead_id, q)
+    render :json => file_matches
+  rescue => ex
+    backtrace = ex.backtrace.join("\r\n")
+    Rails.logger.error("Could not render search. Exception: #{ex} \r\n #{backtrace}")
+    render :json => {error: "Could not fetch file matches"}, status: 500
+  end
+
   def advanced_search
     solr_url = ENV["SOLR_URL"]
     explain_query = nil
@@ -114,6 +131,7 @@ class SearchController < ApplicationController
   end
 
   private
+    # Issues a search within the finding aids and its associated files
     def execute_search(facet_limit = nil)
       solr_url = ENV["SOLR_URL"]
       explain_query = nil
@@ -137,6 +155,14 @@ class SearchController < ApplicationController
       search_results = searcher.search(params, current_user, debug)
       presenter = SearchResultsPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
       presenter
+    end
+
+    # Issues a search within the files associated with a findin aid
+    def execute_files_search(ead_id, q)
+      solr_url = ENV["SOLR_URL"]
+      searcher = Search.new(solr_url)
+      file_results, num_found = searcher.search_files(ead_id, q, 1000, current_user)
+      file_results
     end
 
     def facets_fields()

@@ -58,6 +58,7 @@ Rails.application.routes.draw do
   get 'advanced_proxy' => 'search#advanced_proxy', as: :advanced_proxy
   get 'advanced_parse' => 'search#advanced_parse', as: :advanced_parse
   get 'advanced_search' => 'search#advanced_search', as: :advanced_search
+  get 'search_files' => 'search#files', as: :files_search
   get 'search_facets' => 'search#facets', as: :search_facets
   get 'search' => 'search#index', as: :search
 

@@ -247,16 +247,17 @@ class Search
         return false
       end
 
-      # User has not filtered by any facet then it's OK to search within files.
-      if params.fq.count == 0
-        return true
-      end
-
+      # User is explicitly working with the Borstein collection then it's OK
+      # to search within files.
       # TODO: Remove hardcoded logic
       fq_title = params.fq.find {|fq| fq.field == "title_s"}
       if fq_title != nil && fq_title.value == "Kate Bornstein papers"
-        # User is explicitly working with the Borstein collection then it's OK
-        # to search within files.
+        return true
+      end
+
+      # User has not filtered by any facet it's OK to search within files
+      # as long as we are on the first page
+      if params.fq.count == 0 && params.page == 1
         return true
       end
 

@@ -76,21 +76,28 @@ class EadController < ApplicationController
   end
 
   def view_file
-    @ead_id = params["eadid"]
-    @filename = params["filename"]
+    ead_id = params["eadid"]
+    filename = params["filename"]
 
     if !is_reading_room?
-      Rails.logger.error("Invalid user #{current_user} attempting to view file #{@ead_id} / #{@filename}")
+      Rails.logger.error("Invalid user #{current_user} attempting to view file #{ead_id} / #{filename}")
       render "access_denied", status: 401
       return
     end
 
-    if !valid_filename?(@ead_id, @filename)
-      Rails.logger.error("Invalid id (#{@ead_id}) or file name (#{@filename}) in ead#view_file")
+    if !valid_filename?(ead_id, filename)
+      Rails.logger.error("Invalid id (#{ead_id}) or file name (#{filename}) in ead#view_file")
       render "not_found", status: 404
       return
     end
-    render "pdf_view", :layout => false
+
+    solr_url = ENV["SOLR_URL"]
+    searcher = Search.new(solr_url)
+    file_info = searcher.file_metadata(ead_id, filename)
+    @presenter = FilePresenter.new()
+    @presenter.configure(file_info)
+    @footer = false
+    render "pdf_view"
   rescue => ex
     backtrace = ex.backtrace.join("\r\n")
     Rails.logger.error("Could not render finding aid #{id}, view #{view}. Exception: #{ex} \r\n #{backtrace}")

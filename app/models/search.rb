@@ -111,6 +111,50 @@ class Search
     return items, results.num_found
   end
 
+  # Finds file metadata for a given inventory_filename
+  def file_metadata(ead_id, inventory_filename)
+    logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
+    solr_url = ENV["SOLR_URL"]
+    solr = SolrLite::Solr.new(solr_url, logger)
+    solr.def_type = "edismax"
+
+    params = SolrLite::SearchParams.new()
+    fq = SolrLite::FilterQuery.new("ead_id_s", [ead_id])
+    params.fq = [fq]
+    params.fl = nil
+    params.q = inventory_filename
+    extra_fqs = []
+    qf = "inventory_filename_s"
+    debug = false
+    mm = nil
+    results = solr.search(params, extra_fqs, qf, mm, debug)
+    if !results.ok?
+      raise("Solr reported: #{results.error_msg}")
+    end
+
+    if results.solr_docs.count != 1
+      search_key = "#{ead_id} / #{inventory_filename}"
+      Rails.logger.error("get_file_metadata: #{results.solr_docs.count} results found for #{search_key}.")
+      return nil
+    end
+
+    finding_aid_doc = FindingAids.by_id(ead_id)
+    if finding_aid_doc == nil
+      Rails.logger.error("get_file_metadata: could not fetch finding aid info (#{ead_id}).")
+      return nil
+    end
+
+    info = {
+        ead_id: finding_aid_doc["ead_id_s"],
+        ead_title: finding_aid_doc["title_txt_en"],
+        name: results.solr_docs[0]["inventory_filename_s"],
+        label: results.solr_docs[0]["inventory_label_txt_en"],
+        description: results.solr_docs[0]["inventory_file_description_txt_en"],
+        inv_id: results.solr_docs[0]["inventory_id_s"]
+      }
+    info
+  end
+
   private
     # Finds the file information in SOLR_URL for a given document found in SOLR_TEXT_URL
     #

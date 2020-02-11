@@ -1,9 +1,19 @@
-<div>HEADER GOES HERE</div>
-<div>
-    <embed
-        src="<%= ead_raw_file_path(eadid: @ead_id, filename: @filename) %>"
-        type="application/pdf" height="100%" width="100%">
+<style>
+    h1 {
+        margin-top: 0px;
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12 content-margin-top" >
+        <h1><%= @presenter.ead_title %> (<%= @presenter.ead_id %>)</h1>
+        <p>File: <%= @presenter.file_label %> (<%= @presenter.file_name %>)
+        <a href="<%= ead_show_path() %>?eadid=<%=@presenter.ead_id %>&view=inventory#<%=@presenter.inv_id %>">View in inventory</a></p>
+        <div style="height: 80vh;">
+            <embed
+                src="<%= ead_raw_file_path(eadid: @presenter.ead_id, filename: @presenter.file_name) %>"
+                type="application/pdf" height="100%" width="95%">
+        </div>
+    </div>
 </div>
-<div>FOOTER GOES HERE</div>
 
 

@@ -59,19 +59,23 @@
 
 <%= yield %>
 
-<footer role="contentinfo" class="footer col-sm-12">
-	<div class="row">
-		<div class="container">
-			<div class="col-md-12">
-				<p>Sponsors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="http://www.neh.gov/"><img src="//www.riamco.org/img/neh_logo.gif" alt="National Endowment" /></a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="https://www.neh.gov/divisions/fedstate/resource/we-the-people-council-projects"><img src="//www.riamco.org/img/wtp_logo.gif" alt="We the People" /></a>
-				</p>
+<% if @footer == false %>
+	<!-- nothing to render -->
+<% else %>
+	<footer role="contentinfo" class="footer col-sm-12">
+		<div class="row">
+			<div class="container">
+				<div class="col-md-12">
+					<p>Sponsors:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="http://www.neh.gov/"><img src="//www.riamco.org/img/neh_logo.gif" alt="National Endowment" /></a>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="https://www.neh.gov/divisions/fedstate/resource/we-the-people-council-projects"><img src="//www.riamco.org/img/wtp_logo.gif" alt="We the People" /></a>
+					</p>
+				</div>
 			</div>
 		</div>
-	</div>
-</footer>
+	</footer>
+<% end %>
 
 <% if ENV["GOOGLE_ANALYTICS_KEY"] %>
 	<!-- Global site tag (gtag.js) - Google Analytics -->

@@ -98,30 +98,63 @@ class Ead
         # sequence to force them to be different.
         seq = 1
         inventory.each do |inv|
-            solr_doc = {
-                id: core_doc[:id] + "-" + seq_str(seq),
-                ead_id_s: core_doc[:id],
-                title_s: core_doc[:title_s],                    # finding aid name (for faceting)
-                title_txt_en: core_doc[:title_s],               # finding aid name (for searching)
-                institution_s: core_doc[:institution_s],
-                institution_id_s: core_doc[:institution_id_s],
-                timestamp_s: DateTime.now.to_s,
-                inventory_id_s:inv[:id],
-                inventory_container_txt_en: inv[:container_text],
-                inventory_scope_content_txt_en: inv[:scope_content],
-                inventory_label_txt_en: inv[:label],
-                inventory_date_s: inv[:date],
-                inventory_descendent_path: inv[:full_path],     # for navigation
-                inventory_path_txt_en: inv[:full_path],         # for searching
-                inventory_level_s: inv[:level],
-                inventory_filename_s: inv[:filename],
-                inventory_file_description_txt_en: inv[:file_description],
-                subjects_ss: inv[:subjects],                    # for faceting
-                subjects_txts_en: inv[:subjects],               # for searching
-                creators_ss: inv[:creators],
-                creators_txts_en: inv[:creators],
-                is_file_b: inv[:is_file]
-            }
+
+            # TODO: flag/report/skip items that don't have an inv[:id]
+
+            solr_doc = {}
+            if inv[:level] == "item"
+                solr_doc = {
+                    id: core_doc[:id] + "-" + inv[:id],
+                    ead_id_s: {"set" => core_doc[:id]},
+                    sequence_s: {"set" => core_doc[:id] + "-" + seq_str(seq)},
+                    title_s: {"set" => core_doc[:title_s]},                    # finding aid name (for faceting)
+                    title_txt_en: {"set" => core_doc[:title_s]},               # finding aid name (for searching)
+                    institution_s: {"set" => core_doc[:institution_s]},
+                    institution_id_s: {"set" => core_doc[:institution_id_s]},
+                    timestamp_s: {"set" => DateTime.now.to_s},
+                    inventory_id_s: {"set" => inv[:id]},
+                    inventory_container_txt_en: {"set" => inv[:container_text]},
+                    inventory_scope_content_txt_en: {"set" => inv[:scope_content]},
+                    inventory_label_txt_en: {"set" => inv[:label]},
+                    inventory_date_s: {"set" => inv[:date]},
+                    inventory_descendent_path: {"set" => inv[:full_path]},     # for navigation
+                    inventory_path_txt_en: {"set" => inv[:full_path]},         # for searching
+                    inventory_level_s: {"set" => inv[:level]},
+                    inventory_filename_s: {"set" => inv[:filename]},
+                    inventory_file_description_txt_en: {"set" => inv[:file_description]},
+                    subjects_ss: {"set" => inv[:subjects]},                    # for faceting
+                    subjects_txts_en: {"set" => inv[:subjects]},               # for searching
+                    creators_ss: {"set" => inv[:creators]},
+                    creators_txts_en: {"set" => inv[:creators]},
+                    is_file_b: {"set" => inv[:is_file]}
+                }
+            else
+                solr_doc = {
+                    id: core_doc[:id] + "-" + inv[:id],
+                    sequence_s: core_doc[:id] + "-" + seq_str(seq),
+                    ead_id_s: core_doc[:id],
+                    title_s: core_doc[:title_s],                    # finding aid name (for faceting)
+                    title_txt_en: core_doc[:title_s],               # finding aid name (for searching)
+                    institution_s: core_doc[:institution_s],
+                    institution_id_s: core_doc[:institution_id_s],
+                    timestamp_s: DateTime.now.to_s,
+                    inventory_id_s:inv[:id],
+                    inventory_container_txt_en: inv[:container_text],
+                    inventory_scope_content_txt_en: inv[:scope_content],
+                    inventory_label_txt_en: inv[:label],
+                    inventory_date_s: inv[:date],
+                    inventory_descendent_path: inv[:full_path],     # for navigation
+                    inventory_path_txt_en: inv[:full_path],         # for searching
+                    inventory_level_s: inv[:level],
+                    inventory_filename_s: inv[:filename],
+                    inventory_file_description_txt_en: inv[:file_description],
+                    subjects_ss: inv[:subjects],                    # for faceting
+                    subjects_txts_en: inv[:subjects],               # for searching
+                    creators_ss: inv[:creators],
+                    creators_txts_en: inv[:creators],
+                    is_file_b: inv[:is_file]
+                }
+            end
             solr_data << solr_doc
             seq += 1
         end

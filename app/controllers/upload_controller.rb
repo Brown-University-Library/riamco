@@ -123,9 +123,12 @@ class UploadController < ApplicationController
         # Touch the file so our reindexed notices that the file has been updated
         FileUtils.touch(target)
 
+        # TODO: remove hard-coded logic for Kate Bornstein
         one_MB = 1014 * 1014
-        if File.size(target) > one_MB
-            flash[:notice] = "Finding aid #{eadid} has been published and will be reindexed in the next half an hour."
+        if File.size(target) > one_MB || eadid == "US-RPB-ms2018.010"
+            # For large files we let a cronjob handle the reindex via:
+            #   bundle exec rake riamco:update_eads[/path/to/ead/xml/files]
+            flash[:notice] = "Finding aid #{eadid} has been published and will be reindexed in the next half hour."
             redirect_to upload_list_url()
         else
             solr_url = ENV["SOLR_URL"]

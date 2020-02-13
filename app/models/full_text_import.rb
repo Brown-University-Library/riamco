@@ -1,32 +1,23 @@
 require "./app/models/ead.rb"
 
 class FullTextImport
-    def initialize(pdf_files_path, solr_ead_url, solr_text_url, tika_url)
+    def initialize(pdf_files_path, solr_url, _not_used, tika_url)
         @pdf_files_path = pdf_files_path
 
-        @solr_ead = SolrLite::Solr.new(solr_ead_url)
-        @solr_ead.def_type = "edismax"
-
-        @solr_text = SolrLite::Solr.new(solr_text_url)
-        @solr_text.def_type = "edismax"
+        @solr = SolrLite::Solr.new(solr_url)
+        @solr.def_type = "edismax"
 
         @text_extractor = TextExtractor.new(tika_url)
     end
 
-    # Deletes all text documents for a given EAD ID
-    def delete_finding_aid(ead_id)
-        query = 'ead_id_s:\"' + CGI.escape(ead_id) + '\"'
-        response = @solr_text.delete_by_query(query)
-        return response.ok?
-    end
-
     # Imports the text of all the files associated with the EAD ID.
     def import_ead_files(ead_id)
-        ok = delete_finding_aid(ead_id)
-        if !ok
-            raise "Error deleting previous information for finding aid #{ead_id}"
-        end
+        start = Time.now
+
+        # Get the list of files to process from the inventory in the EAD
         files = get_ead_files(ead_id)
+
+        # Process each file
         files.each do |file|
             filename = file["inventory_filename_s"]
             full_filename = "#{@pdf_files_path}/#{ead_id}/#{filename}"
@@ -46,38 +37,39 @@ class FullTextImport
             # and https://www.rubyguides.com/2019/05/ruby-ascii-unicode/
             text_utf8 = text_ascii.force_encoding("utf-8")
 
-            # Save the text in the Solr text Solr
-            doc_hash = file
-            doc_hash["text_txt_en"] = text_utf8
+            # Save the text in the Sold document. Notice that we are
+            # updating parts of the document only.
+            # See https://lucene.apache.org/solr/guide/7_5/updating-parts-of-documents.html
+            #
+            # TODO: Should I also update the timestamp_s value to reflect
+            # the date the text was indexed. I need to be careful that this
+            # will not result in an endless import loop (EAD => PDF => EAD => PDF ...)
+            doc_hash = {
+                "id" => file["id"],
+                "text_txt_en" => {"set" => text_utf8}
+            }
             json = "[" + doc_hash.to_json + "]"
-            response = @solr_text.update(json)
+            response = @solr.update(json)
             if !response.ok?
                 Rails.logger.error("Adding text to ead_id #{ead_id}: #{filename}. Exception: #{response.error_msg}")
                 raise response.error_msg
             end
         end
+
+        StringUtils.log_elapsed(start, "import_ead_files - processed #{files.count} files,")
     end
 
     private
-
         def get_ead_files(ead_id)
             files = []
             params = SolrLite::SearchParams.new()
             params.fl = ["id", "ead_id_s", "inventory_id_s", "inventory_filename_s"]
             params.q = "ead_id_s:\"#{CGI.escape(ead_id)}\" AND inventory_level_s:\"item\""
-            params.page_size = 10000 # TODO: implement pagination
-            response = @solr_ead.search(params)
+            params.page_size = 10000
+            response = @solr.search(params)
             response.solr_docs.each do |doc|
                 files << doc
             end
             files
-        end
-
-        def elapsed_ms(start)
-            ((Time.now - start) * 1000).to_i
-        end
-
-        def log_elapsed(start, msg)
-            Rails.logger.info("#{msg} took #{elapsed_ms(start)} ms")
         end
 end

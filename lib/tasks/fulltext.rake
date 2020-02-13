@@ -24,6 +24,7 @@ namespace :riamco do
     solr_ead_url = ENV["SOLR_URL"]
     solr_text_url = ENV["SOLR_TEXT_URL"]
     tika_url = ENV["TIKA_URL"]
+    puts "Processig files for #{ead_id} from #{pdf_files_path}"
     ft_import = FullTextImport.new(pdf_files_path, solr_ead_url, solr_text_url, tika_url)
     ft_import.import_ead_files(ead_id)
     puts "done"

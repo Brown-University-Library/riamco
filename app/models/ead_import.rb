@@ -3,25 +3,9 @@ require "./app/models/ead.rb"
 class EadImport
     def initialize(files_path, solr_url)
         @files_path = files_path
-        @solr = SolrLite::Solr.new(solr_url)
+        logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
+        @solr = SolrLite::Solr.new(solr_url, logger)
         @solr.def_type = "edismax"
-    end
-
-    def add_file(ead_id, filename, text)
-        # TODO: revisit this
-        # See https://www.rubyguides.com/2019/05/ruby-ascii-unicode/
-        text_utf8 = text.encode("UTF-8", "ASCII", invalid: :replace, undef: :replace, replace: "")
-        doc = {
-            ead_id_s: ead_id,
-            filename_s: filename,
-            text_txt_en: text_utf8
-        }
-        json = "[" + doc.to_json + "]"
-        response = @solr.update(json)
-        if !response.ok?
-            Rails.logger.error("Adding text to ead_id #{ead_id}: #{file_name}. Exception: #{response.error_msg}")
-            raise response.error_msg
-        end
     end
 
     # Deletes all the information for a given EAD ID
@@ -42,9 +26,9 @@ class EadImport
             begin
                 start_file = Time.now
                 import_one_file(file_name)
-                log_elapsed(start_file, "  File: #{File.basename(file_name)} [#{ix+1}/#{count}]")
+                StringUtils.log_elapsed(start_file, "  File: #{File.basename(file_name)} [#{ix+1}/#{count}]")
             rescue => ex
-                log_elapsed(start_file, "  Error on file: #{File.basename(file_name)}. #{ex}")
+                StringUtils.log_elapsed(start_file, "  Error on file: #{File.basename(file_name)}. #{ex}")
                 errors << "File: #{file_name}. #{ex}, #{ex.backtrace}"
             end
         end
@@ -60,16 +44,15 @@ class EadImport
             # T to delimit time).
             #
             timestamp = (start_all-10).to_datetime.to_s
-            query = 'timestamp_s:[* TO \"' + timestamp + '\"]'
-            Rails.logger.info("Deleting Solr documents older than #{timestamp}")
-            response = @solr.delete_by_query(query)
+            garbage_collect_all(timestamp)
         end
 
-        log_elapsed(start_all, "Import ended")
+        StringUtils.log_elapsed(start_all, "Import ended")
         return errors
     end
 
-    # Imports to Solr the XML files in the path that have changed since the given timestamp.
+    # Imports to Solr the XML files that have changed
+    # since the most recent timestamp in Solr.
     def import_updated()
         timestamp = most_recent_timestamp_in_solr()
         if timestamp == nil
@@ -85,15 +68,14 @@ class EadImport
                 if mtime > timestamp
                     start_file = Time.now
                     import_one_file(file_name)
-                    log_elapsed(start_file, "  File: #{File.basename(file_name)}")
+                    StringUtils.log_elapsed(start_file, "  File: #{File.basename(file_name)}")
                     count += 1
                 end
             rescue => ex
-                # log_elapsed(start_file, "  Error on file: #{File.basename(file_name)}")
                 errors << "File: #{file_name}: #{ex}, #{ex.backtrace}"
             end
         end
-        log_elapsed(start_all, "Import ended, #{count} files were imported")
+        StringUtils.log_elapsed(start_all, "Import ended, #{count} files were imported")
         return {count: count, errors: errors}
     end
 
@@ -117,6 +99,22 @@ class EadImport
     end
 
     private
+        # Delete Solr documents older than a given timestamp
+        def garbage_collect_all(timestamp)
+            query = 'timestamp_s:[* TO \"' + timestamp + '\"]'
+            Rails.logger.info("Deleting Solr documents older than #{timestamp}")
+            response = @solr.delete_by_query(query)
+        end
+
+        # Delete Solr documents for a finding aid that are older than a given timestamp
+        def garbage_collect_finding_aid(ead_id, timestamp)
+            q1 = 'ead_id_s:\"' + CGI.escape(ead_id) + '\"'
+            q2 = 'timestamp_s:[* TO \"' + timestamp + '\"]'
+            query = q1 + " AND " + q2
+            Rails.logger.info("Deleting Solr documents for EAD ID #{ead_id} older than #{timestamp}")
+            response = @solr.delete_by_query(query)
+        end
+
         def most_recent_timestamp_in_solr()
             params = SolrLite::SearchParams.new()
             params.q = 'inventory_level_s:"Finding Aid"'
@@ -131,17 +129,11 @@ class EadImport
         end
 
         def import_one_file(file_name)
+            timestamp = Time.now.to_datetime.to_s
             xml = File.read(file_name)
             ead = Ead.new(xml)
             solr_docs = ead.to_solr(true)
-
-            # Delete from Solr all previous information for this finding aid
             ead_id = solr_docs[0][:id]
-            response = delete_finding_aid(ead_id)
-            if !response.ok?
-                Rails.logger.error("Deleting previous data for file: #{file_name}, query: #{ead_id}. \r\nException: #{response.error_msg}")
-                raise response.error_msg
-            end
 
             # Import all the Solr documents generated for this finding aid
             json_docs = solr_docs.map { |solr_doc| solr_doc.to_json }
@@ -151,14 +143,14 @@ class EadImport
                 Rails.logger.error("Importing file: #{file_name}. Exception: #{response.error_msg}")
                 raise response.error_msg
             end
+
+            # Delete from Solr documents not longer associated with this finding aid
+            response = garbage_collect_finding_aid(ead_id, timestamp)
+            if !response.ok?
+                Rails.logger.error("Deleting previous data for file: #{file_name}, query: #{ead_id}. \r\nException: #{response.error_msg}")
+                raise response.error_msg
+            end
+
             nil
-        end
-
-        def elapsed_ms(start)
-            ((Time.now - start) * 1000).to_i
-        end
-
-        def log_elapsed(start, msg)
-            Rails.logger.info("#{msg} took #{elapsed_ms(start)} ms")
         end
 end

@@ -157,7 +157,7 @@ class SearchController < ApplicationController
       presenter
     end
 
-    # Issues a search within the files associated with a findin aid
+    # Issues a search within the files associated with a finding aid
     def execute_files_search(ead_id, q)
       solr_url = ENV["SOLR_URL"]
       searcher = Search.new(solr_url)

@@ -17,7 +17,7 @@ class EadImport
 
     # Imports to Solr the XML files in the path.
     def import_files()
-        start_all = Time.now
+        start_all = Time.now - 1
         Rails.logger.info("Import started: #{Time.now}, path: #{@files_path}")
         errors = []
         files = Dir[@files_path]
@@ -33,17 +33,14 @@ class EadImport
             end
         end
 
-        if errors.count == 0
-            # Delete any Solr documents that were not touched during the
-            # import process.
-            #
-            # Notice that we use the start time minus 10 seconds just
-            # to be safe. We also convert the value to datetime and
-            # then to string to make sure it's formatted with the exact
-            # format as the timestamp_s value in Solr (including the
-            # T to delimit time).
-            #
-            timestamp = (start_all-10).to_datetime.to_s
+        if files.count == 1
+            # Nothing to do -- the import process garbage collected the finding aid.
+        elsif errors.count == 0
+            # Garbage collect any Solr documents that were not touched during
+            # the import process. This makes sure that we delete documents for
+            # finding aids that were processed at one point but the file has
+            # been deleted and therefore we did not process again.
+            timestamp = start_all.to_datetime.to_s
             garbage_collect_all(timestamp)
         end
 
@@ -108,8 +105,8 @@ class EadImport
 
         # Delete Solr documents for a finding aid that are older than a given timestamp
         def garbage_collect_finding_aid(ead_id, timestamp)
-            q1 = 'ead_id_s:\"' + CGI.escape(ead_id) + '\"'
-            q2 = 'timestamp_s:[* TO \"' + timestamp + '\"]'
+            q1 = "ead_id_s:#{CGI.escape(ead_id)}"
+            q2 = "timestamp_s:[* TO #{timestamp}]"
             query = q1 + " AND " + q2
             Rails.logger.info("Deleting Solr documents for EAD ID #{ead_id} older than #{timestamp}")
             response = @solr.delete_by_query(query)
@@ -129,7 +126,7 @@ class EadImport
         end
 
         def import_one_file(file_name)
-            timestamp = Time.now.to_datetime.to_s
+            timestamp = (Time.now - 1).to_datetime.to_s
             xml = File.read(file_name)
             ead = Ead.new(xml)
             solr_docs = ead.to_solr(true)

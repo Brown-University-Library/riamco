@@ -6,7 +6,7 @@ class SearchItem
     :start_year, :end_year,
     :inv_id, :inv_level, :inv_scope_content, :inv_label, :inv_date, :inv_container,
     :timestamp, :highlights, :children, :match_count,
-    :file_text, :inv_filename, :inv_filedesc
+    :file_text, :inv_filename, :inv_filedesc, :sequence
 
   def initialize(id, ead_id, title, title_filing, title_sort,
     abstract, call_no, scope_content,
@@ -46,6 +46,7 @@ class SearchItem
     @file_text = nil
     @inv_filename = nil
     @inv_filedesc = nil
+    @sequence = ""
   end
 
   def title_hl
@@ -138,7 +139,14 @@ class SearchItem
       h["inventory_label_txt_en"], h["inventory_date_s"], h["inventory_container_txt_en"],
       h["timestamp_s"], highlights)
 
+    item.sequence = h["sequence_s"] || ""
     item.date_display = h["date_display_s"]
+    item.file_text = h["text_txt_en"]
+    item.inv_filename = h["inventory_filename_s"]
+    if item.inv_filename != nil
+      item.inv_level = "Digital"
+    end
+    item.inv_filedesc = h["inventory_file_description_txt_en"]
     item
   end
 
@@ -147,11 +155,10 @@ class SearchItem
   end
 
   def children_sorted()
-    # The ID of each children has a sequential number appended to
-    # it. This number represents the position of the inventory item
-    # in the original XML document.
+    # The sequential field includes the position within the inventory
+    # e.g. "US-RPB-ms2018.010-0000636"
     @children_sorted ||= begin
-      @children.sort_by {|x| x.id }
+      @children.sort_by {|x| x.sequence }
     end
   end
 

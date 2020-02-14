@@ -22,18 +22,10 @@ namespace :riamco do
     ead_id = args[:ead_id]
     pdf_files_path = ENV["EAD_DIGITAL_FILES_PATH"]
     solr_ead_url = ENV["SOLR_URL"]
-    solr_text_url = ENV["SOLR_TEXT_URL"]
     tika_url = ENV["TIKA_URL"]
     puts "Processig files for #{ead_id} from #{pdf_files_path}"
-    ft_import = FullTextImport.new(pdf_files_path, solr_ead_url, solr_text_url, tika_url)
+    ft_import = FullTextImport.new(pdf_files_path, solr_ead_url, tika_url)
     ft_import.import_ead_files(ead_id)
     puts "done"
-  end
-
-  desc "Deletes all documents from the full text index"
-  task :ft_clean_index do |cmd, args|
-    solr_url = ENV["SOLR_TEXT_URL"]
-    solr = SolrLite::Solr.new(solr_url)
-    solr.delete_all!
   end
 end

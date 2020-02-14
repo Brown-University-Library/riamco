@@ -1,7 +1,7 @@
 require "./app/models/ead.rb"
 
 class FullTextImport
-    def initialize(pdf_files_path, solr_url, _not_used, tika_url)
+    def initialize(pdf_files_path, solr_url, tika_url)
         @pdf_files_path = pdf_files_path
 
         @solr = SolrLite::Solr.new(solr_url)

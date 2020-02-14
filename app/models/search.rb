@@ -37,13 +37,6 @@ class Search
   end
 
   def search_files(ead_id, q, page_size, user)
-    logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
-    solr_url = ENV["SOLR_URL"]
-    solr = SolrLite::Solr.new(solr_url, logger)
-    solr.def_type = "edismax"
-
-    is_reading_room = user != nil && user.is_reading_room?
-
     fq = SolrLite::FilterQuery.new("ead_id_s", [ead_id])
     params = SolrLite::SearchParams.new()
     params.fq = [fq]
@@ -62,17 +55,21 @@ class Search
     mm = nil
     debug = false
 
-    results = solr.search(params, extra_fqs, qf, mm, debug)
+    results = @solr.search(params, extra_fqs, qf, mm, debug)
     if !results.ok?
       raise("Solr reported: #{results.error_msg}")
     end
 
+    is_reading_room = user != nil && user.is_reading_room?
     items = []
     results.solr_docs.each do |doc|
       id = doc["id"]
       highlights = results.highlights.for(id) || []
       if !is_reading_room
-        highlights = {"text_txt_en" => ["Access is restricted to reading room users."]}
+        doc["text_txt_en"] = nil
+        if highlights["text_txt_en"] != nil
+          highlights["text_txt_en"] = ["Access is restricted to reading room users."]
+        end
       end
 
       item = SearchItem.from_hash(doc, highlights)
@@ -83,11 +80,6 @@ class Search
 
   # Finds file metadata for a given inventory_filename
   def file_metadata(ead_id, inventory_filename)
-    logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
-    solr_url = ENV["SOLR_URL"]
-    solr = SolrLite::Solr.new(solr_url, logger)
-    solr.def_type = "edismax"
-
     params = SolrLite::SearchParams.new()
     fq = SolrLite::FilterQuery.new("ead_id_s", [ead_id])
     params.fq = [fq]
@@ -97,7 +89,7 @@ class Search
     qf = "inventory_filename_s"
     debug = false
     mm = nil
-    results = solr.search(params, extra_fqs, qf, mm, debug)
+    results = @solr.search(params, extra_fqs, qf, mm, debug)
     if !results.ok?
       raise("Solr reported: #{results.error_msg}")
     end
@@ -136,41 +128,47 @@ class Search
       groups_ids = results.solr_groups("ead_id_s")
       groups_ids.each do |group_id|
         docs_for_group = results.solr_docs_for_group("ead_id_s", group_id)
-        # Try to create the item with finding aid information
-        # if the finding aid document is found in the resultset.
-        item = nil
+
+        # Try to get the finding aid information from the
+        # documents for this group.
+        finding_aid = nil
         docs_for_group.each do |doc|
           if doc["inventory_level_s"] == "Finding Aid"
             highlights = results.highlights.for(doc["id"]) || {}
-            item = SearchItem.from_hash(doc, highlights)
+            finding_aid = SearchItem.from_hash(doc, highlights)
             break
           end
         end
 
-        if item == nil
-          # The finding aid was not in the result set, fetch it.
+        if finding_aid == nil
+          # The finding aid was not in the documents for this group,
+          # fetch the finding aid directly from our cache.
           solr_id = URI.escape(group_id)
           finging_aid_doc = FindingAids.by_id(solr_id)
           if finging_aid_doc == nil
             raise("Error getting finding aid with id: #{group_id}")
           end
-          item = SearchItem.from_hash(finging_aid_doc, {})
+          finding_aid = SearchItem.from_hash(finging_aid_doc, {})
         end
 
-        item.match_count = results.num_found_for_group("ead_id_s", group_id)
+        finding_aid.match_count = results.num_found_for_group("ead_id_s", group_id)
 
+        # Append each document in the group as a children to the finding aid
         docs_for_group.each do |doc|
           if doc["inventory_level_s"] == "Finding Aid"
-            # skip it
-          else
-            highlights = results.highlights.for(doc["id"]) || {}
-            if !is_reading_room
-              highlights = {"text_txt_en" => ["Access is restricted to reading room users."]}
-            end
-            item.add_child(doc, highlights)
+            # skip it -- we already handled the finding aid
+            next
           end
+          highlights = results.highlights.for(doc["id"]) || {}
+          if !is_reading_room
+            doc["text_txt_en"] = nil
+            if highlights["text_txt_en"] != nil
+              highlights["text_txt_en"] = ["Access is restricted to reading room users."]
+            end
+          end
+          finding_aid.add_child(doc, highlights)
         end
-        results.items << item
+        results.items << finding_aid
       end
       results
     end

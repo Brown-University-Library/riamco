@@ -108,10 +108,12 @@ class Search
 
     info = {
         ead_id: finding_aid_doc["ead_id_s"],
+        call_no: finding_aid_doc["call_no_s"],
         ead_title: finding_aid_doc["title_txt_en"],
         name: results.solr_docs[0]["inventory_filename_s"],
         label: results.solr_docs[0]["inventory_label_txt_en"],
         description: results.solr_docs[0]["inventory_file_description_txt_en"],
+        scope_content: results.solr_docs[0]["inventory_scope_content_txt_en"],
         inv_id: results.solr_docs[0]["inventory_id_s"]
       }
     info

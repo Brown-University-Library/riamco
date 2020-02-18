@@ -97,7 +97,8 @@ class EadController < ApplicationController
     @presenter = FilePresenter.new()
     @presenter.configure(file_info)
     @footer = false
-    render "pdf_view"
+    view_name = params.key?("v") ? "pdf_view2" : "pdf_view"
+    render view_name
   rescue => ex
     backtrace = ex.backtrace.join("\r\n")
     Rails.logger.error("Could not render finding aid #{id}, view #{view}. Exception: #{ex} \r\n #{backtrace}")

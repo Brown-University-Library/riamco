@@ -183,8 +183,6 @@ class EadController < ApplicationController
     end
 
     def load_ead_html(id, view)
-      html_path = ENV["EAD_HTML_FILES_PATH"]
-      html_file = html_path + "/#{id}_riamco_#{view}.html"
       xml_file = ENV["EAD_XML_FILES_PATH"] + "/#{id}.xml"
       xsl_file = ENV["EAD_XSL_FILES_PATH"] + "/riamco_#{view}.xsl"
       if !File.exist?(xml_file)
@@ -211,7 +209,8 @@ class EadController < ApplicationController
       html = "<!DOCTYPE html>\r\n" + transformed_doc.to_s
       if is_reading_room?
         # Activate the links to the digital files
-        html = html.gsub("digital-file-link-hidden", "digital-file-link-visible")
+        html = html.gsub("digital-file-view-hidden", "digital-file-view-visible")
+        html = html.gsub("digital-file-info-visible", "digital-file-view-hidden")
       end
       html
     end

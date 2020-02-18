@@ -412,10 +412,12 @@
                                 <xsl:variable name="filename_id" select="ead:dao[@ns2:role='NORMALIZEDFILE_ID']/@ns2:href" />
                                 <p>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>&#160;
-                                    <a href="renderfile/{$eadid}/{$filename_id}"
-                                        target="_blank"
-                                        title="Content available to reading room users"
-                                        class="digital-file-link-hidden">(View File)</a>
+                                    <span class="digital-file-view-hidden">
+                                        (<a href="renderfile/{$eadid}/{$filename_id}" target="_blank">View File</a>)
+                                    </span>
+                                    <span class="digital-file-info-visible">
+                                        (Access restricted. <a href="go-to-parent/{$eadid}?inv_id={@id}">More information</a>)
+                                    </span>
                                 </p>
                             </xsl:when>
                             <xsl:when test="ead:eadid[@mainagencycode='US-RPRC']">

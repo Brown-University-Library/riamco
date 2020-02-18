@@ -317,10 +317,18 @@ td {
     font-feature-settings: 'liga';
   }
 
-.digital-file-link-hidden {
+.digital-file-view-hidden {
     display: none;
 }
 
-.digital-file-link-visible {
+.digital-file-view-visible {
+    display: inline;
+}
+
+.digital-file-info-hidden {
+    display: none;
+}
+
+.digital-file-info-visible {
     display: inline;
 }

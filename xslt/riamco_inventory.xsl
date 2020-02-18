@@ -446,7 +446,6 @@
                         <xsl:if test="ead:scopecontent/ead:p">
                             <xsl:text>Contents Note: </xsl:text>
                             <xsl:copy-of select="ead:scopecontent"/>
-                            <br/>
                         </xsl:if>
 
                         <xsl:if test="ead:odd/ead:p">

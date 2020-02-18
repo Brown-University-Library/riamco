@@ -109,7 +109,7 @@ class SearchItem
     if file_text_hl?
       @highlights["text_txt_en"].join("...<br/>")
     else
-      @file_text
+      @file_text || ""
     end
   end
 

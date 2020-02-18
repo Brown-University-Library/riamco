@@ -5,7 +5,7 @@
 </style>
 <div class="row">
     <div class="col-sm-12 content-margin-top" >
-        <h1><%= @presenter.ead_title %> (<%= @presenter.call_no %>)</h1>
+        <h1><a href="<%= ead_view_file_path(eadid: @presenter.ead_id, filename: @presenter.file_name) %>?v"><span style="font-size: 22px" class="glyphicon glyphicon-resize-horizontal"></span></a><%= @presenter.ead_title %> (<%= @presenter.call_no %>)</h1>
         <p>File: <%= @presenter.file_label %> (<%= @presenter.file_name %>)
         <a href="<%= ead_show_path() %>?eadid=<%=@presenter.ead_id %>&view=inventory#<%=@presenter.inv_id %>">View in inventory</a></p>
         <p><%= @presenter.scope_content %></p>

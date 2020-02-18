@@ -75,6 +75,27 @@ class EadController < ApplicationController
     render "error", status: 500
   end
 
+  # For a given eadid and inv_id redirect the user to the
+  # inventory page for the *parent* of the inv_id
+  def go_to_parent
+    ead_id = params["eadid"]
+    inv_id = params["inv_id"]
+    if ead_id == nil
+      redirect_to root_url
+    end
+
+    solr_url = ENV["SOLR_URL"]
+    searcher = Search.new(solr_url)
+    parent_id = searcher.parent_id(ead_id, inv_id)
+
+    url = ead_show_url(eadid: ead_id, view: "inventory")
+    if parent_id != nil
+      url += "#" + parent_id
+    end
+
+    redirect_to url
+  end
+
   def view_file
     ead_id = params["eadid"]
     filename = params["filename"]

@@ -168,7 +168,12 @@
               '<a target="_blank" href="' + td2_url + '">' + data[i].inv_label + '</a>'
             '</td>';
 
-            text_hl = (data[i].highlights["text_txt_en"] || []).join("...<br/>");
+            if (data[i].highlights["text_txt_en"] != null) {
+              text_hl = data[i].highlights["text_txt_en"].join("...<br/>");
+            } else {
+              text_hl = data[i].file_text;
+            }
+
             if (ead_view_file_path === "") {
               text_hl += '<p></p>';
               td3 = "<td>" + text_hl +"</td>";

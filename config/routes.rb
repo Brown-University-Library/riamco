@@ -37,6 +37,10 @@ Rails.application.routes.draw do
     constraints: { eadid: /[a-zA-Z0-9\.\-]+/, filename: /[a-zA-Z0-9\.\-]+/}
   get 'rawfile/:eadid/:filename' => 'ead#raw_file', as: :ead_raw_file,
     constraints: { eadid: /[a-zA-Z0-9\.\-]+/, filename: /[a-zA-Z0-9\.\-]+/}
+
+  get 'go-to-parent/:eadid' => 'ead#go_to_parent', as: :ead_go_to_parent,
+    constraints: { eadid: /[a-zA-Z0-9\.\-]+/ }
+
   get 'download_pending' => 'ead#download_pending', as: :ead_download_pending
   get 'download' => 'ead#download', as: :ead_download
   get 'about' => 'home#about', as: :home_about

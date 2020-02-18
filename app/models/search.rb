@@ -66,10 +66,9 @@ class Search
       id = doc["id"]
       highlights = results.highlights.for(id) || []
       if !is_reading_room
-        doc["text_txt_en"] = nil
-        if highlights["text_txt_en"] != nil
-          highlights["text_txt_en"] = ["Access is restricted to reading room users."]
-        end
+        highlights["text_txt_en"] = nil
+        inv_id = doc["inventory_id_s"]
+        doc["text_txt_en"] = "Access restricted. " + more_info_link(ead_id, inv_id) + "."
       end
 
       item = SearchItem.from_hash(doc, highlights)
@@ -119,6 +118,58 @@ class Search
     info
   end
 
+  # Finds file parent ID for a given inventory ID
+  def parent_id(ead_id, inv_id)
+    if inv_id == nil
+      return nil
+    end
+
+    log_key = "#{ead_id}, #{inv_id}"
+    fq = SolrLite::FilterQuery.new("ead_id_s", [ead_id])
+    extra_fqs = []
+    debug = false
+    mm = nil
+
+    # Find the inventory node requested...
+    params = SolrLite::SearchParams.new()
+    params.fq = [fq]
+    params.q = inv_id
+    results = @solr.search(params, extra_fqs, "inventory_id_s", mm, debug)
+    if !results.ok?
+      raise("Solr reported: #{results.error_msg}")
+    end
+
+    if results.solr_docs.count != 1
+      Rails.logger.error("parent_id: #{results.solr_docs.count} results found for #{log_key}.")
+      return nil
+    end
+
+    # ...get the parent path for this inventory node...
+    path = results.solr_docs[0]["inventory_descendent_path"] || ""
+    tokens = path.split("/")
+    if tokens.count < 2
+      Rails.logger.error("parent_id: cannot determine parent path for #{log_key}.")
+      return nil
+    end
+    parent_path = tokens[0..(tokens.count-2)].join("/")
+
+    # ...find the parent node
+    params = SolrLite::SearchParams.new()
+    params.fq = [fq]
+    params.q = parent_path
+    results = @solr.search(params, extra_fqs, "inventory_descendent_path", mm, debug)
+    if !results.ok?
+      raise("Solr reported: #{results.error_msg}")
+    end
+
+    if results.solr_docs.count != 1
+      Rails.logger.error("parent_id: #{results.solr_docs.count} parent results found for #{log_key}.")
+      return nil
+    end
+
+    results.solr_docs[0]["inventory_id_s"]
+  end
+
   private
     # Issues the search and groups the results.
     def search_grouped(params, extra_fqs, qf, mm, debug, limit_to = 4, is_reading_room = false)
@@ -163,15 +214,18 @@ class Search
           end
           highlights = results.highlights.for(doc["id"]) || {}
           if !is_reading_room
-            doc["text_txt_en"] = nil
-            if highlights["text_txt_en"] != nil
-              highlights["text_txt_en"] = ["Access is restricted to reading room users."]
-            end
+            highlights["text_txt_en"] = nil
+            inv_id = doc["inventory_id_s"]
+            doc["text_txt_en"] = "Access restricted. " + more_info_link(finding_aid.id, inv_id) + "."
           end
           finding_aid.add_child(doc, highlights)
         end
         results.items << finding_aid
       end
       results
+    end
+
+    def more_info_link(ead_id, inv_id)
+      "<a href=\"/go-to-parent/#{ead_id}?inv_id=#{inv_id}\">More information</a>"
     end
 end

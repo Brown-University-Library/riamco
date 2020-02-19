@@ -140,7 +140,7 @@ class SearchItem
 
     item.sequence = h["sequence_s"] || ""
     item.date_display = h["date_display_s"]
-    item.file_text = h["text_txt_en"]
+    item.file_text = (h["text_txt_en"] || "")[0..150]
     item.inv_filename = h["inventory_filename_s"]
     if item.inv_filename != nil
       item.inv_level = "Digital"

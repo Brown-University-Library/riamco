@@ -117,9 +117,20 @@ class EadController < ApplicationController
     file_info = searcher.file_metadata(ead_id, filename)
     @presenter = FilePresenter.new()
     @presenter.configure(file_info)
+
+    # Fetch the original "scope content" for this file directly from the XML EAD.
+    # This is required because in Solr we store this value without the HTML tags.
+    xml = load_xml(ead_id)
+    if xml != nil
+      ead = Ead.new(xml, false)
+      raw_scope_content = ead.inventory_scope_content(file_info[:inv_id])
+      if raw_scope_content != nil
+        @presenter.scope_content = raw_scope_content
+      end
+    end
+
     @footer = false
-    view_name = params.key?("v") ? "pdf_view2" : "pdf_view"
-    render view_name
+    render "pdf_view"
   rescue => ex
     backtrace = ex.backtrace.join("\r\n")
     Rails.logger.error("Could not render finding aid #{id}, view #{view}. Exception: #{ex} \r\n #{backtrace}")

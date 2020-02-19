@@ -11,8 +11,11 @@ class Ead
         :title, :title_sort, :title_filing, :title_proper,
         :unit_id
 
-    def initialize(xml)
+    def initialize(xml, parse = true)
         @xml_doc = Nokogiri::XML(xml)
+        if parse != true
+            return
+        end
         @abstract = get_doc_abstract()
         @biog_hist = get_doc_biog_hist()
         @bulk = get_doc_bulk()
@@ -46,6 +49,21 @@ class Ead
 
     def to_s()
         "#{@id}, #{@title}"
+    end
+
+    def inventory_scope_content(inv_id, trim_tag = true)
+        # https://www.bennadel.com/blog/2142-using-and-expressions-in-xpath-xml-search-directives-in-coldfusion.htm
+        elements = @xml_doc.xpath("//xmlns:c[@id='#{inv_id}']/xmlns:scopecontent")
+        if elements.count != 1
+            return nil
+        end
+
+        html = elements.to_s
+        if trim_tag
+            html.gsub!("<scopecontent>", "")
+            html.gsub!("</scopecontent>", "")
+        end
+        html
     end
 
     def to_solr(with_inventory = false)

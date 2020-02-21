@@ -141,7 +141,7 @@ class EadController < ApplicationController
     ead_id = params["eadid"]
     filename = params["filename"]
 
-    if current_user == nil || !current_user.is_reading_room?
+    if !is_reading_room?
       Rails.logger.error("Invalid user #{current_user} attempting to view file #{ead_id} / #{filename}")
       render "error", status: 401
       return

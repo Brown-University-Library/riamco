@@ -7,12 +7,11 @@ class Search
     @solr.def_type = "edismax"
   end
 
-  def search(params, user, debug)
+  def search(params, rr_request, debug)
     extra_fqs = []
     params.fl = nil
     mm = nil
     limit_to = 4
-    is_reading_room = user != nil && user.is_reading_room?
 
     # The current boost values for title (100) and abstract (.1) are to
     # account for the fact that Solr is weighting the title *too low*
@@ -32,11 +31,11 @@ class Search
 
     params.spellcheck = true
 
-    results = search_grouped(params, extra_fqs, qf, mm, debug, limit_to, is_reading_room)
+    results = search_grouped(params, extra_fqs, qf, mm, debug, limit_to, rr_request)
     results
   end
 
-  def search_files(ead_id, q, page_size, user)
+  def search_files(ead_id, q, page_size, rr_request)
     fq = SolrLite::FilterQuery.new("ead_id_s", [ead_id])
     params = SolrLite::SearchParams.new()
     params.fq = [fq]
@@ -60,12 +59,11 @@ class Search
       raise("Solr reported: #{results.error_msg}")
     end
 
-    is_reading_room = user != nil && user.is_reading_room?
     items = []
     results.solr_docs.each do |doc|
       id = doc["id"]
       highlights = results.highlights.for(id) || []
-      if !is_reading_room
+      if !rr_request
         highlights["text_txt_en"] = nil
         inv_id = doc["inventory_id_s"]
         doc["text_txt_en"] = "Access restricted. " + more_info_link(ead_id, inv_id) + "."
@@ -172,7 +170,7 @@ class Search
 
   private
     # Issues the search and groups the results.
-    def search_grouped(params, extra_fqs, qf, mm, debug, limit_to = 4, is_reading_room = false)
+    def search_grouped(params, extra_fqs, qf, mm, debug, limit_to = 4, rr_request = false)
       results = @solr.search_group(params, extra_fqs, qf, mm, debug, "ead_id_s", limit_to)
       if !results.ok?
         raise("Solr reported: #{results.error_msg}")
@@ -213,7 +211,7 @@ class Search
             next
           end
           highlights = results.highlights.for(doc["id"]) || {}
-          if !is_reading_room
+          if !rr_request
             highlights["text_txt_en"] = nil
             inv_id = doc["inventory_id_s"]
             doc["text_txt_en"] = "Access restricted. " + more_info_link(finding_aid.id, inv_id) + "."

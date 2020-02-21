@@ -15,8 +15,7 @@ class LoginController < ApplicationController
             Rails.logger.info("Login succeeded (#{username})")
             flash[:alert] = nil
             if user.is_reading_room?
-                # TODO: Make this value configurable
-                redirect_to search_url(fq_0: "title_s|Kate Bornstein papers")
+                redirect_to search_url()
             else
                 redirect_to upload_list_url()
             end

@@ -186,6 +186,8 @@ class SearchResultsPresenter
   end
 
   def reading_room?()
+    # Notice that this does not check the IP of the request.
+    # This is no big deal because we already checked on the controller.
     @reading_room ||= (@user != nil) && @user.is_reading_room?
   end
 

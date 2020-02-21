@@ -55,7 +55,7 @@ class SearchController < ApplicationController
     params.page_size = 10 # don't allow the client to control this
 
     searcher = Search.new(solr_url)
-    search_results = searcher.search(params, current_user, debug)
+    search_results = searcher.search(params, is_reading_room?, debug)
     @presenter = AdvancedSearchPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
     @presenter.user = current_user
   end
@@ -152,7 +152,7 @@ class SearchController < ApplicationController
       params.facet_limit = facet_limit if facet_limit != nil
 
       searcher = Search.new(solr_url)
-      search_results = searcher.search(params, current_user, debug)
+      search_results = searcher.search(params, is_reading_room?, debug)
       presenter = SearchResultsPresenter.new(search_results, params, search_url(), base_facet_search_url(), explain_query)
       presenter
     end
@@ -161,7 +161,7 @@ class SearchController < ApplicationController
     def execute_files_search(ead_id, q)
       solr_url = ENV["SOLR_URL"]
       searcher = Search.new(solr_url)
-      file_results, num_found = searcher.search_files(ead_id, q, 1000, current_user)
+      file_results, num_found = searcher.search_files(ead_id, q, 1000, is_reading_room?)
       file_results
     end
 

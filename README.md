@@ -36,7 +36,7 @@ your environment.
 bundle exec rake riamco:import_eads[/path/to/xml/published/*.xml]
 ```
 
-You can use rake task `parse_eads` if you just want to parse to an EAD and see the result in your Terminal.
+You can use rake task `parse_eads` if you just want to parse an EAD and see the result in your Terminal.
 
 The code to convert the finding aids from XML to Solr documents is in `./app/models/ead.rb` and `./app/models/ead_import.rb`.
 

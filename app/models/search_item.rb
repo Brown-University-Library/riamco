@@ -36,7 +36,10 @@ class SearchItem
     @inv_scope_content = inv_scope_content
     @inv_label = inv_label
     @inv_date = inv_date
-    @inv_container = inv_container
+
+    # Strip the barcode [in brackets]
+    @inv_container = (inv_container || "").gsub(/\[.*\]/,"")
+
     @timestamp = timestamp
     @highlights = highlights
     @children = []

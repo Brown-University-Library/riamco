@@ -38,6 +38,8 @@ bundle exec rake riamco:import_eads[/path/to/xml/published/*.xml]
 
 You can use rake task `parse_eads` if you just want to parse to an EAD and see the result in your Terminal.
 
+The code to convert the finding aids from XML to Solr documents is in `./app/models/ead.rb` and `./app/models/ead_import.rb`.
+
 
 # Indexing text from PDF files (optional)
 If you are interested in indexing the *content* of the PDF files indicated in an EAD (in addition to the EAD itself) there are a few of extra steps required.
@@ -49,17 +51,21 @@ curl http://apache.mirrors.tds.net/tika/tika-server-1.22.jar > tika-server-1.22.
 java -jar tika-server-1.22.jar
 ```
 
-Create a separate Solr core to store the contents of the PDF files extracted with Tika:
-
-```
-solr create -c riamco_pdf_text
-```
-
 Run the following Rake task to scan a particular EAD (by EAD ID) and index the PDF files indicated on it.
 
 ```
 bundle exec rake riamco:ft_index_ead[US-RPB-ms2018.010]
 ```
+
+The code to extract the content of the PDF files and index it in Solr is in `./app/models/full_text_import.rb`.
+
+
+# Main classes
+Most of the search logic is in `./app/controllers/search_controller.rb` and `./app/models/search.rb`.
+
+The code to view individual finding aids is in `./app/controllers/ead_controller.rb` and relies heavily on the XSLT files under `./xslt/`.
+
+
 
 
 # General Architecture
@@ -67,5 +73,3 @@ bundle exec rake riamco:ft_index_ead[US-RPB-ms2018.010]
 See [this document](https://docs.google.com/document/d/1zQG6yT5sITz8JeCn4ILDOLy1nT5XAY6MwSRHm36Pwog/).
 
 
-# Solr Index
-The code to convert the finding aids from XML to Solr documents is in the `./app/models/ead.rb` file.

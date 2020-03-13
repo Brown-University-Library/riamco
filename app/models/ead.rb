@@ -418,7 +418,7 @@ class Ead
                 # ORIGINALFILE_ID (e.g. book_contract.pages)
                 #
                 # TODO: revisit this logic, it works but seems less than optimal
-                daos = node.xpath("xmlns:dao")
+                daos = node.xpath("xmlns:did/xmlns:dao")
                 daos.each do |dao|
                     href = dao.attributes["href"]
                     role = dao.attributes["role"]

@@ -408,8 +408,8 @@
                                 <br/>
                             </xsl:when>
                             <!-- For Digital Files in Kate Borstein collection -->
-                            <xsl:when test="ead:dao[@ns2:role='NORMALIZEDFILE_ID']">
-                                <xsl:variable name="filename_id" select="ead:dao[@ns2:role='NORMALIZEDFILE_ID']/@ns2:href" />
+                            <xsl:when test="ead:did/ead:dao[@ns2:role='NORMALIZEDFILE_ID']">
+                                <xsl:variable name="filename_id" select="ead:did/ead:dao[@ns2:role='NORMALIZEDFILE_ID']/@ns2:href" />
                                 <p>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>&#160;
                                     <span class="digital-file-view-hidden">
@@ -446,6 +446,22 @@
                         <xsl:if test="ead:scopecontent/ead:p">
                             <xsl:text>Contents Note: </xsl:text>
                             <xsl:apply-templates select="ead:scopecontent/ead:p"/>
+                        </xsl:if>
+
+                        <xsl:if test="ead:originalsloc">
+                            <p><i><xsl:value-of select="ead:originalsloc/ead:head"/></i></p>
+                            <xsl:for-each select="ead:originalsloc/ead:p">
+                                <p style="margin-left:30px;"><xsl:value-of select="node()"/></p>
+                            </xsl:for-each>
+                        </xsl:if>
+
+                        <xsl:if test="ead:phystech">
+                            <xsl:for-each select="ead:phystech">
+                                <p><i><xsl:value-of select="ead:head"/>: </i>
+                                <xsl:for-each select="ead:p">
+                                    <xsl:value-of select="node()"/>
+                                </xsl:for-each>
+                            </xsl:for-each> </p>
                         </xsl:if>
 
                         <xsl:if test="ead:odd/ead:p">
@@ -602,6 +618,10 @@
     </xsl:template>
 
     <xsl:template match="ead:unitdate">
+        <xsl:if test="@datechar!='creation'">
+            <p><i><xsl:call-template name="CamelCase"><xsl:with-param name="text"><xsl:value-of select="@datechar"/></xsl:with-param>
+</xsl:call-template>: </i></p>
+        </xsl:if>
         <xsl:apply-templates/>
     </xsl:template>
 
@@ -810,6 +830,31 @@
         <font style="font-variant: small-caps">
             <xsl:apply-templates/>
         </font>
+    </xsl:template>
+
+        <xsl:template name="CamelCase">
+      <xsl:param name="text"/>
+      <xsl:choose>
+        <xsl:when test="contains($text,' ')">
+          <xsl:call-template name="CamelCaseWord">
+            <xsl:with-param name="text" select="substring-before($text,' ')"/>
+          </xsl:call-template>
+          <xsl:text> </xsl:text>
+          <xsl:call-template name="CamelCase">
+            <xsl:with-param name="text" select="substring-after($text,' ')"/>
+          </xsl:call-template>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="CamelCaseWord">
+            <xsl:with-param name="text" select="$text"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="CamelCaseWord">
+      <xsl:param name="text"/>
+      <xsl:value-of select="translate(substring($text,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" /><xsl:value-of select="translate(substring($text,2,string-length($text)-1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
     </xsl:template>
 
 

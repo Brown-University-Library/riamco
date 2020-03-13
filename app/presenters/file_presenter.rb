@@ -9,7 +9,7 @@ class FilePresenter < DefaultPresenter
         @file_name = file_info[:name]           # 123456.pdf
         @file_label = file_info[:label]         # letter to editor.pages
         @file_description = file_info[:description]
-        @scope_content = file_info[:scope_content]
+        @scope_content = (file_info[:scope_content] || "")
         @inv_id = file_info[:inv_id]
     end
   end

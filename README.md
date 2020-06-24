@@ -18,6 +18,9 @@ See `./solr_conf/solr_create.sh` for instructions on how to create the Solr core
 
 
 # To get started
+Update the values in `.env_sample` to match the URLs where Solr is running in
+your environment.
+
 ```
 git https://github.com/Brown-University-Library/riamco.git
 cd riamco
@@ -27,13 +30,10 @@ bundle exec rake db:migrate
 bundle exec rails server
 ```
 
-Update the values in `.env_sample` to match the URLs where Solr is running in
-your environment.
-
 
 # Indexing our EAD files
 ```
-bundle exec rake riamco:import_eads[/path/to/xml/published/*.xml]
+bundle exec rake riamco:import_eads[/path/to/riamco/sampledata/*.xml]
 ```
 
 You can use rake task `parse_eads` if you just want to parse an EAD and see the result in your Terminal.
@@ -64,8 +64,6 @@ The code to extract the content of the PDF files and index it in Solr is in `./a
 Most of the search logic is in `./app/controllers/search_controller.rb` and `./app/models/search.rb`.
 
 The code to view individual finding aids is in `./app/controllers/ead_controller.rb` and relies heavily on the XSLT files under `./xslt/`.
-
-
 
 
 # General Architecture

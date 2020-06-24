@@ -23,13 +23,13 @@ curl -X POST -H 'Content-type:application/json' --data-binary '{
   }
 }' $SOLR_URL/$SOLR_CORE/schema
 
-
+# OPTIONAL:
+#
+# To enable the spell checker in RIAMCO see solrconfig_changes.xml
+# for the changes that are need in Solr's configuration.
+#
+# This is an optional step for local development.
+#
 # Reload Solr core (needed after updating solrconfig.xml)
-# See solrconfig_changes.xml
-#
 # curl "$SOLR_URL/admin/cores?action=RELOAD&core=$SOLR_CORE"
-
-
-# Reimport EAD files to Solr
 #
-# bundle exec rake riamco:import_eads[/Users/hectorcorrea/dev/riamco_php/xml/published_small/*.xml]

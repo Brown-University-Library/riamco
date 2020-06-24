@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd" audience="external" relatedencoding="MARC21">
+   <eadheader xmlns:ns2="http://www.w3.org/1999/xlink" audience="external" countryencoding="iso3166-1" dateencoding="iso8601" scriptencoding="iso15924" relatedencoding="MARC21" repositoryencoding="iso15511" langencoding="iso639-2b">
+      <eadid countrycode="US" mainagencycode="US-RiBrHMA" identifier="msESC.xml">US-RiBrHMA-msESC</eadid>
+      <filedesc>
+         <titlestmt>
+            <titleproper>Emma Shaw Colcleugh Collection<date type="inclusive" era="ce" calendar="gregorian" normal="1863/1937">1863-1937</date>
+               <date type="bulk" era="ce" calendar="gregorian" normal="1884/1902">(bulk 1884-1902)</date>
+            </titleproper>
+            <author>Finding aid prepared by Anthony M. Belz, January 2012, revised July 2013. Encoded November 2013</author>
+         </titlestmt>
+         <publicationstmt>
+            <publisher>Haffenreffer Museum of Anthropology</publisher>
+            <address>
+               <addressline>Brown University</addressline>
+               <addressline>300 Tower Street</addressline>
+               <addressline>Bristol, RI 02809</addressline>
+               <addressline>(401) 863-5700</addressline>
+               <addressline>haffenreffermuseum@brown.edu</addressline>
+            </address>
+            <date era="ce" calendar="gregorian" normal="2012" type="publication">January 2012</date>
+         </publicationstmt>
+      </filedesc>
+      <profiledesc>
+         <creation>This finding aid was produced using the Archivists' Toolkit<date era="ce" calendar="gregorian" normal="2013" type="publication"> November 2013</date>
+         </creation>
+         <langusage>English</langusage>
+         <descrules>Describing Archives: A Content Standard (DACS)</descrules>
+      </profiledesc>
+      <revisiondesc>
+         <change>
+            <date>July 2013</date>
+            <item/>
+         </change>
+      </revisiondesc>
+   </eadheader>
+   <archdesc level="collection">
+      <did>
+         <unittitle type="primary">Emma Shaw Colcleugh Collection</unittitle>
+         <unitid countrycode="US" repositorycode="US-RiBrHMA" type="collection">msESC</unitid>
+         <repository>
+            <corpname>Haffenreffer Museum of Anthropology</corpname>
+            <address>
+               <addressline>Brown University</addressline>
+               <addressline>300 Tower Street</addressline>
+               <addressline>Bristol, RI 02809</addressline>
+               <addressline>Tel: (401) 863-5700</addressline>
+               <addressline>
+                  <extptr xlink:actuate="onLoad" xlink:href="mailto:haffenreffermuseum@brown.edu"/>email: haffenreffermuseum@brown.edu
+            </addressline>
+            </address>
+         </repository>
+         <langmaterial xmlns:ns2="http://www.w3.org/1999/xlink">
+            <language langcode="eng">English
+</language>
+         </langmaterial>
+         <physdesc xmlns:ns2="http://www.w3.org/1999/xlink"/>
+         <unitdate era="ce" type="bulk" calendar="gregorian" normal="1884/1902">(bulk 1884-1902)</unitdate>
+         <unitdate era="ce" type="inclusive" calendar="gregorian" normal="1863/1937">1863-1937</unitdate>
+         <abstract xmlns:ns2="http://www.w3.org/1999/xlink" id="ref1" label="Abstract">The collection encompasses the years of 1863 until 1937 and consists of five scrapbooks of newspaper clippings, two separate inventories of field collections, a bill of sale, two photographs, a postcard and Pas Indian Reservation (Saskatchewan, Canada) documents including a Cree Syllabary Hymn and Psalms book, a treaty form and a ration ticket. Scrapbooks are arranged by Emma Shaw Colcleugh by geography, subject and in varying chronological order.</abstract>
+         <langmaterial xmlns:ns2="http://www.w3.org/1999/xlink" id="ref2" label="Language of Materials">English, 1 item in Cree Syllabary</langmaterial>
+         <origination xmlns:ns2="http://www.w3.org/1999/xlink" label="creator">
+            <persname rules="dacs" source="ingest" role="Author (aut)">Emma Shaw Colcleugh, 1846-1940</persname>
+         </origination>
+         <unittitle type="filing">Colcleugh (Emma Shaw) Collection</unittitle>
+         <physdesc><extent>6.25 Linear Feet</extent></physdesc>
+      </did>
+      <bioghist xmlns:ns2="http://www.w3.org/1999/xlink" id="ref5">
+         <head>Biographical Note</head>
+         <p>
+            <emph render="italic">For a more detailed biography see Out of the North: The Subartic Collection of the Haffenreffer Museum of Anthropology</emph>
+         </p>
+         <p>Emma Shaw was born on September 3, 1846 in Thompson, Connecticut, the child of George W. Shaw and Abby Carpenter. She moved to Providence, Rhode Island at age 18 to begin a career as a primary school teacher. In 1875, she began her interest in travel based journalism by writing about her trip to the upper banks of Lake Superior to visit relatives in Minnesota, subsequently published in the Providence Daily Journal. Between the years of 1884 and 1910 she traveled extensively; documenting her travels as an early ethnographer, visiting Alaska (1884 &amp; 1885), Saskatchewan, Alberta, Manitoba (1888-1893) and the Northwest Territories (1894), Canada, where she first began collecting ethnographic material, Hawaii (1891 &amp; 1897), Samoa, Fiji Islands, New Zealand and Tahiti (1897), Cuba (1898), Puerto Rico (1900), Africa (1902) and South America (1910).</p> 
+       <p>She married Frederick William Colcleugh, a Canadian (d. 1907) on May 17, 1893, and lived in Winnipeg, Manitoba, Canada, for four years before divorcing in 1897. She was also an avid photographer, often giving lectures on her travels with accompanying stereopticon presentations. Emma Shaw Colcleugh retired from journalism in 1927 at age 81 and in 1930, sold the entirety of her field collections to Rudolf Haffenreffer, Jr.. In 1932, she wrote a series of nineteen articles for the Providence Evening Bulletin entitled “I Saw These Things” which documented her experiences during her years of traveling. Her last trip was a solo train ride to Florida in 1937 at age 91.
+      </p>
+      </bioghist>
+      <descgrp type="descriptive">
+         <head>Collection information</head>
+      <accessrestrict xmlns:ns2="http://www.w3.org/1999/xlink" id="ref11">
+         <p>All responsible investigators shall have access to the collection for legitimate research and study, subject to procedures necessary to safeguard the objects and to restrictions required by limitations of normal operating hours, exhibition requirements, available study space and facilities, and the Haffenreffer Museum of Anthropology staff time.</p>
+      </accessrestrict>
+      <userestrict xmlns:ns2="http://www.w3.org/1999/xlink" id="ref40">
+         <p>Costs of reproducing documentary materials and photographs may be charged to investigators. No distinctions in such charges shall be made on the basis of the value or rarity of the original materials. Methods of reproduction may be limited if necessary to protect the originals from possible damage.</p>
+      </userestrict>
+      <scopecontent xmlns:ns2="http://www.w3.org/1999/xlink" id="ref3">
+         <p>As travel writer for the Providence Daily Journal and Providence Daily Bulletin, Emma Shaw Colcleugh created scrapbooks of articles that she wrote documenting her various travels abroad, her many lectures, photography as well as subjects of personal interest. She also collected ethnographic material during these trips, amassing 218 objects from the Subarctic, Americas, Oceania and Africa by the time she retired from journalism in 1927. In 1930, she sold the bulk of her field collections to Rudolf F. Haffenreffer, Jr. The scrapbooks were donated to the museum by her nephew, Richard Jackson and great-niece, Deborah Jackson in 1990.</p>
+      </scopecontent>
+      <arrangement xmlns:ns2="http://www.w3.org/1999/xlink" id="ref4">
+         <p>Arranged into four series by collection number and type of materials</p> 
+         <list>
+            <item>Series 1. Scrapbooks</item><item>Series 2. Inventories of field collections</item><item> Series 3. Associated Materials</item><item>Series 4. Ethnographic Collection</item>
+            </list>
+      </arrangement>
+      <prefercite xmlns:ns2="http://www.w3.org/1999/xlink" id="ref41">
+         <p>Emma Shaw Colcleugh Collection. ESC. Haffenreffer Museum of Anthropology, Brown University. Bristol, Rhode Island.</p>
+      </prefercite>
+      </descgrp>
+      <descgrp type="administrative">
+         <head>Administrative information</head>
+      <acqinfo xmlns:ns2="http://www.w3.org/1999/xlink" id="ref42">
+         <p>Ethnographic objects and inventories purchased from Emma Shaw Colcleugh by Rudolph F. Haffenreffer Jr., 1930. Scrapbooks donated by Richard Jackson and Deborah Jackson in 1990.</p>
+      </acqinfo>
+      <processinfo xmlns:ns2="http://www.w3.org/1999/xlink" id="ref38">
+         <p>Collection arranged and described by Anthony M. Belz, January 2012; revised July 2013</p>
+      </processinfo>
+      </descgrp>
+      <descgrp type="additional">
+         <head>Additional information</head>
+      <bibliography xmlns:ns2="http://www.w3.org/1999/xlink" id="ref44">
+         <p>Hail, B. &amp; Duncan, K. (1989). 
+            <emph render="italic"><archref xlink:href="http://www.riamco.org/riamco/pdf_files/OutOfTheNorth.pdf">Out of the North</archref></emph>:The Subarctic Collection of the Haffenreffer Museum of Anthropology. Studies in Anthropology and Material Culture Volume V. Bristol, RI: Haffenreffer Museum of Anthropology.</p>
+         <p>Hail, B. (1991). <archref xlink:href="http://www.riamco.org/riamco/pdf_files/I Saw These Things Hail.pdf"> I Saw These Things. The Victorian Collection of Emma Shaw Colcleugh</archref>. 
+                <emph render="italic">Arctic Anthropology 28</emph> (1). p 16-33. Art and Material Culture of the Sub Arctic and Adjacent Regions. University of Wisconsin Press.</p>
+      </bibliography>
+      <altformavail xmlns:ns2="http://www.w3.org/1999/xlink" id="ref15">
+         <p>Scrapbooks and inventory of field collections are also available on microfilm</p>
+      </altformavail>
+      </descgrp>
+      <descgrp type="cataloging">
+         <controlaccess>
+            <head>Subjects</head>
+         <subject source="Library_of_Congress_Subject_Headings">Indians of North America -- Canada -- History</subject>
+         <subject source="Library_of_Congress_Subject_Headings">Indians of North America -- Alaska -- History</subject>
+         </controlaccess>
+      <controlaccess xmlns:ns2="http://www.w3.org/1999/xlink">
+         <subject source="Library_of_Congress_Subject_Headings">Journalism -- Rhode Island</subject>
+      </controlaccess>
+         <controlaccess>
+            <head>Social Life and Customs</head>
+            <subject altrender="nodisplay" source="riamco" encodinganalog="690">Social Life and Customs</subject>
+         </controlaccess>
+            <controlaccess>
+               <geogname source="Library_of_Congress_Subject_Headings">Alaska</geogname>
+               <subject source="Library_of_Congress_Subject_Headings">Arctic regions -- Social life and customs</subject>
+               <geogname source="Library_of_Congress_Subject_Headings">Fiji</geogname>
+               <geogname source="Library_of_Congress_Subject_Headings">Hawaii</geogname>
+               <geogname source="Library_of_Congress_Subject_Headings">Saskatchewan</geogname>
+               <geogname source="Library_of_Congress_Subject_Headings">Tahiti</geogname>
+            </controlaccess>
+      </descgrp>
+      <dsc type="combined">
+         <c id="ref6" level="series">
+            <did>
+               <unittitle>Series I: Scrapbooks</unittitle>
+               <unitdate normal="1883/1937" type="inclusive">1883-1937</unitdate>
+            </did>
+            <scopecontent id="ref45">
+               <head>Series Description</head>
+               <p>A collection of five scrapbooks consisting of articles written by Emma Shaw Colcleugh and organized by Colcleugh according to date and geographic location.</p>
+            </scopecontent>
+         </c>
+         <c id="ref16" level="item">
+            <did>
+               <unittitle>Scrapbook</unittitle>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+               <container id="cid1028001" type="Volume" label="Text">1</container>
+               <physdesc>
+                  <extent>1.0 bound volumes</extent>
+               </physdesc>
+               <unitdate normal="1897/1903" type="inclusive">1897-1903</unitdate>
+               <physdesc id="ref30" label="Dimensions ">
+                  <dimensions>10" x 12" x 1 3/4"</dimensions>
+               </physdesc>
+            </did>
+         </c>
+         <c id="ref17" level="item">
+            <did>
+               <unittitle>Scrapbook</unittitle>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+               <container id="cid1028002" type="Volume" label="Text">2</container>
+               <physdesc>
+                  <extent>1.0 bound volumes</extent>
+               </physdesc>
+               <unitdate normal="1896/1937" type="inclusive">1896-1937</unitdate>
+               <physdesc id="ref31" label="Dimensions">
+                  <dimensions>10" x 12" x 1 3/4"</dimensions>
+               </physdesc>
+            </did>
+         </c>
+         <c id="ref18" level="item">
+            <did>
+               <unittitle>Scrapbook</unittitle>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+               <container id="cid1028003" type="Volume" label="Text">3</container>
+               <physdesc>
+                  <extent>1.0 bound volumes</extent>
+               </physdesc>
+               <unitdate normal="1890/1908" type="inclusive">1890-1908</unitdate>
+               <physdesc id="ref32" label="Dimensions">
+                  <dimensions>10" x 12" x 1 3/4"</dimensions>
+               </physdesc>
+            </did>
+         </c>
+         <c id="ref19" level="item">
+            <did>
+               <unittitle>Scrapbook</unittitle>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+               <container id="cid1028004" type="Volume" label="Text">4</container>
+               <physdesc>
+                  <extent>1.0 bound volumes</extent>
+               </physdesc>
+               <unitdate normal="1888/1902" type="inclusive">1888-1902</unitdate>
+               <physdesc id="ref33" label="Dimensions">
+                  <dimensions>10" x 12" x 1 3/4"</dimensions>
+               </physdesc>
+            </did>
+         </c>
+         <c id="ref20" level="item">
+            <did>
+               <unittitle>Scrapbook</unittitle>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+               <container id="cid1028005" type="Volume" label="Text">5</container>
+               <physdesc>
+                  <extent>1.0 bound volumes</extent>
+               </physdesc>
+               <unitdate normal="1883/1887" type="inclusive">1883-1887</unitdate>
+               <physdesc id="ref34" label="Dimensions">
+                  <dimensions>9" x 10" x 1 1/4"</dimensions>
+               </physdesc>
+            </did>
+         </c>
+         <c id="ref7" level="series">
+            <did>
+               <unittitle>Series II: Inventory of field collections</unittitle>
+            </did>
+            <scopecontent id="ref46">
+               <head>Series Description</head>
+               <p>Two inventories of Colcleugh’s ethnographic collection; one of handwritten field notes and one typewritten as part of the sale to Rudolph Haffenreffer in 1930.</p>
+            </scopecontent>
+            <c id="ref21" level="item">
+               <did>
+                  <unittitle> <archref xlink:href="http://www.riamco.org/riamco/pdf_files/ESC Original Collection Notebook.pdf"> Notebook of field collections</archref></unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <physdesc>
+                     <extent>1.0 notebook</extent>
+                  </physdesc>
+                  <unitdate normal="1888/1894" type="inclusive">1888-1894</unitdate>
+                  <physdesc id="ref35" label="Dimensions">
+                     <dimensions>7" x 8" x 1"</dimensions>
+                  </physdesc>
+               </did>
+            </c>
+            <c id="ref37" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/ESC-Green List Complete.pdf">Green List Inventory/Bill of sale</archref></unittitle>
+                  <physdesc>
+                     <extent>1.0 item</extent>
+                  </physdesc>
+                  <unitdate normal="1930/1930">1930</unitdate>
+               </did>
+            </c>
+         </c>
+         <c id="ref8" level="series">
+            <did>
+               <unittitle>Series III: Associated Materials</unittitle>
+               <unitdate normal="1863/1896" type="inclusive">1863-1896</unitdate>
+            </did>
+            <scopecontent id="ref47">
+               <head>Series Description</head>
+               <p>Related items from travels; newspaper clipping, postcard, personal photographs and blank Canadian reservation forms.</p>
+            </scopecontent>
+            <c id="ref23" level="item">
+               <did>
+                  <unittitle>Providence Journal Newspaper Pages</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <physdesc>
+                     <extent>2.0 pages</extent>
+                  </physdesc>
+                  <unitdate normal="1896/1896">26 April 1896</unitdate>
+               </did>
+            </c>
+            <c id="ref24" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/Cree syllabary Psalms and Hymn Book.pdf">Cree syllabary Psalms and Hymn Book</archref></unittitle>
+                  <langmaterial>
+                     <language langcode="cre"/>
+                  </langmaterial>
+                  <physdesc>
+                     <extent>1.0 item</extent>
+                  </physdesc>
+                  <unitdate normal="1885/1887" type="inclusive">1877</unitdate>
+               </did>
+               <controlaccess>
+                  <subject source="Library_of_Congress_Subject_Headings">Cree language -- Writing</subject>
+               </controlaccess>
+            </c>
+            <c id="ref25" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/Ration Ticket.pdf">Ration Ticket</archref></unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <physdesc>
+                     <extent>1.0 item</extent>
+                  </physdesc>
+                  <unitdate normal="1885/1887" type="inclusive">1885-1887</unitdate>
+               </did>
+            </c>
+            <c id="ref26" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/Treaty Form.pdf">Blank Treaty form</archref></unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <physdesc>
+                     <extent>1.0 item</extent>
+                  </physdesc>
+                  <unitdate normal="1885/1887" type="inclusive">1885-1887</unitdate>
+               </did>
+               <controlaccess>
+                  <subject source="Library_of_Congress_Subject_Headings">Cree Indians -- Treaties</subject>
+               </controlaccess>
+            </c>
+            <c id="ref27" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/Emma Shaw 1863.pdf">Photograph of Emma Shaw</archref></unittitle>
+                  <physdesc>
+                     <extent>1.0 photographs</extent>
+                  </physdesc>
+                  <unitdate normal="1863/1863">1863</unitdate>
+               </did>
+            </c>
+            <c id="ref28" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/Emma Shaw Undated.pdf">Photograph of Emma Shaw</archref></unittitle>
+                  <physdesc>
+                     <extent>1.0 photographs</extent>
+                  </physdesc>
+                  <unitdate>unknown</unitdate>
+               </did>
+            </c>
+            <c id="ref29" level="item">
+               <did>
+                  <unittitle><archref xlink:href="http://www.riamco.org/riamco/pdf_files/Postcard Photograph of Emma Shaw Colcleugh's Den.pdf">Postcard photograph of Emma Shaw Colcleugh's Den</archref></unittitle>
+                  <physdesc>
+                     <extent>1.0 postcard</extent>
+                  </physdesc>
+               </did>
+            </c>
+         </c>
+         <c id="ref49" level="series">
+            <did>
+               <unittitle>Series IV: Ethnographic Collection</unittitle>
+            </did>
+            <scopecontent id="ref50">
+               <head>Series Description</head>
+               <p>Collection of ethnographic objects acquired during Colcleugh’s travels and sold to Rudolf Haffenreffer in 1930.</p>
+            </scopecontent>
+         </c>
+         </dsc>
+   </archdesc>
+</ead>

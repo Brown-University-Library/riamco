@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ead xmlns="urn:isbn:1-931666-22-9" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:isbn:1-931666-22-9 http://www.loc.gov/ead/ead.xsd" audience="external" relatedencoding="MARC21">
+   <eadheader xmlns:ns2="http://www.w3.org/1999/xlink" audience="external" countryencoding="iso3166-1" dateencoding="iso8601" scriptencoding="iso15924" relatedencoding="MARC21" repositoryencoding="iso15511" langencoding="iso639-2b">
+      <eadid countrycode="US" mainagencycode="US-RPB" identifier="ms2011.028.xml">US-RPB-ms2011.028</eadid>
+      <filedesc>
+         <titlestmt>
+            <titleproper>Guide to the ACT UP Rhode Island Records<date type="inclusive" era="ce" calendar="gregorian" normal="1987/1995">1987-1995</date>
+            </titleproper>
+            <author>Finding aid prepared by Brown University Library staff.</author>
+            <sponsor>Processing funded by a grant from the National Historical Publications and Records Commission.</sponsor>
+         </titlestmt>
+         <publicationstmt>
+            <publisher>Brown University Library</publisher>
+            <address>
+               <addressline>Box A</addressline>
+               <addressline>Brown University</addressline>
+               <addressline>Providence, RI, 02912</addressline>
+               <addressline>Tel: 401-863-2146</addressline>
+               <addressline>email:hay@brown.edu</addressline>
+            </address>
+            <date era="ce" calendar="gregorian" normal="20111005" type="publication">2011 October 5</date>
+         </publicationstmt>
+      </filedesc>
+      <profiledesc>
+         <creation>This finding aid was produced using the Archivists' Toolkit
+                <date era="ce" calendar="gregorian" normal="20130125" type="publication">2013 January 25</date>
+         </creation>
+         <langusage>English</langusage>
+         <descrules>Finding aid based on Describing Archives: A Content Standard (DACS)</descrules>
+      </profiledesc>
+   </eadheader>
+   <archdesc level="collection" type="inventory">
+      <did>
+         <unittitle type="primary">ACT UP Rhode Island records</unittitle>
+         <unitid countrycode="US" repositorycode="US-RPB" type="collection">MS.2011.028</unitid>
+         <repository>
+            <corpname>John Hay Library
+            <subarea>Special Collections</subarea>
+            </corpname>
+            <address>
+               <addressline>Box A</addressline>
+               <addressline>Brown University</addressline>
+               <addressline>Providence, RI 02912</addressline>
+               <addressline>Tel: 401-863-2146</addressline>
+               <addressline>
+                  <extptr xlink:actuate="onLoad" xlink:href="mailto:hay@brown.edu"/>email: hay@brown.edu</addressline>
+            </address>
+         </repository>
+         <langmaterial xmlns:ns2="http://www.w3.org/1999/xlink">
+            <language langcode="eng">English
+</language>
+         </langmaterial>
+         <physdesc xmlns:ns2="http://www.w3.org/1999/xlink">
+            <extent>24.0 Linear feet</extent>
+         </physdesc>
+         <unitdate era="ce" type="inclusive" calendar="gregorian" normal="1987/1995">1987-1995</unitdate>
+         <abstract xmlns:ns2="http://www.w3.org/1999/xlink" id="ref2" label="Abstract">The ACT UP Rhode Island (AIDS Coalition to Unleash Power) records contain minutes of meetings, correspondence, financial records, reports, booklets, handbooks, pamphlets, clippings, mailings, newsletters, conference material, publications, lists of members and contacts, ACT UP/RI circulars and posters, photographs and clippings of ACT UP demonstrations, documentation of Rhode Island legislation, regulations, and policies concerning AIDS. Also included are AIDS-related materials from other ACT UP groups, especially New York, and various gay and lesbian groups, both in Rhode Island and nationally. Topical files document developments in AIDS treatment, public health issues, government policy, AIDS activism, and various gay/lesbian issues. There are also three painted plywood panels and one cloth banner in the collection.</abstract>
+         <origination xmlns:ns2="http://www.w3.org/1999/xlink" label="creator">
+            <corpname source="local">ACT UP Rhode Island (Organization).</corpname>
+         </origination>
+         <unittitle type="filing">ACT UP Rhode Island Records</unittitle>
+      </did>
+      <bioghist xmlns:ns2="http://www.w3.org/1999/xlink" id="ref5">
+         <head>Administrative History</head>
+         <p>The AIDS Coalition to Unleash Power (ACT UP) is an international direct action advocacy group working to impact the lives of people with AIDS (PWAs) and the AIDS pandemic to bring about legislation, medical research and treatment and policies to ultimately bring an end to the disease by mitigating loss of health and lives.</p>
+         <p>ACT UP was effectively formed in March 1987 at the Lesbian and Gay Community Services Center in New York. Larry Kramer was asked to speak as part of a rotating speaker series, and his well-attended speech focused on action to fight AIDS. Kramer spoke out against the Gay Men's Health Crisis (GMHC), which he perceived as politically impotent. Kramer had co-founded the GMHC but had resigned from its board of directors in 1983. According to Douglas Crimp, Kramer posed a question to the audience: "Do we want to start a new organization devoted to political action?" The answer was "a resounding yes." Approximately 300 people met two days later to form ACT UP.</p>
+         <p>ActUp/ RI, the Rhode Island chapter of ACT UP, the AIDS Coalition to Unleash Power, was formed in the spring of 1987, largely through the energies of Stephen Gendin, and continued as an active organization until 1993. Frequent targets of the groups demonstrations included the RI Department of Health, RI Project AIDS, and the Providence Journal.</p>
+      </bioghist>
+      <descgrp type="descriptive">
+         <head>Collection information</head>
+      <arrangement xmlns:ns2="http://www.w3.org/1999/xlink" id="ref8">
+         <p>The collection is organized in two series:<list><item>I. Records and printed material, 1987-1994</item><item>II. Graphic material, undated</item></list></p>
+      </arrangement>
+      <scopecontent xmlns:ns2="http://www.w3.org/1999/xlink" id="ref9">
+         <p>The records are arranged in alphabetical order generally by organization, committee or topic and contain printed material concerning HIV/AIDS. Included in the collection are three painted plywood panels and one cloth banner.</p>
+         <p>Box 1 focus is on ACT UP Rhode Island , which includes agendas, minutes of meetings, inmates concerns about AIDS in prison, unsorted material including information on AZT, Gay Pride and RI project AIDS. There is also material from various ACT UP organizations located in New Jersey; Philadelphia, Seattle, Boston (including the newsletter "Attitude"); Washington, DC (including the newsletter "Frontline"), San Francisco, Kansas, Los Angeles, Louisiana, Minnesota, New York (includes Target Ciy Hall AIDS Activist Guide); FDA Action Handbook; Women and Aids; HIV positive children; clinical trial reports AZT, and AIDS Clinical Trial Group (ACTG). Other material represented is by AAWH (the American Association for World Health); ACLU and ACLU Rhode Island (American Civil Liberties Union): ACT UP Network information on Universal Health Care; Rhode Island HIV testing bulletin; amfAR (the American Foundation for AIDS Research); Brown University Health Services; Brown University pamphlet (AIDS and IV Drug Use); the AIDS Action 1993 annual report and the AIDS Action Committee of Massachusetts bulletin "Update." The collection also inlcudes some material on PCP (Pneumocystis pneumoni or pneumocystosis); and some journals 
+                <title render="italic">AIDS Clinical Care</title> and 
+                <title render="italic">AIDS Treatment News</title>.</p>
+         <p>The majority of Box 2 contains original and photocopied articles and clippings which are sorted randomly or by month and year with an emphasis on AIDS; women and AIDS; AIDS and politics; AZT; Foscarnet; DHPG (Dihydroxyphenylglycine); condom usage; drug abuse; T-cells; Human Immunodeficienty virus testing; sexual discrimination; gays and lesbians; art and culture in the gay community; and gays in the military. Most of the articles and clippings are from the Boston Globe; New York Times; Wall Street Journal; San Francisco Chronicle, Providence Journal Bulletin; Brown Daily Herald; the Phoenix; and Newsweek. The box also contains other material which include: AID/HIV Experimental Treatment Directory by amfAR (February 1989, August 1989, December 1989, March 1990 and June 1990); BRUNAP (Brown University AIDS Program) News; the Bay State Banner; the Body Positive; pamphlets, brochures; syallabus with readings for Brown University course BIC-214 Enviroment, Behavior and Disease by Professor Sally Zierler; course material and notes by Bill Jesdale; Burroughs Welcome Company reports; CDC (Centers for Disease Control and Prevention) information and statistics; CHEF (Comprehensive Health Education Foundation) material; and the book 
+                <title render="italic">AIDS and Syphilis the Hidden Link</title> by Harris L. Coulter, 1987.</p>
+         <p>Box 3 contains an abundant amount of computer printouts of newsletters from HICN (Health Information Network) as well as the newsgroup Sci Med AIDS from Brown University. Other newletters include "Eclipse" the Shanti Project newsletter; "The Exchange"; "Legal Aid Society of Rhode Island"; P.W.A. (People with AIDS Coalition); Piss and Vinegar; Positive Changes, and GLADD (Gay and Lesbian Alliance against Defamation). There are several newspapers "the Phoenix', "the Newpaper", and "Options" the RI Lesbian and Gay newspaper. Magazines include "People", April 9, 1990; and "Dimensions Magazine", 1990 March. There is also material from the National Journal Project which includes the Spring, 1989 journal "
+                <title render="italic">National Prison Project Journal</title>." Some other highlights of material include ACT UP's Treatment and Data Digest from 1989-1991; some fundraising items from ACT UP Rhode Island; legislation material from Connecticut, Massachusetts, and Rhode Island; weekly report from MMWR (Morbidity and Morality report, July and August 1990; Lesbian Rights Project, San Francisco, California; NAIC (National Aids Information Clearing House), and NAPWA (National Association of People with AIDS). There are several notes that appear to concern themselves with the New York Chapter of ACT UP which are written by an unidentified individual or individuals. The box also contains three blank postcards (Womens Action June 22, 1990 and World AIDS Day, December 1, 1989) along with photographs which appear to be from a 1989 March in Washington, DC, and black and white photographs (with negatives) of a road sign with "Welcome to Rhode Island" on it with "Home of Mandatory AIDS Testing" banner added to the sign.</p>
+         <p>Box 4 contains newsletters which include "Provincetown Positive", "Queers", "Rhode Island AIDS Alert", "RESIST", "Impetus", "Friends for Life", "the People's Health" along with numerous computer printouts of the newsgroup Sci Med AIDS from Brown University and one journal in Spanish "Quipi" (August and December 1989). There is also a substantial amount of material from the Rhode Island Department of Health which includes pamphlets; rules and regulations pertaining to HIV-1 counseling; testing, reporting and confidentiality; sexually transmitted disease and counseling survelliance report; counseling and testing site and AIDS survelliance report, and prevention and treatment of AIDS in Rhode Island report with appendix. Additionally, there is budget information from 1991 on Rhode Island Project AIDS along with flyers about Rhode Project Aids and Brown University. Also represented is a report from the Surgeon General on understanding AIDS. Some material is grouped by topical information which includes education material; medical literature; surveys; mandatory contact tracing (AIDS antibody tracing); treatments; National Directory of Local AIDS Services (January 1990); Workers World newspaper; and the West Side Spirit. In addition, Box 5 contains additional newspapers collected by ACT UP Rhode Island with articles on various AIDS/HIV related topics.</p>
+         <p>There are three painted plywood panels (each 96 in. L x 48 in. W x 0.75 in. H) which depict three scenes of nude couples advertising the need for safer sex. They were commisioned by ACT UP Rhode Island from artist Angel Quinonez, former artist in residence at AS220 in Providence, Rhode Island. Box 6 contains one cloth banner painted black (104 in. L x 28.5 in. W x 0.5 in. H) which reads "ACT - UP RI" with a pink triangle on it.</p>
+      </scopecontent>
+      <accessrestrict xmlns:ns2="http://www.w3.org/1999/xlink" id="ref1">
+         <p>There are no restrictions on access, except that the collection can only be seen by prior appointment. Some materials may be stored off-site and cannot be produced on the same day on which they are requested.</p>
+      </accessrestrict>
+      <userestrict xmlns:ns2="http://www.w3.org/1999/xlink" id="ref4">
+         <p>All researchers seeking to publish materials from the collections of the John Hay Library are requested to complete a Notice of Intent to Publish, prior to reproducing, quoting, or otherwise publishing any portion or extract from this collection. Although Brown University has physical ownership of the collection and the materials contained therein, it does not claim literary rights. It is up to the researcher to determine the owners of the literary rights and to obtain any necessary permissions from them.</p>
+      </userestrict>
+      <prefercite xmlns:ns2="http://www.w3.org/1999/xlink" id="ref3">
+         <p>ACT UP Rhode Island Records, Ms.2011.028, Brown University</p>
+      </prefercite>
+      </descgrp>
+      <descgrp type="administrative">
+         <head>Administrative information</head>
+         <p/>
+      </descgrp>
+      <descgrp type="additional">
+         <head>Additional information</head>
+         <p/>
+      </descgrp>
+      <descgrp type="cataloging">
+         <controlaccess>
+            <head>Names</head>
+            
+            <corpname source="lcnaf">ACT UP New York (Organization)</corpname>
+            <corpname source="lcnaf">ACT UP San Francisco (Organization).</corpname>
+            <corpname source="lcnaf">American Association for World Health.</corpname>
+            <corpname source="lcnaf">American Association of Physicians for Human Rights.</corpname>
+            <corpname source="lcnaf">American Foundation for AIDS Research.</corpname>
+            <corpname source="local">AS220 (Providence, R.I.).</corpname>
+            <persname source="lcnaf">Coulter, Harris L. (Harris Livermore), 1932-</persname>
+            <persname source="local">Gendin, Stephen</persname>
+            <persname source="lcnaf">Jesdale, William</persname>
+            <persname source="lcnaf">Kramer, Larry</persname>
+            <persname source="local">Quinonez, Angel</persname>
+            <corpname source="lcnaf">Rhode Island Project/AIDS.</corpname>
+            <corpname source="lcnaf">Rhode Island. Dept. of Health.</corpname>
+         </controlaccess>
+         <controlaccess>
+            <head>Subjects</head>
+            <subject source="lcsh">AIDS (Disease)</subject>
+            <subject source="lcsh">AIDS (Disease) and art</subject>
+            <subject source="lcsh">Gay men</subject>
+            <subject source="lcsh">Gay rights</subject>
+            <subject source="lcsh">HIV (Viruses)</subject>
+            <subject source="lcsh">Lesbians</subject>
+            <subject source="lcsh">Safe sex in AIDS prevention</subject>
+         </controlaccess>
+         <controlaccess>
+            <head>Occupations</head>
+            <p/>
+         </controlaccess>
+         <controlaccess>
+            <head>Types of Materials</head>
+            <genreform source="aat">Banners</genreform>
+            <genreform source="aat">Correspondence</genreform>
+            <genreform source="aat">Fliers (Printed matter)</genreform>
+            <genreform source="aat">Minutes</genreform>
+            <genreform source="aat">Pamphlets</genreform>
+            <genreform source="aat">Reports</genreform>
+         </controlaccess>
+         <controlaccess>
+            <head>RIAMCO Browsing Term</head>
+            <subject altrender="nodisplay" source="riamco" encodinganalog="690">Health and Medicine</subject>
+         </controlaccess>
+      </descgrp>
+      <dsc type="combined">
+         <c xmlns:ns2="http://www.w3.org/1999/xlink" id="ref6" level="series">
+            <did>
+               <unittitle>Records and Printed Material</unittitle>
+               <unitid type="series">Series 1</unitid>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+               <unitdate normal="1987/1994" type="inclusive">1987-1994</unitdate>
+            </did>
+            <c id="ref11" level="file">
+               <did>
+                  <unittitle>AAPHR - amFAR</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Box" type="box" id="cid104001">1</container>
+               </did>
+            </c>
+            <c id="ref12" level="file">
+               <did>
+                  <unittitle>amFAR - Dateline</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Box" type="box" id="cid104002">2</container>
+               </did>
+            </c>
+            <c id="ref13" level="file">
+               <did>
+                  <unittitle>Digest - Project Inform</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Box" type="box" id="cid104003">3</container>
+               </did>
+            </c>
+            <c id="ref14" level="file">
+               <did>
+                  <unittitle>Providence - West Side</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Box" type="box" id="cid104004">4</container>
+               </did>
+            </c>
+            <c id="ref20" level="file">
+               <did>
+                  <unittitle>Newspapers</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Box" type="box" id="cid105001">5</container>
+               </did>
+            </c>
+         </c>
+         <c xmlns:ns2="http://www.w3.org/1999/xlink" id="ref22" level="series">
+            <did>
+               <unittitle>Graphic Material</unittitle>
+               <unitid type="series">Series 2</unitid>
+               <langmaterial>
+                  <language langcode="eng"/>
+               </langmaterial>
+            </did>
+            <c id="ref24" level="item">
+               <did>
+                  <unittitle>Painted plywood panels (3)</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Object" type="object" id="cid105002">1-3</container>
+               </did>
+               <scopecontent><p>Three painted plywood panels (each 96 in. L x 48 in. W x 0.75 in. H) which depict three scenes of nude couples advertising the need for safer sex. They were commisioned by ACT UP Rhode Island from artist Angel Quinonez, former artist in residence at AS220 in Providence, Rhode Island.</p></scopecontent>
+            </c>
+            <c id="ref25" level="item">
+               <did>
+                  <unittitle>Banner</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Box" type="box" id="cid107001">6</container>
+               </did>
+            </c>
+            <c id="ref25a" level="item">
+               <did>
+                  <unittitle>Flyers and poster</unittitle>
+                  <langmaterial>
+                     <language langcode="eng"/>
+                  </langmaterial>
+                  <container label="Oversize Box" type="box" id="cid107001a">1XX</container>
+               </did>
+            </c>
+            
+            
+            </c>
+      </dsc>
+   </archdesc>
+</ead>

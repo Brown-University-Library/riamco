@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.11'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -35,3 +34,5 @@ gem 'dotenv-rails'
 
 gem "solr_lite", '0.0.14'
 # gem "solr_lite", path: '/Users/hectorcorrea/dev/solr_lite'
+
+gem "tzinfo-data", "~> 1.2020"

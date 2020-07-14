@@ -82,7 +82,12 @@ class Institutions
 
             orgs << {code: "US-RiPrCA", name: "Providence City Archives", link: "https://www.providenceri.com/archives", active: "N"}
 
-            pc = {code: "US-RPPC", name: "Providence College Special and Archival Collections", active: "Y", link: "http://www.providence.edu/library/spcol/", email: "pml.specoll@providence.edu"}
+            pc = {
+                code: "US-RPPC",
+                name: "Providence College Archives and Special Collections",
+                active: "Y",
+                link: "https://pml.providence.edu/digital-special-collections/",
+                email: "pcarchives@providence.edu"}
             orgs << pc
 
             orgs << {code: "US-RP",

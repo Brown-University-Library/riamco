@@ -1,18 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.11'
+gem 'rails', '~> 6.0.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-
-# group :production do
-#   # Rails 4.x must stay within MySQL 0.4
-#   # https://github.com/brianmario/mysql2/issues/950#issuecomment-376375844
-#   # gem 'mysql2', '< 0.5'
-# end
 
 group :development, :test do
   gem "byebug"                # debugger
@@ -21,7 +15,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0' # Access an IRB console on exception pages or by using <%= console %> in views
 end
 
-gem "sqlite3"
+gem "sqlite3", "~> 1.4"
 
 # Needed on RedHat
 gem 'therubyracer', platforms: :ruby

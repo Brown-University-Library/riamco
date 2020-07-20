@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema.define(version: 2019_06_10_130100) do
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "username", limit: 20
-    t.string "password", limit: 50
+    t.string "password", limit: 100
     t.string "description", limit: 50
     t.string "fileprefix", limit: 20
     t.string "role", limit: 20

@@ -3,14 +3,14 @@ Source code for the [Rhode Island Archival and Manuscript Collections Online](ht
 
 
 # Pre-requisites
-We are currently using Ruby 2.3.5, Rails 4.2.x, SQLite, and Solr 7.
+We are currently using Ruby 2.7.1, Rails 6.0.2, MySQL, and Solr 7.
 
 ```
 brew install ruby-install
 brew install chruby
-ruby-install ruby 2.3.5
+ruby-install ruby 2.7.1
 source /usr/local/opt/chruby/share/chruby/chruby.sh
-chruby 2.3.5
+chruby 2.7.1
 gem install bundle
 ```
 

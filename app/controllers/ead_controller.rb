@@ -7,7 +7,7 @@ class EadController < ApplicationController
       if html == nil
         render "not_found", status: 404
       else
-        render text: html
+        render plain: html, content_type: "text/html"
       end
     else
       Rails.logger.error("Invalid id (#{id}) or view (#{view}) in ead#show")
@@ -26,7 +26,7 @@ class EadController < ApplicationController
     view = params["view"] || "title"
     if valid_id?(id) && valid_view?(view)
       html = load_pending_ead_html(id, view)
-      render text: html
+      render plain: html, content_type: "text/html"
     else
       Rails.logger.error("Invalid id (#{id}) or view (#{view}) in ead#show")
       render "not_found", status: 404
@@ -42,7 +42,7 @@ class EadController < ApplicationController
     if valid_id?(id)
       xml = load_xml(id)
       if xml == nil
-        render text: "Not found", status: 404
+        render plain: "Not found", status: 404
       else
         render xml: xml
       end
@@ -61,7 +61,7 @@ class EadController < ApplicationController
     if valid_id?(id)
       xml = load_xml(id, true)
       if xml == nil
-        render text: "Not found", status: 404
+        render plain: "Not found", status: 404
       else
         render xml: xml
       end

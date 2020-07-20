@@ -31,6 +31,21 @@ class User < ActiveRecord::Base
         user.save!
     end
 
+    def self.new_user_raw(id, username, password, description, prefix, role, created_at, updated_at)
+        info = {
+            id: id,
+            username: username,
+            password: password,
+            description: description,
+            fileprefix: prefix,
+            role: role,
+            created_at: created_at,
+            updated_at: updated_at
+        }
+        user = User.new(info)
+        user.save!
+    end
+
     def self.new_reading_room_user(username, password)
         info = {
             username: username,

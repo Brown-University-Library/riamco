@@ -71,4 +71,31 @@ namespace :riamco do
     User.new_reading_room_user(username, password)
     puts "Created reading room user: #{username}"
   end
+
+  desc "Exports the raw data from the Users table to the console as tab-separated values"
+  task :export_users => :environment do |cmd, args|
+    User.all.each do |u|
+      puts "#{u.id}\t#{u.username}\t#{u.password}\t#{u.description}\t#{u.fileprefix}\t#{u.role}\t#{u.created_at}\t#{u.updated_at}"
+    end
+  end
+
+  desc "Imports raw data from a TSV file into the Users table"
+  task :import_users, [:filename] => :environment do |cmd, args|
+    if args[:filename] == nil
+      abort "No file name was provided"
+    end
+    File.open(args[:filename]).each do |line|
+      tokens = line.split("\t")
+      id = tokens[0]
+      username = tokens[1]
+      password = tokens[2]
+      description = tokens[3]
+      prefix = tokens[4]
+      role = tokens[5]
+      created_at = tokens[6]
+      updated_at = tokens[7]
+      User.new_user_raw(id, username, password, description, prefix, role, created_at, updated_at)
+      Rails.logger.info("Created #{username}")
+    end
+  end
 end

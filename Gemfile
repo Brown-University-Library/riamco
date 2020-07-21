@@ -1,6 +1,13 @@
 source 'https://rubygems.org'
 
 gem 'rails', '~> 6.0.2'
+
+# In older servers this requires installing newer MySQL client libraries
+# (e.g. rh-mysql57-mysql-devel ) and point the gem to them. For more
+# information see https://github.com/brianmario/mysql2#configuration-options
+#
+# gem install mysql2 -v '0.5.3' --source 'https://rubygems.org/' -- --with-mysql-dir=/something/something/rh-mysql57/root/usr
+#
 gem "mysql2"
 
 # Use Uglifier as compressor for JavaScript assets

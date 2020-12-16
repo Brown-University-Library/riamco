@@ -10,7 +10,7 @@ class FindingAids
 
     def self.reload_cache()
         Rails.cache.delete("finding_aids_all")
-        Rails.cache.write("finding_aids_all", self.load_from_solr())
+        Rails.cache.write("finding_aids_all", self.load_from_solr(), expires_in: 1.day)
     end
 
     def self.load_from_solr()

@@ -1,6 +1,6 @@
 class FindingAids
     def self.all
-        Rails.cache.fetch("finding_aids_all", expires_in: 30.day) do
+        Rails.cache.fetch("finding_aids_all", expires_in: 1.day) do
             self.load_from_solr()
         end
     rescue Exception => e

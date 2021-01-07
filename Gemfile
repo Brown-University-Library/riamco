@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.0.2'
+gem 'rails', '~> 6.0.3'
 
 # In older servers this requires installing newer MySQL client libraries
 # (e.g. rh-mysql57-mysql-devel ) and point the gem to them. For more
@@ -35,3 +35,4 @@ gem 'dotenv-rails'
 
 gem "solr_lite", '0.0.14'
 # gem "solr_lite", path: '/Users/hectorcorrea/dev/solr_lite'
+gem "nokogiri", ">= 1.11.0.rc4"

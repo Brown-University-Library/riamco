@@ -4,6 +4,9 @@
 # User-agent: *
 # Disallow: /
 
+User-agent: SemrushBot
+Disallow: /
+
 User-agent: *
 Crawl-delay: 30
 Disallow: /admin/

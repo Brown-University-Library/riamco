@@ -182,6 +182,9 @@
             <xsl:apply-templates/>
         </font>
     </xsl:template>
-
+    
+    <!-- Ignore the <head> element within the <scopecontent> element to 
+        eliminate duplication of the label. -->
+    <xsl:template match="ead:head"/>
 
 </xsl:stylesheet>

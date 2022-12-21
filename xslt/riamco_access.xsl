@@ -52,7 +52,6 @@
                                     <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:altformavail">
                                         <tr>
                                             <td class="category_column">Alternate form:</td>
-
                                             <td class="info_column">
                                                 <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:altformavail"/>
                                             </td>
@@ -62,7 +61,7 @@
                                         <tr>
                                             <td class="category_column">Physical characteristics:</td>
                                             <td class="info_column">
-                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:phystech/ead:p"/>
+                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:phystech"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -70,7 +69,7 @@
 
                                         <td class="category_column">Preferred citation:</td>
                                         <td class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:prefercite/ead:p"/>
+                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:prefercite"/>
                                         </td>
                                     </tr>
 
@@ -249,5 +248,8 @@
             <xsl:apply-templates/>
         </font>
     </xsl:template>
+    <!-- Ignore the <head> element within the <scopecontent> element to 
+        eliminate duplication of the label. -->
+    <xsl:template match="ead:head"/>
 
 </xsl:stylesheet>

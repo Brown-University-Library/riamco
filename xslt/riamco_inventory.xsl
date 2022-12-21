@@ -99,7 +99,7 @@
 
 
     <xsl:template match="ead:c">
-        <xsl:if test="@level='series' or @level='subgrp'">
+        <xsl:if test="@level='series' or @level='subgrp' or @level='recordgrp'">
             <xsl:call-template name="series"/>
         </xsl:if>
         <xsl:if test="@level='subseries'">
@@ -116,7 +116,7 @@
             <a name="{$inventory_id}" id="{$inventory_id}"></a>
             <p id="{$inventory_id}_wrapper">
                 <strong>
-                    <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp']"/>
+                    <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp' or @type='recordgrp']"/>
                     <xsl:choose>
                         <xsl:when test="ead:dao[@ns2:role='METSID']">
                             <u>
@@ -210,6 +210,10 @@
                 </xsl:if>
 
            </p>
+           <xsl:if test="child::ead:c[@level='subgrp']">
+               <xsl:apply-templates select="child::ead:c[@level='subgrp']"/>
+           </xsl:if>
+           
            <xsl:if test="child::ead:c[@level='series']">
                <xsl:apply-templates select="child::ead:c[@level='series']"/>
            </xsl:if>
@@ -461,7 +465,7 @@
                                 <xsl:for-each select="ead:p">
                                     <xsl:value-of select="node()"/>
                                 </xsl:for-each>
-                            </xsl:for-each> </p>
+                                </p> </xsl:for-each> 
                         </xsl:if>
 
                         <xsl:if test="ead:odd/ead:p">
@@ -480,7 +484,7 @@
                         </xsl:if>
 
                         <xsl:if test="ead:acqinfo/ead:p/ead:num[@type='Accession' or @type='accession']">
-                            <xsl:text>Accession Number #: </xsl:text>
+                            <xsl:text>Accession Number: </xsl:text>
                             <xsl:value-of select="ead:acqinfo/ead:p/ead:num"/>
                             <br/>
                         </xsl:if>
@@ -592,6 +596,11 @@
         </xsl:if>
 
     </xsl:template> <!-- item -->
+
+    <xsl:template match="ead:did/ead:unitid[@type='recordgrp']">
+        <xsl:apply-templates/>
+        <xsl:text>. </xsl:text>
+    </xsl:template>
 
     <xsl:template match="ead:did/ead:unitid[@type='subgrp']">
         <xsl:apply-templates/>

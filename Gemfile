@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.0.3'
+gem 'rails', '~> 6.0.6'
 
 # In older servers this requires installing newer MySQL client libraries
 # (e.g. rh-mysql57-mysql-devel ) and point the gem to them. For more

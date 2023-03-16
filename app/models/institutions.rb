@@ -33,7 +33,7 @@ class Institutions
                 link: "http://www.historicnewengland.org/",
                 active: "Y", email: "archives@historicnewengland.org"}
 
-            iyrs = {code: "", name: "IYRS School of Technology & Trades Maritime Library", active: "Y", link: "https://iyrs.edu/student-services/iyrs-library/", email: "abenson@iyrs.edu"}
+            iyrs = {code: "", name: "IYRS School of Technology & Trades Maritime Library", active: "Y", link: "https://www.iyrs.edu/about/library", email: "ffrost@iyrs.edu"}
             orgs << iyrs
 
             orgs << {code: "US-RiJaHS",
@@ -73,14 +73,14 @@ class Institutions
             orgs << {code: "US-RiNpPs",
                 name: "Preservation Society of Newport County",
                 link: "http://www.newportmansions.org/",
-                active: "Y", email: "info@newportmansions.org"}
+                active: "Y", email: "museumaffairs@newportmansions.org"}
 
             orgs << {code: "US-PUM",
                 name: "Providence Athenaeum",
                 link: "https://providenceathenaeum.org/",
                 active: "N", email: "info@providenceathenaeum.org"}
 
-            orgs << {code: "US-RiPrCA", name: "Providence City Archives", link: "https://www.providenceri.com/archives", active: "N"}
+            orgs << {code: "US-RiPrCA", name: "Providence City Archives", link: "https://www.providenceri.gov/cityarchives/", active: "N"}
 
             pc = {
                 code: "US-RPPC",
@@ -119,6 +119,8 @@ class Institutions
 
             salve = {code: "US-RNSRU", name: "Salve Regina Archives and Special Collections", active: "Y", link: "http://library.salve.edu/archives", email: "archives@salve.edu"}
             orgs << salve
+
+            orgs << {code: "US-RiWarSHS", name: "Steamship Historical Society of America", link: "https://www.sshsa.org/", active: "Y", email: "info@sshsa.org"}
 
             orgs << {code: "US-RiExTM", name: "Tomaquag Museum", link: "https://www.tomaquagmuseum.org/", active: "N", email: "slarose@tomaquagmuseum.org"}
 

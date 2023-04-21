@@ -7,7 +7,7 @@ class Institutions
 
     def self.all()
         # TODO: Create an Institution class rather than keep expanding the hash,
-        #       at one poin we want to move this to a database anyway. But for
+        #       at one point we want to move this to a database anyway. But for
         #       now this would do :)
         @@all ||= begin
             orgs = []
@@ -126,6 +126,8 @@ class Institutions
 
             uri = {code: "US-RUn", name: "University of Rhode Island Special Collections and University Archives", active: "Y", link: "http://www.uri.edu/library/special_collections/", email: "archives@etal.uri.edu"}
             orgs << uri
+
+            orgs << {code: "US-RiCrWLA", name: "Wanderground Lesbian Archive/Library", link: "https://wanderground.org/", active: "Y", email: "info@wanderground.org"}            
 
             westerly = {code: "US-RWe", name: "Westerly Public Library Special Collections", active: "Y", link: "http://www.westerlylibrary.org/contentmgr/showdetails.php/id/18", email: "reference@westerlylibrary.org"}
             orgs << westerly

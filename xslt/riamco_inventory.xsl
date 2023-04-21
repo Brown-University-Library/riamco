@@ -178,8 +178,11 @@
 
                 <xsl:if test="ead:did/ead:physdesc/ead:extent">
                     <br/>
+
                     <xsl:apply-templates select="ead:did/ead:physdesc/ead:extent"/>
+
                 </xsl:if>
+                
                 <xsl:if test="ead:did/ead:container">
                 <br/>
                 <xsl:apply-templates select="ead:did/ead:container"/>
@@ -866,6 +869,6 @@
       <xsl:value-of select="translate(substring($text,1,1),'abcdefghijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ')" /><xsl:value-of select="translate(substring($text,2,string-length($text)-1),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')" />
     </xsl:template>
 
-
+   
 </xsl:stylesheet>
 

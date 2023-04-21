@@ -205,7 +205,7 @@ class SearchResultsPresenter
       facet.add_value("Newport Art Museum", -1)
       facet.add_value("Providence City Archives", -1)
       facet.add_value("Roger Williams University School of Law", -1)
-      facet.add_value("Steamship Historical Society of America", -1)
+      facet.add_value("Wanderground Lesbian Archive/Library", -1)
     end
 
     def set_urls_in_facets()

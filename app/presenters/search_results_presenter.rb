@@ -199,7 +199,6 @@ class SearchResultsPresenter
     def force_show_all_institutions()
       facet = @facets.find {|facet| facet.name == "institution_s" }
       return if facet == nil
-      facet.add_value("IYRS School of Technology & Trades Maritime Library", -1)
       facet.add_value("Jamestown Historical Society", -1)
       facet.add_value("Johnson & Wales University", -1)
       facet.add_value("Newport Art Museum", -1)

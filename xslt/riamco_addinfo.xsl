@@ -57,7 +57,7 @@
                                         <tr>
                                             <td class="category_column">Location of originals:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:originalsloc"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:originalsloc/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -93,7 +93,7 @@
                                         <tr>
                                             <td class="category_column">Other information:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:odd"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:odd/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>

@@ -40,15 +40,15 @@
                                         <td class="category_column">ABOUT THE COLLECTION</td>
                                         <td class="table_section_header">&#160;</td>
                                     </tr>
-                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo">
+                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo/ead:p">
                                         <tr>
                                             <td width="165" class="category_column">Acquisition:</td>
                                             <td width="530" class="info_column">
-                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo"/>
+                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
-                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:custodhist">
+                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:custodhist/ead:p">
                                         <tr>
                                             <td class="category_column">Custodial history:</td>
                                             <td class="info_column">
@@ -56,11 +56,11 @@
                                             </td>
                                         </tr>
                                     </xsl:if>
-                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:accruals">
+                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:accruals/ead:p">
                                         <tr>
                                             <td class="category_column">Accruals:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:accruals"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:accruals/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -72,11 +72,11 @@
                                             </td>
                                         </tr>
                                     </xsl:if>
-                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:processinfo">
+                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:processinfo/ead:p">
                                         <tr>
                                             <td class="category_column">Processing information:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:processinfo"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:processinfo/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>

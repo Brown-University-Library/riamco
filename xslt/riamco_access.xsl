@@ -39,14 +39,14 @@
                                     <tr>
                                         <td width="165" class="category_column">Access to the collection:</td>
                                         <td width="530" class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:accessrestrict"/>
+                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:accessrestrict/ead:p"/>
                                         </td>
 
                                     </tr>
                                     <tr>
                                         <td class="category_column">Use of the materials:</td>
                                         <td class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:userestrict"/>
+                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:userestrict/ead:p"/>
                                         </td>
                                     </tr>
                                     <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:altformavail">
@@ -69,7 +69,7 @@
 
                                         <td class="category_column">Preferred citation:</td>
                                         <td class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:prefercite"/>
+                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:prefercite/ead:p"/>
                                         </td>
                                     </tr>
 

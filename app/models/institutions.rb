@@ -33,7 +33,7 @@ class Institutions
                 link: "http://www.historicnewengland.org/",
                 active: "Y", email: "archives@historicnewengland.org"}
 
-            iyrs = {code: "", name: "IYRS Maritime Library", active: "Y", link: "https://www.iyrs.edu/about/library", email: "ffrost@iyrs.edu"}
+            iyrs = {code: "US-RiNpIYRS", name: "IYRS Maritime Library", active: "Y", link: "https://www.iyrs.edu/about/library", email: "ffrost@iyrs.edu"}
             orgs << iyrs
 
             orgs << {code: "US-RiJaHS",

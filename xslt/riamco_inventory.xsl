@@ -386,9 +386,22 @@
                             <b><xsl:apply-templates select="ead:odd/ead:p"/></b>
                             <br/>
                         </xsl:if>
-
+                        <!-- updated dao linking to BDR April 2023 @link:role EAD update-->
                         <xsl:choose>
-                            <xsl:when test="ead:dao[@ns2:role='METSID']">
+                            <xsl:when test="ead:did/ead:dao[@xlink:role='BDR_PID']">
+                                <u>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>https://repository.library.brown.edu/studio/item/</xsl:text><xsl:value-of select="ead:did/ead:dao[@xlink:role='BDR_PID']/@xlink:href"/>
+                                            <xsl:text>/</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                    </a>
+                                </u>
+                                <br/>
+			                 </xsl:when>
+			<xsl:when test="ead:dao[@ns2:role='METSID']">
                                 <u>
                                     <a>
                                         <xsl:attribute name="href">
@@ -414,7 +427,7 @@
                                 </u>
                                 <br/>
                             </xsl:when>
-                            <!-- For Digital Files in Kate Borstein collection -->
+                            <!-- For Digital Files in Kate Bornstein collection -->
                             <xsl:when test="ead:did/ead:dao[@ns2:role='NORMALIZEDFILE_ID']">
                                 <xsl:variable name="filename_id" select="ead:did/ead:dao[@ns2:role='NORMALIZEDFILE_ID']/@ns2:href" />
                                 <p>
@@ -639,6 +652,7 @@
 
     <xsl:template match="ead:extent">
         <xsl:apply-templates/>
+	<br/>
     </xsl:template>
 
     <xsl:template match="ead:scopecontent/ead:p">

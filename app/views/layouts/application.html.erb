@@ -7,6 +7,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="always">
 
+<% if ENV["GOOGLE_ANALYTICS_KEY"] %>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV["GOOGLE_ANALYTICS_KEY"] %>"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+	  gtag('config', '<%= ENV["GOOGLE_ANALYTICS_KEY"] %>');
+	</script>
+<% end %>
+
 <title><%= @page_title || "RIAMCO" %></title>
 
 <%= stylesheet_link_tag    'application', media: 'all' %>
@@ -75,17 +86,6 @@
 			</div>
 		</div>
 	</footer>
-<% end %>
-
-<% if ENV["GOOGLE_ANALYTICS_KEY"] %>
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=<%= ENV["GOOGLE_ANALYTICS_KEY"] %>"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', '<%= ENV["GOOGLE_ANALYTICS_KEY"] %>');
-	</script>
 <% end %>
 
 <% if @nav_active %>

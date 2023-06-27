@@ -53,11 +53,13 @@
         </html>
     </xsl:template>
 
-    <xsl:template match="ead:arrangement">
-        <xsl:apply-templates/>
+<!-- Catches the head tag inserted by Archivesspace and skips it, JK 6/21/23 -->
+    <xsl:template match="ead:arrangement/ead:head">
+        <xsl:apply-templates select="following-sibling::text()" />
     </xsl:template>
 
-    <xsl:template match="ead:p">
+
+    <xsl:template match="ead:arrangement/ead:p">
         <p>
             <xsl:apply-templates/>
         </p>

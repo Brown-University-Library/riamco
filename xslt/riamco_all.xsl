@@ -127,7 +127,7 @@
 
                                 <!-- SECTION: scope and content -->
                                 <h3>Scope &amp; content</h3>
-                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:scopecontent"/>
+                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:scopecontent/ead:p"/>
 
                                 <!-- SECTION: arrangement -->
                                 <h3>Arrangement</h3>
@@ -173,14 +173,14 @@
                                     <tr>
                                         <td width="165" class="category_column">Access to the collection:</td>
                                         <td class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:accessrestrict"/>
+                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:accessrestrict/ead:p"/>
                                         </td>
 
                                     </tr>
                                     <tr>
                                         <td class="category_column">Use of the materials:</td>
                                         <td class="info_column">
-                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:userestrict"/>
+                                            <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:userestrict/ead:p"/>
                                         </td>
                                     </tr>
                                     <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:altformavail">
@@ -223,11 +223,11 @@
                                         <td class="category_column">ABOUT THE COLLECTION</td>
                                         <td class="table_section_header">&#160;</td>
                                     </tr>
-                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo">
+                                    <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo/ead:p">
                                         <tr>
                                             <td width="165" class="category_column">Acquisition:</td>
                                             <td width="530" class="info_column">
-                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo"/>
+                                                <xsl:value-of select="/ead:ead/ead:archdesc/ead:descgrp/ead:acqinfo/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -243,7 +243,7 @@
                                         <tr>
                                             <td class="category_column">Accruals:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:accruals"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:accruals/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -259,7 +259,7 @@
                                         <tr>
                                             <td class="category_column">Processing information:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:processinfo"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:processinfo/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -370,7 +370,7 @@
                                         <tr>
                                             <td class="category_column">Location of originals:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:originalsloc"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:originalsloc/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -406,7 +406,7 @@
                                         <tr>
                                             <td class="category_column">Other information:</td>
                                             <td class="info_column">
-                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:odd"/>
+                                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:odd/ead:p"/>
                                             </td>
                                         </tr>
                                     </xsl:if>
@@ -637,8 +637,14 @@
 
 
     <!-- SECTION: arrangement -->
+
 <xsl:template match="ead:arrangement">
         <xsl:apply-templates/>
+    </xsl:template>
+
+<!-- Catches the head tag inserted by Archivesspace and skips it, JK 6/21/23 -->
+    <xsl:template match="ead:arrangement/ead:head">
+        <xsl:apply-templates select="following-sibling::text()" />
     </xsl:template>
 
     <xsl:template match="ead:p">
@@ -1486,6 +1492,7 @@
 
     <xsl:template match="ead:extent">
         <xsl:apply-templates/>
+	<br/>
     </xsl:template>
 
     <xsl:template match="ead:scopecontent/ead:p">
@@ -1542,7 +1549,7 @@
         </xsl:if>
     </xsl:template>
 
-<xsl:template match="ead:arrangement/ead:p">
+<xsl:template match="ead:arrangement">
             <xsl:apply-templates/>
     </xsl:template>
 

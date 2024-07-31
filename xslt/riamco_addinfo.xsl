@@ -117,6 +117,12 @@
         </html>
     </xsl:template>
 
+<!-- Catches the head tag inserted by Archivesspace and skips it, JK 9/27/23 -->
+    <xsl:template match="/ead:ead/ead:archdesc/ead:descgrp/ead:relatedmaterial/ead:head">
+        <xsl:apply-templates select="following-sibling::text()" />
+    </xsl:template>
+
+
     <xsl:template match="ead:relatedmaterial/ead:p">
         <xsl:apply-templates/>
     </xsl:template>

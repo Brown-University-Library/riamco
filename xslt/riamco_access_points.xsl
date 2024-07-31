@@ -35,7 +35,12 @@
                             <div class="right_two_thirds">
                                 <xsl:call-template name="top_banner" />
                                 <h3>Access Points</h3>
-                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess"/>
+                                <xsl:if test="/ead:ead/ead:archdesc/ead:did/ead:origination[position()!=1]">
+                                    <b>Additional Originators</b>
+                                    <ul><xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:origination[position()!=1]"/>
+                                    </ul>
+                                </xsl:if>
+				<xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess"/>
                             </div>
                         </div>
                     </div>
@@ -50,7 +55,18 @@
             </body>
         </html>
     </xsl:template>
-
+    <xsl:template match="ead:ead/ead:archdesc/ead:did/ead:origination[position()!=1]/*">      
+        <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a> (<xsl:value-of select="parent::node()/@label"/>)
+                    </li> 
+                    
+              
+             </xsl:template>
     <xsl:template match="ead:controlaccess">
         <xsl:if test="./ead:persname">
             <b>Subject Names</b>
@@ -67,7 +83,21 @@
                 </xsl:for-each>
             </ul>
         </xsl:if>
-
+	<xsl:if test="./ead:famname">
+            <b>Subject Families</b>
+            <ul>
+                <xsl:for-each select="./ead:famname">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
         <xsl:if test="./ead:corpname">
             <b>Subject Organizations</b>
             <ul>
@@ -96,9 +126,25 @@
                             <xsl:value-of select="text()"/>
                         </a>
                     </li>
+</ul>
+                </xsl:for-each>
+        </xsl:if>
+
+<xsl:if test="./ead:title">		
+<xsl:for-each select="./ead:title">
+<b>Publication Titles</b>
+<ul>                    
+<li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
                 </xsl:for-each>
             </ul>
-        </xsl:if>
+</xsl:if>
 
         <xsl:if test="./ead:genreform">
             <b>Document Types</b>

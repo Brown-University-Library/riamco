@@ -9,12 +9,19 @@
         <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:persname">yes</xsl:if>
     </xsl:param>
 
+    <xsl:param name="ap_creators">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:did/ead:origination[position()!=1]">yes</xsl:if>
+    </xsl:param>
+    <xsl:param name="ap_titles">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:title">yes</xsl:if>
+    </xsl:param>
+
     <xsl:param name="ap_corporation">
         <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:corpname">yes</xsl:if>
     </xsl:param>
 
     <xsl:param name="ap_subject">
-        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:subject">yes</xsl:if>
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:subject|/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:title">yes</xsl:if>
     </xsl:param>
 
     <xsl:param name="ap_genre">
@@ -40,9 +47,9 @@
                 <a class="toc_link" href="render.php?eadid={$eadid}&amp;view=scope">Scope &amp; content</a>
             </li>
         </xsl:if>
-        <xsl:if test="$ap_person = 'yes' or $ap_corporation = 'yes' or $ap_subject = 'yes' or $ap_genre = 'yes' or $ap_occupation = 'yes'">
+        <xsl:if test="$ap_person = 'yes' or $ap_corporation = 'yes' or $ap_subject = 'yes' or $ap_genre = 'yes' or $ap_occupation = 'yes' or $ap_creators = 'yes' or $ap_titles = 'yes'">
             <li>
-                <a class="toc_link" href="render?eadid={$eadid}&amp;view=access_points">Access Points</a>
+                <a class="toc_link" href="render?eadid={$eadid}&amp;view=access_points">Access points</a>
             </li>
         </xsl:if>
         <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp/ead:arrangement">

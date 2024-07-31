@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ead="urn:isbn:1-931666-22-9" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ns2="http://www.w3.org/1999/xlink">
+    <xsl:strip-space elements="ead:*"/>
+ 
     <xsl:param name="eadid">
         <xsl:value-of select="/ead:ead/ead:eadheader/ead:eadid"/>
     </xsl:param>
+    <!-- access point parameters -->
+    <xsl:param name="ap_person">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:persname">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_corporation">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:corpname">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_subject">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:subject|/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:title">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_genre">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:genreform">yes</xsl:if>
+    </xsl:param>
+
+    <xsl:param name="ap_occupation">
+        <xsl:if test="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess/ead:occupation">yes</xsl:if>
+    </xsl:param>
+
 
     <xsl:template match="/">
         <html>
@@ -129,6 +152,11 @@
                                 <h3>Scope &amp; content</h3>
                                 <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:scopecontent/ead:p"/>
 
+ 				<!-- SECTION: access points -->
+                                <xsl:if test="$ap_person = 'yes' or $ap_corporation = 'yes' or $ap_subject = 'yes' or $ap_genre = 'yes' or $ap_occupation = 'yes'">
+				<h3>Access Points</h3>
+                                <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess"/>
+				</xsl:if>
                                 <!-- SECTION: arrangement -->
                                 <h3>Arrangement</h3>
                                 <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:descgrp/ead:arrangement"/>
@@ -160,11 +188,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
 
-                                <xsl:if test="ead:ead/ead:eadheader/ead:eadid[@mainagencycode='US-RBrRW']">
-                                    <img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='a']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='b']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='c']/@xlink:href}"/>
-                                    <br/>
-                                    <img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='d']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='e']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='f']/@xlink:href}"/>
-                                </xsl:if>
+                                
 
                                 <!-- SECTION: access and use -->
                                 <h3>Access &amp; Use</h3>
@@ -460,13 +484,23 @@
         <xsl:apply-templates/>
         <br/>
     </xsl:template>
-
+    
+    <xsl:template match="ead:extptr[@xlink:href]">
+        <xsl:apply-templates/>
+    </xsl:template>
+    
     <xsl:template match="ead:extref[@xlink:href]">
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
     </xsl:template>
 
     <xsl:template match="ead:archref[@xlink:href]">
+        <u>
+            <a href="{@xlink:href}">
                 <xsl:apply-templates/>
+            </a>
+        </u>
     </xsl:template>
 
     <xsl:template match="ead:corpname">
@@ -491,11 +525,17 @@
     </xsl:template>
 
     <xsl:template match="ead:extref[@xlink:href]">
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
     </xsl:template>
 
     <xsl:template match="ead:archref[@xlink:href]">
-            <xsl:apply-templates/>
+        <u>
+            <a href="{@xlink:href}">
+                <xsl:apply-templates/>
+            </a>
+        </u>
     </xsl:template>
 
     <!-- The following general templates format the display of various RENDER attributes.-->
@@ -622,11 +662,17 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
+    </u>
 </xsl:template>
 
 <xsl:template match="ead:title">
@@ -666,11 +712,17 @@
     </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
+    </u>
 </xsl:template>
 
    <xsl:template match="ead:date[@type='inclusive']">
@@ -751,11 +803,17 @@
     </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
+    </u>
 </xsl:template>
 
 
@@ -894,11 +952,17 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
+    </u>
 </xsl:template>
 
 
@@ -957,11 +1021,17 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
+    </u>
 </xsl:template>
 
     <!-- SECTION: Additional information -->
@@ -1038,11 +1108,17 @@
 </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
+        </a>
+    </u>
 </xsl:template>
 
     <xsl:template match="ead:title">
@@ -1077,6 +1153,22 @@
                             </u>
 
                         </xsl:when>
+<!--updated dao linking for xlink:role='metsid' August 2023 jk-->
+
+                            <xsl:when test="ead:did/ead:dao[@xlink:role='metsid']">
+                                <u>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:did/ead:dao/@xlink:href"/>
+                                            <xsl:text>/</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                    </a>
+                                </u>
+                                <br/>
+                            </xsl:when>
+
                         <xsl:when test="ead:dao[@ns2:role='BDR_PID']">
                             <u>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -1168,7 +1260,22 @@
                 <strong>
                     <xsl:apply-templates select="ead:did/ead:unitid[@type='subseries']"/>
                     <xsl:choose>
-                        <xsl:when test="ead:dao[@ns2:role='METSID']">
+                        <!--updated dao linking for xlink:role='metsid' August 2023 jk-->
+
+                            <xsl:when test="ead:did/ead:dao[@xlink:role='metsid']">
+                                <u>
+                                    <a>
+                                        <xsl:attribute name="href">
+                                            <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:did/ead:dao/@xlink:href"/>
+                                            <xsl:text>/</xsl:text>
+                                        </xsl:attribute>
+                                        <xsl:attribute name="target">_blank</xsl:attribute>
+                                        <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                                    </a>
+                                </u>
+                                <br/>
+                            </xsl:when>
+<xsl:when test="ead:dao[@ns2:role='METSID']">
                             <u>
                                     <xsl:apply-templates select="ead:did/ead:unittitle"/>
                             </u>
@@ -1282,7 +1389,23 @@
                     <br/>
                 </xsl:if>
 
+
+                            
                 <xsl:choose>
+                    <!--updated dao linking for xlink:role='metsid' August 2023 jk-->
+                    <xsl:when test="ead:did/ead:dao[@xlink:role='metsid']">
+                        <u>
+                            <a>
+                                <xsl:attribute name="href">
+                                    <xsl:text>https://repository.library.brown.edu/studio/item/mets:</xsl:text><xsl:value-of select="ead:did/ead:dao/@xlink:href"/>
+                                    <xsl:text>/</xsl:text>
+                                </xsl:attribute>
+                                <xsl:attribute name="target">_blank</xsl:attribute>
+                                <xsl:apply-templates select="ead:did/ead:unittitle"/>
+                            </a>
+                        </u>
+                        <br/>
+                    </xsl:when>
                     <xsl:when test="ead:dao[@ns2:role='METSID']">
                         <u>
                                 <xsl:apply-templates select="ead:did/ead:unittitle"/>
@@ -1392,6 +1515,12 @@
                     <xsl:apply-templates select="ead:arrangement/ead:p"/>
                     <br/>
                 </xsl:if>
+                
+                <xsl:if test="ead:accessrestrict/ead:p">
+                    <xsl:text>Access restrictions: </xsl:text>
+                    <xsl:apply-templates select="ead:accessrestrict/ead:p"/>
+                    <br/>
+                </xsl:if>
 
                 <xsl:if test="ead:controlaccess/ead:subject">
                     <br/>
@@ -1405,17 +1534,49 @@
                     <br/>
                     <text>Names: </text>
                     <br/>
-                    <xsl:apply-templates select="ead:controlaccess/ead:persname"/>
-                    <xsl:apply-templates select="ead:controlaccess/ead:corpname"/>
-                    <br/>
-                </xsl:if>
+                    <xsl:for-each select="ead:controlaccess/ead:persname">
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="text()"/>
+                                </a>
+                               <br/>
+                           </xsl:for-each>
+                            <xsl:for-each select="ead:controlaccess/ead:corpname">
+                                <a>
+                                    <xsl:attribute name="href">
+                                        <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                                    </xsl:attribute>
+                                    <xsl:value-of select="text()"/>
+                                </a>
+                                <br/>
+                            </xsl:for-each>
+                            <br/>                           </xsl:if>
 
                 <xsl:if test="ead:did/ead:origination/ead:persname">
                     <br/>
                     <text>Names: </text>
                     <br/>
-                    <xsl:apply-templates select="ead:did/ead:origination/ead:persname"/>
-                    <xsl:apply-templates select="ead:did/ead:origination/ead:corpname"/>
+                    <xsl:for-each select="ead:did/ead:origination/ead:persname">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                        <br/>
+                    </xsl:for-each>
+                    <xsl:for-each select="ead:did/ead:origination/ead:corpname">
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                        <br/>
+                    </xsl:for-each>
+                    <br/>
                     <br/>
                 </xsl:if>
 
@@ -1578,13 +1739,17 @@
     </xsl:template>
 
 <xsl:template match="ead:extref[@xlink:href]">
-            <xsl:apply-templates/>
+    <a href="{@xlink:href}">
+        <xsl:apply-templates/>
+    </a>
 </xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
-        <u>
+    <u>
+        <a href="{@xlink:href}">
             <xsl:apply-templates/>
-        </u>
+        </a>
+    </u>
 </xsl:template>
 
 <xsl:template match="ead:dao[@xlink:href]">
@@ -1596,5 +1761,121 @@
             <xsl:apply-templates/>
         </i>
     </xsl:template>
+
+<xsl:template match="/ead:ead/ead:archdesc/ead:descgrp[@type='cataloging']/ead:controlaccess">
+        <xsl:if test="./ead:persname">
+            <b>Subject Names</b>
+            <ul>
+                <xsl:for-each select="./ead:persname">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+
+        <xsl:if test="./ead:corpname">
+            <b>Subject Organizations</b>
+            <ul>
+                <xsl:for-each select="./ead:corpname">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+
+        <xsl:if test="./ead:subject">
+            <b>Subject Topics</b>
+            <ul>
+                <xsl:for-each select="./ead:subject">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+
+<xsl:if test="./ead:title">		
+<xsl:for-each select="./ead:title">
+<ul>                    
+<li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+</ul>
+                </xsl:for-each>
+            
+</xsl:if>
+
+        <xsl:if test="./ead:genreform">
+            <b>Document Types</b>
+            <ul>
+                <xsl:for-each select="./ead:genreform">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+
+        <xsl:if test="./ead:occupation">
+            <b>Occupations</b>
+            <ul>
+                <xsl:for-each select="./ead:occupation">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+
+        <xsl:if test="./ead:geogname">
+            <b>Geographical Names</b>
+            <ul>
+                <xsl:for-each select="./ead:geogname">
+                    <li>
+                        <a>
+                            <xsl:attribute name="href">
+                                <xsl:text>https://www.riamco.org/search?fq=subjects_ss|</xsl:text><xsl:value-of select="text()"/>
+                            </xsl:attribute>
+                            <xsl:value-of select="text()"/>
+                        </a>
+                    </li>
+                </xsl:for-each>
+            </ul>
+        </xsl:if>
+    </xsl:template>
+
 
 </xsl:stylesheet>

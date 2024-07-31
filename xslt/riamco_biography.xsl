@@ -3,7 +3,7 @@
     xmlns:ead="urn:isbn:1-931666-22-9"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     xmlns:ns2="http://www.w3.org/1999/xlink">
-    <xsl:param name="eadid">
+    <xsl:param name="eadidx">
         <xsl:value-of select="/ead:ead/ead:eadheader/ead:eadid"/>
     </xsl:param>
 
@@ -61,12 +61,7 @@
                                             </xsl:otherwise>
                                 </xsl:choose>
 
-			    <xsl:if test="ead:ead/ead:eadheader/ead:eadid[@mainagencycode='US-RBrRW']">
-			        <img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='a']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='b']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='c']/@xlink:href}"/>
-			       <br/>
-			        <img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='d']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='e']/@xlink:href}"/>&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="graphics/{ead:ead/ead:archdesc/ead:bioghist/ead:dao[@id='f']/@xlink:href}"/>
-
-			    </xsl:if>
+			  
                             </div>
                         </div>
                     </div>

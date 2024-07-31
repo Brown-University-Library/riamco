@@ -23,6 +23,11 @@ class Institutions
             brown_ar = {code: "US-RPB", name: "Brown University Archives", active: "Y", link: "http://library.brown.edu/collections/archives/", email: "archives@brown.edu"}
             orgs << brown_ar
 
+            orgs << {code: "US-RiCuPL",
+                name: "Cumberland Public Library", active: "Y",
+                link: "https://www.cumberlandlibrary.org/",
+                email: "reference@cumberlandlibrary.org"}
+
             orgs << {code: "US-RiBrHMA",
                 name: "Haffenreffer Museum of Anthropology", active: "Y",
                 link: "http://www.brown.edu/Facilities/Haffenreffer/",

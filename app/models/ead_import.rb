@@ -5,6 +5,9 @@ class EadImport
         @files_path = files_path
         logger = ENV["SOLR_VERBOSE"] == "true" ? Rails.logger : nil
         @solr = SolrLite::Solr.new(solr_url, logger)
+        puts "Solr URL: #{solr_url}"
+        puts "Files path: #{files_path}"
+        puts "Solr verbose: #{ENV["SOLR_VERBOSE"]}"
         @solr.def_type = "edismax"
     end
 
@@ -52,23 +55,29 @@ class EadImport
     # since the most recent timestamp in Solr.
     def import_updated()
         timestamp = most_recent_timestamp_in_solr()
+        puts "Most recent timestamp in Solr: #{timestamp}"
         if timestamp == nil
             timestamp = Time.parse("1900-01-01")
+            puts "No timestamp found in Solr, importing all files"
         end
         start_all = Time.now
         Rails.logger.info("Import started: #{Time.now}, path: #{@files_path}, timestamp: #{timestamp}")
+        puts "Importing files from path: #{@files_path} to Solr..."
         errors = []
         count = 0
         Dir[@files_path].each do |file_name|
+            puts "Starting file: #{file_name}"
             begin
                 mtime = File.mtime(file_name)
                 if mtime > timestamp
                     start_file = Time.now
+                    puts "Importing file: #{file_name}"
                     import_one_file(file_name)
                     StringUtils.log_elapsed(start_file, "  File: #{File.basename(file_name)}")
                     count += 1
                 end
             rescue => ex
+                puts "Error importing file: #{file_name}: #{ex}, #{ex.backtrace}"
                 errors << "File: #{file_name}: #{ex}, #{ex.backtrace}"
             end
         end
@@ -135,7 +144,10 @@ class EadImport
             # Import all the Solr documents generated for this finding aid
             json_docs = solr_docs.map { |solr_doc| solr_doc.to_json }
             json = "[" + json_docs.join(", ") + "]"
+            puts "Starting Solr update for file: #{file_name}"
+            # puts "JSON: #{json}"
             response = @solr.update(json)
+            puts "Finished Solr update for file: #{file_name}"
             if !response.ok?
                 Rails.logger.error("Importing file: #{file_name}. Exception: #{response.error_msg}")
                 raise response.error_msg

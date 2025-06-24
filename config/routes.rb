@@ -80,6 +80,10 @@ Rails.application.routes.draw do
   post 'login' => 'login#authenticate', as: :login_authenticate
   get 'logout' => 'login#logout', as: :login_logout
 
+  # bot detection challenge
+  get "/challenge", to: "bot_detect#challenge", as: :bot_detect_challenge
+  post "/challenge", to: "bot_detect#verify_challenge"
+
   # POSSIBLE FUTURE ENHANCEMENT:
   #
   # In the future we could consider using a cleaner URL for the display of

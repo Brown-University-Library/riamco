@@ -1,7 +1,5 @@
 class HomeController < ApplicationController
 
-  before_action { |controller| BotDetectController.bot_detection_enforce_filter(controller) }
-
   def about
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()

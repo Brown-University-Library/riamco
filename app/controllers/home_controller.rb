@@ -1,5 +1,4 @@
 class HomeController < ApplicationController
-
   def about
     @nav_active = "nav_about"
     @presenter = HomePresenter.new()

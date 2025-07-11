@@ -41,11 +41,6 @@ class Institutions
             iyrs = {code: "US-RiNpIYRS", name: "IYRS Maritime Library", active: "Y", link: "https://www.iyrs.edu/about/library", email: "ffrost@iyrs.edu"}
             orgs << iyrs
 
-            orgs << {code: "US-RiJaHS",
-                name: "Jamestown Historical Society",
-                link: "http://www.jamestownhistoricalsociety.org/",
-                active: "Y", email: "collections@jamestownhistoricalsociety.org"}
-
             orgs << {code: "US-RPJCB",
                 name: "John Carter Brown Library",
                 link: "http://www.brown.edu/Facilities/John_Carter_Brown_Library/",

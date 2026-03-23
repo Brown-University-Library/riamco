@@ -25,4 +25,18 @@
 # Ignore our oficial settings and configuration files
 .env
 refresh.sh
+refresh_branch.sh
 /http
+
+# Ignore xml folder so it is not accidentally committed
+xml/
+
+# Ignore scripts
+import_all_eads.sh
+public/render.php
+solr_conf/solr_commands.sh
+task.sh
+update_solr.sh
+
+# Ignore obsolete folder
+obsolete/

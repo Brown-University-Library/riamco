@@ -73,9 +73,11 @@
                     <%= inv_item.inv_container %>
                   <% else %>
                     <% if inv_item.is_file? %>
-                      <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_label %></a>
+                      <% link_text = inv_item.inv_label.presence || inv_item.inv_container.presence || 'View item' %>
+                      <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= link_text %></a>
                     <% else %>
-                      <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= inv_item.inv_container %></a>
+                      <% link_text = inv_item.inv_container.presence || inv_item.inv_label.presence || 'View item' %>
+                      <a target="_blank" href="<%= ead_show_path() %>?eadid=<%=item.ead_id %>&view=inventory#<%=inv_item.inv_id %>"><%= link_text %></a>
                     <% end %>
                   <% end %>
                 </td>

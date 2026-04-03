@@ -25,7 +25,7 @@
                           name="<%= value.add_url %>" id="<%= value.add_url %>"
                           value="<%= value.text %>"
                           class="facet-checkbox-<%= facet.name %>"/>
-                        <%= value.text %>
+                        <label for="<%= value.add_url %>"><%= value.text %></label>
                     </span>
                     <% if @presenter.show_facet_counts %>
                       <div class="no-orphans">

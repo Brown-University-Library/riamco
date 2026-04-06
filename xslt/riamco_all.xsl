@@ -48,7 +48,7 @@
                                 </h1>
                                 </center>
                                 <center>
-                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/><br/>
+                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg" alt="Logo for {/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher}"/><br/>
                                     <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:repository"/>
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>
                                 </center>

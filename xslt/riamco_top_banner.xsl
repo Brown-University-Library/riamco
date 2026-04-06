@@ -32,7 +32,7 @@
 
         <div class="top_banner">
             <div>
-                <img style="max-height: 100px;" src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg" alt="Logo for {/ead:ead/ead:archdesc/ead:did/ead:unitid/text()}"/>
+                <img style="max-height: 100px;" src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg" alt="Logo for {/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher}"/>
             </div>
             <h1>
                 <xsl:value-of select="/ead:ead/ead:archdesc/ead:did/ead:unittitle[@type='primary']"/>

@@ -28,7 +28,7 @@
 
 
     <xsl:template match="/">
-        <html>
+        <html lang="en">
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>

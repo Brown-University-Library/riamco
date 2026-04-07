@@ -5,6 +5,7 @@
 
 # Our locally generated HTML finding aids (from the XML+XSLT)
 /public/html
+/public/info.php
 
 # Ignore bundler config.
 /.bundle
@@ -30,6 +31,7 @@ refresh_branch.sh
 
 # Ignore xml folder so it is not accidentally committed
 xml/
+pdf/
 
 # Ignore scripts
 import_all_eads.sh
@@ -37,6 +39,10 @@ public/render.php
 solr_conf/solr_commands.sh
 task.sh
 update_solr.sh
+scripts/
 
 # Ignore obsolete folder
 obsolete/
+
+# Ignore apache tika server
+tika/

@@ -71,18 +71,20 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="year_from">Year Range</label>
-            <div class="col-md-3">
-              <input type="text" maxlength="4" class="form-control" name="year_from" id="year_from" placeholder="">
-            </div>
-            <div class="col-md-3">
-                <input type="text" maxlength="4" class="form-control" name="year_to" id="year_to" placeholder="">
-            </div>
+          <div class="col-md-3">
+            <label class="control-label" for="year_from">Year From</label>
+            <input type="text" maxlength="4" class="form-control" name="year_from" id="year_from">
+          </div>
+
+          <div class="col-md-3">
+            <label class="control-label" for="year_to">Year To</label>
+            <input type="text" maxlength="4" class="form-control" name="year_to" id="year_to">
+          </div>
         </div>
 
         <!-- hidden but their values are set via JavaScript and submitted to the server -->
-        <input type="text" style="display:none;" name="match_type" id="match_type" value="AND">
-        <button type="submit" style="display:none;" id="submit_search"></button>
+        <input type="hidden" name="match_type" id="match_type" value="AND" aria-hidden="true">
+        <button type="submit" id="submit_search" hidden aria-hidden="true">Search</button>
 
         <!-- facets -->
         <p><b>AND have these attributes</b></p>
@@ -91,8 +93,7 @@
         </div>
         <!-- clear button -->
         <div class="col-md-8">
-          <a href="" name="clear_search" id="clear_search" class="btn btn-danger btn-sm" title="Clear the current search parameters">
-            <span class="glyphicon glyphicon-erase" aria-hidden="true"></span>
+          <a href="" name="clear_search" id="clear_search" title="Clear the current search parameters" style="color: #fff; background-color: #A32824; border: 1px solid #d43f3a; padding: 6px 12px; border-radius: 4px; text-decoration: none; display: inline-block;">
             <span aria-only="true">Clear</span>
           </a>
         </div>

@@ -23,7 +23,7 @@
       <% (@presenter.form_values || []).each do |form_value| %>
         <input name="<%= form_value[:name] %>" id="<%= form_value[:name] %>"
           value="<%= form_value[:value] %>"
-          type="text" class="hidden">
+          type="hidden">
       <% end %>
     <% end %>
   </form>

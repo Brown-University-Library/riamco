@@ -9,7 +9,7 @@
     <xsl:include href="riamco_ga.xsl" />
 
     <xsl:template match="/">
-        <html>
+        <html lang="en">
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <xsl:call-template name="html_title_template" />
@@ -71,7 +71,7 @@
                                     </h1>
                                 </div>
                                 <div>
-                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/>
+                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg" alt="Logo for {/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher}"/>
                                     <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:repository"/>
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>
                                 </div>

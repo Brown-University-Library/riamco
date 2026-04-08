@@ -28,7 +28,7 @@
 
 
     <xsl:template match="/">
-        <html>
+        <html lang="en">
             <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
                 <title>RIAMCO &#160;&#124;&#160; Rhode Island Archival and Manuscript Collections Online</title>
@@ -48,7 +48,7 @@
                                 </h1>
                                 </center>
                                 <center>
-                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg"/><br/>
+                                    <img src="img/{ead:ead/ead:eadheader/ead:eadid/@mainagencycode}.jpg" alt="Logo for {/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher}"/><br/>
                                     <xsl:apply-templates select="/ead:ead/ead:archdesc/ead:did/ead:repository"/>
                                     <xsl:apply-templates select="/ead:ead/ead:eadheader/ead:filedesc/ead:publicationstmt/ead:publisher"/>
                                 </center>

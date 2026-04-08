@@ -32,9 +32,9 @@
             <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
 
             <div class="form-group">
-                <label id="file_lbl" class="control-label col-sm-1">File</label>
+                <label id="file_lbl" class="control-label col-sm-1" for="uploadFilename">File</label>
                 <div class="col-sm-4">
-                    <input id="uploadFilename" placeholder="Choose a file to upload" disabled="disabled" />
+                    <input id="uploadFilename" placeholder="Choose a file to upload" disabled="disabled" aria-labelledby="file_lbl" />
                     <div class="fileUpload btn btn-info">
                         <span>Browse</span>
                         <input type="file" class="upload" id="file" name="file" title="Click to select a file to upload" />

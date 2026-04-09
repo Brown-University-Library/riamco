@@ -44,7 +44,7 @@
                                 <form method="POST" action="<%= upload_delete_url(eadid: file[:name]) %>">
                                     <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
                                     <button type="submit" id="delete_ead" name="delete_ead"
-                                        class="btn btn-danger btn-xs delete-ead"
+                                        class="btn-danger btn-xs delete-ead"
                                         value="delete_ead"
                                         title="Delete this finding aid (<%= file[:name] %>)">Delete</button>
                                 </form>

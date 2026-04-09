@@ -59,8 +59,8 @@
 
 <div style="visibility: hidden;" aria-hidden="true">
     <form id="publish_form" method="POST" action="<%= upload_publish_url() %>" aria-hidden="true">
-        <input id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
-        <input id="eadid" name="eadid" value="" />
+        <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <input type="hidden" id="eadid" name="eadid" value="" />
     </form>
 </div>
 

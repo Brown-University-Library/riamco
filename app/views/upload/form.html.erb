@@ -32,9 +32,9 @@
             <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
 
             <div class="form-group">
-                <label id="file_lbl" class="control-label col-sm-1">File</label>
+                <label id="file_lbl" class="control-label col-sm-1" for="uploadFilename">File</label>
                 <div class="col-sm-4">
-                    <input id="uploadFilename" placeholder="Choose a file to upload" disabled="disabled" />
+                    <input id="uploadFilename" placeholder="Choose a file to upload" disabled="disabled" aria-labelledby="file_lbl" />
                     <div class="fileUpload btn btn-info">
                         <span>Browse</span>
                         <input type="file" class="upload" id="file" name="file" title="Click to select a file to upload" />
@@ -44,17 +44,15 @@
 
             <div id="overwrite-section" class="form-group hidden">
                 <p style="margin-left: 45px;">This file already exists on the server, overwrite it?</p>
-                <label id="overwrite_lbl" class="control-label col-sm-1">&nbsp;</label>
                 <div class="col-sm-4">
-                    <input type="radio" name="overwrite" id="overwrite" value="no" class="radioButton">
-                    <label>No (select a new file)&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                    <input type="radio" name="overwrite" id="overwrite" value="yes" class="radioButton">
-                    <label>Yes</label>
+                    <input type="radio" name="overwrite" id="overwrite_no" value="no" class="radioButton" aria-labelledby="overwrite_no_lbl">
+                    <label id="overwrite_no_lbl">No (select a new file)&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="radio" name="overwrite" id="overwrite_yes" value="yes" class="radioButton" aria-labelledby="overwrite_yes_lbl">
+                    <label id="overwrite_yes_lbl" for="overwrite_yes">Yes</label>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-1">&nbsp;</label>
                 <div class="col-sm-4">
                     <input type="submit" id="submit" name="submit"
                         class="btn btn-primary"

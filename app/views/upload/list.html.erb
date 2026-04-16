@@ -20,8 +20,8 @@
                     <tr>
                         <th>Date Uploaded</th>
                         <th>Filename</th>
-                        <th>&nbsp;</th>
-                        <th>&nbsp;</th>
+                        <th>Publish?</th>
+                        <th>Delete?</th>
                     </tr>
                     <% @presenter.file_list.each do |file| %>
                         <tr>
@@ -44,7 +44,7 @@
                                 <form method="POST" action="<%= upload_delete_url(eadid: file[:name]) %>">
                                     <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
                                     <button type="submit" id="delete_ead" name="delete_ead"
-                                        class="btn btn-danger btn-xs delete-ead"
+                                        class="btn-danger btn-xs delete-ead"
                                         value="delete_ead"
                                         title="Delete this finding aid (<%= file[:name] %>)">Delete</button>
                                 </form>
@@ -57,10 +57,10 @@
     </div> <!-- row -->
 </div> <!-- container -->
 
-<div style="visibility: hidden;">
-    <form id="publish_form" method="POST" action="<%= upload_publish_url() %>">
-        <input id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
-        <input id="eadid" name="eadid" value="" />
+<div style="visibility: hidden;" aria-hidden="true">
+    <form id="publish_form" method="POST" action="<%= upload_publish_url() %>" aria-hidden="true">
+        <input type="hidden" id="authenticity_token" name="authenticity_token" value="<%= form_authenticity_token %>" />
+        <input type="hidden" id="eadid" name="eadid" value="" />
     </form>
 </div>
 

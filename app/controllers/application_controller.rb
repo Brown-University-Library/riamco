@@ -2,8 +2,6 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
 
-  before_action { |controller| BotDetectController.bot_detection_enforce_filter(controller) }
-
   protect_from_forgery with: :exception
 
   def current_user

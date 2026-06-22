@@ -220,10 +220,30 @@
                      <xsl:if test="ead:arrangement/ead:p">
                     <br/> Arrangement: <xsl:apply-templates select="ead:arrangement/ead:p"/>
                 </xsl:if>
-
-                <xsl:if test="ead:c[@level='series']/ead:controlaccess/ead:subject">
-                   <br/> Subjects: <xsl:apply-templates select="ead:c/ead:controlaccess/ead:subject"/>
+                <xsl:if test="ead:controlaccess/ead:subject"> 
+                    <br/> Subjects: <br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:subject"/>
                 </xsl:if>
+
+                <xsl:if test="ead:controlaccess/ead:persname"> <br/> Names: <br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:persname"/><br />
+                </xsl:if><br />
+                <br />
+                <xsl:if test="ead:controlaccess/ead:famname"> <br/> Names: <br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:famname"/><br />
+                </xsl:if><br />
+                <br />
+                <xsl:if test="ead:controlaccess/ead:corpname"> <br/> Names: <br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:corpname"/><br />
+                </xsl:if><br />
+                <br />
+                <xsl:if test="ead:controlaccess/ead:title"> <br/> Titles: <br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:title"/><br />
+                </xsl:if><br />
+                <br />
+                <xsl:if test="ead:controlaccess/ead:genreform"> <br/> Types of materials: <br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:genreform"/><br />
+                </xsl:if><br />
 
            </p>
            <xsl:if test="child::ead:c[@level='subgrp']">
@@ -365,6 +385,25 @@
                  <xsl:if test="ead:arrangement/ead:p">
                     <br/> Arrangement: <xsl:apply-templates select="ead:arrangement/ead:p"/>
                  </xsl:if>
+                 <xsl:if test="ead:controlaccess/ead:persname"> <br/> Names:<br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:persname"/><br />
+                </xsl:if><br />
+               <br />
+                <xsl:if test="ead:controlaccess/ead:famname"> <br/> Names:<br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:famname"/><br />
+                </xsl:if><br />
+               <br />
+                <xsl:if test="ead:controlaccess/ead:corpname"> <br/> Names:<br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:corpname"/><br />
+                </xsl:if><br />
+               <br />
+                <xsl:if test="ead:controlaccess/ead:title"> <br/> Titles:<br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:title"/><br />
+                </xsl:if><br />
+               <br />
+                <xsl:if test="ead:controlaccess/ead:genreform"> <br/> Types of materials:<br />
+                    <xsl:apply-templates select="ead:controlaccess/ead:genreform"/><br />
+                </xsl:if><br />
 
                 <xsl:if test="ead:controlaccess"> <br/> Subjects:
                     <xsl:apply-templates select="ead:controlaccess/ead:subject"/>
@@ -863,6 +902,21 @@
     <xsl:template match="ead:controlaccess/ead:corpname">
         <xsl:apply-templates/>
         <br/>
+    </xsl:template>
+
+    <xsl:template match="ead:controlaccess/ead:famname"><br />
+        <xsl:apply-templates/><br />
+        <br/><br />
+    </xsl:template><br />
+
+    <xsl:template match="ead:controlaccess/ead:genreform"><br />
+        <xsl:apply-templates/><br />
+        <br/><br />
+    </xsl:template><br />
+
+    <xsl:template match="ead:controlaccess/ead:title"><br />
+        <xsl:apply-templates/><br />
+        <br/><br />
     </xsl:template>
 
     <xsl:template match="ead:extref[@xlink:href]">

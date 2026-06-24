@@ -204,7 +204,7 @@
                     <xsl:apply-templates select="ead:did/ead:note/ead:p"/>
                     <br/>
                 </xsl:if>
-                     <xsl:if test="ead:arrangement/ead:p">
+                    <xsl:if test="ead:arrangement/ead:p">
                     <br/> Arrangement: <xsl:apply-templates select="ead:arrangement/ead:p"/>
                 </xsl:if>
 
@@ -228,7 +228,7 @@
                     <xsl:apply-templates select="ead:controlaccess/ead:title"/>
                 </xsl:if>
                 
-                <xsl:if test="ead:controlaccess/ead:genreform"> <br/> Types of materials: 
+                <xsl:if test="ead:controlaccess/ead:genreform"> <br/> Types of materials:
                     <xsl:apply-templates select="ead:controlaccess/ead:genreform"/>
                 </xsl:if>
 
@@ -349,6 +349,26 @@
 
                 <xsl:if test="ead:controlaccess"> <br/> Subjects:
                     <xsl:apply-templates select="ead:controlaccess/ead:subject"/>
+                </xsl:if>
+
+                <xsl:if test="ead:controlaccess/ead:persname"> <br/> Names:
+                    <xsl:apply-templates select="ead:controlaccess/ead:persname"/>
+                </xsl:if>
+               
+                <xsl:if test="ead:controlaccess/ead:famname"> <br/> Names:
+                    <xsl:apply-templates select="ead:controlaccess/ead:famname"/>
+                </xsl:if>
+               
+                <xsl:if test="ead:controlaccess/ead:corpname"> <br/> Names:
+                    <xsl:apply-templates select="ead:controlaccess/ead:corpname"/>
+                </xsl:if>
+               
+                <xsl:if test="ead:controlaccess/ead:title"> <br/> Titles:
+                    <xsl:apply-templates select="ead:controlaccess/ead:title"/>
+                </xsl:if>
+               
+                <xsl:if test="ead:controlaccess/ead:genreform"> <br/> Types of materials:
+                    <xsl:apply-templates select="ead:controlaccess/ead:genreform"/>
                 </xsl:if>
             </span>
         </p>
@@ -777,6 +797,21 @@
         <br/>
     </xsl:template>
     
+    <xsl:template match="ead:controlaccess/ead:title">
+        <xsl:apply-templates/>
+        <br/>
+    </xsl:template>
+
+    <xsl:template match="ead:controlaccess/ead:famname">
+        <xsl:apply-templates/>
+        <br/>
+    </xsl:template>
+   
+    <xsl:template match="ead:controlaccess/ead:genreform">
+        <xsl:apply-templates/>
+        <br/>
+    </xsl:template>
+   
     <xsl:template match="ead:controlaccess/ead:title">
         <xsl:apply-templates/>
         <br/>

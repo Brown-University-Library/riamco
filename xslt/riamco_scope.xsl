@@ -56,19 +56,25 @@
             <xsl:apply-templates/>
         </div>
     </xsl:template>
+    
 
+    
     <xsl:template match="ead:p">
         <p>
             <xsl:apply-templates/>
         </p>
     </xsl:template>
-
     <xsl:template match="ead:list">
         <ul>
             <xsl:apply-templates/>
         </ul>
     </xsl:template>
-
+    <xsl:template match="ead:list/ead:extref">
+        <a href="{@xlink:href}">
+            <xsl:apply-templates/>
+            <xsl:value-of select="@xlink:title"/>.
+        </a>
+    </xsl:template>
 <xsl:template match="ead:item">
         <li>
             <xsl:apply-templates/>
@@ -80,18 +86,25 @@
 <xsl:apply-templates/>
 </xsl:template>
 
-<xsl:template match="ead:extref[@xlink:href]">
-        <a href="{@xlink:href}">
-            <xsl:apply-templates/>
-        </a>
-</xsl:template>
 
 <xsl:template match="ead:archref[@xlink:href]">
         <a href="{@xlink:href}">
             <xsl:apply-templates/>
+            <xsl:value-of select="@xlink:title"/>.
         </a>
 </xsl:template>
-
+    <xsl:template match="ead:extref[@xlink:href]">
+        <a href="{@xlink:href}">
+            <xsl:apply-templates/>
+            <xsl:value-of select="@xlink:title"/>.
+        </a>
+    </xsl:template>
+    <xsl:template match="ead:extptr[@xlink:href]">
+        <a href="{@xlink:href}">
+            <xsl:apply-templates/>
+            <xsl:value-of select="@xlink:title"/>.
+        </a>
+    </xsl:template>
 <xsl:template match="ead:title">
        <i>
            <xsl:apply-templates/>
@@ -182,6 +195,7 @@
             <xsl:apply-templates/>
         </font>
     </xsl:template>
+
     
     <!-- Ignore the <head> element within the <scopecontent> element to 
         eliminate duplication of the label. -->

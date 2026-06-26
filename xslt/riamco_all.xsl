@@ -1130,7 +1130,7 @@
 
     <!-- SECTION: Inventory -->
     <xsl:template match="ead:c">
-        <xsl:if test="@level='series' or @level='subgrp'">
+        <xsl:if test="@level='series' or @level='subgrp' or @level='recordgrp'">
             <xsl:call-template name="series"/>
         </xsl:if>
         <xsl:if test="@level='subseries'">
@@ -1145,7 +1145,7 @@
        <div class="series">
             <p>
                 <strong>
-                    <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp']"/>
+                    <xsl:apply-templates select="ead:did/ead:unitid[@type='series' or @type='subgrp' or @level='recordgrp']"/>
                     <xsl:choose>
                         <xsl:when test="ead:dao[@ns2:role='METSID']">
                             <u>
@@ -1624,6 +1624,11 @@
         </xsl:template> -->
 
     <xsl:template match="ead:did/ead:unitid[@type='subgrp']">
+        <xsl:apply-templates/>
+        <xsl:text>. </xsl:text>
+    </xsl:template>
+    
+    <xsl:template match="ead:did/ead:unitid[@type='recordgrp']">
         <xsl:apply-templates/>
         <xsl:text>. </xsl:text>
     </xsl:template>
